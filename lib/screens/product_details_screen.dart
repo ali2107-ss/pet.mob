@@ -151,7 +151,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
                     ),
                     const SizedBox(height: 24),
                     const Text(
-                      'Описание',
+                      'Сипаттама',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -196,10 +196,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Цена', style: TextStyle(color: AppTheme.greyColor, fontSize: 14)),
+                  const Text('Баға', style: TextStyle(color: AppTheme.greyColor, fontSize: 14)),
                   const SizedBox(height: 4),
                   Text(
-                    '\$${widget.product.price.toStringAsFixed(2)}',
+                    '₸${widget.product.price.toStringAsFixed(0)}',
                     style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
@@ -213,7 +213,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
                   Provider.of<CartProvider>(context, listen: false).addItem(widget.product);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('${widget.product.name} добавлено в корзину'),
+                      content: Text('${widget.product.name} себетке қосылды'),
                       duration: const Duration(seconds: 2),
                       behavior: SnackBarBehavior.floating,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -222,7 +222,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
                   );
                 },
                 icon: const Icon(Icons.shopping_cart),
-                label: const Text('В корзину'),
+                label: const Text('Себетке'),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),

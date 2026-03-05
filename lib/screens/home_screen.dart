@@ -18,10 +18,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   int _selectedCategoryIndex = 0;
   final List<Map<String, dynamic>> _categories = [
-    {'name': 'Все', 'icon': Icons.pets},
-    {'name': 'Корм', 'icon': Icons.restaurant},
-    {'name': 'Игрушки', 'icon': Icons.toys},
-    {'name': 'Аксессуары', 'icon': Icons.content_cut},
+    {'name': 'Барлығы', 'icon': Icons.pets},
+    {'name': 'Тамақ', 'icon': Icons.restaurant},
+    {'name': 'Ойыншықтар', 'icon': Icons.toys},
+    {'name': 'Аксессуарлар', 'icon': Icons.content_cut},
   ];
   String _searchQuery = '';
   late AnimationController _animationController;
@@ -65,20 +65,20 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Привет, Иван! 👋',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: AppTheme.textColor,
+                  const Text(
+                    'Сәлем, Айдар! 👋',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.textColor,
+                    ),
                   ),
-                ),
                 Row(
                   children: [
                     const Icon(Icons.location_on, size: 12, color: AppTheme.primaryColor),
                     const SizedBox(width: 4),
                     Text(
-                      'Москва, Россия',
+                      'Алматы, Казахстан',
                       style: TextStyle(
                         fontSize: 12,
                         color: AppTheme.greyColor,
@@ -139,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Позаботьтесь о',
+                    'Қамқорлық жасаңыз',
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.w400,
@@ -147,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     ),
                   ),
                   const Text(
-                    'вашем любимце',
+                    'сүйікті үй жануарыңызға',
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.w900,
@@ -178,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                               });
                             },
                             decoration: InputDecoration(
-                              hintText: 'Найти корм, игрушки...',
+                              hintText: 'Тамақ, ойыншықтар, аксессуарлар іздеу...',
                               hintStyle: const TextStyle(color: AppTheme.greyColor, fontSize: 14),
                               prefixIcon: const Icon(Icons.search, color: AppTheme.primaryColor),
                               border: InputBorder.none,

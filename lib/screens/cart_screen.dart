@@ -12,7 +12,7 @@ class CartScreen extends StatelessWidget {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Корзина'),
+        title: const Text('Себет'),
       ),
       body: cart.items.isEmpty
           ? Center(
@@ -21,7 +21,7 @@ class CartScreen extends StatelessWidget {
                 children: [
                   Icon(Icons.shopping_cart_outlined, size: 80, color: AppTheme.greyColor.withOpacity(0.5)),
                   const SizedBox(height: 16),
-                  const Text('Ваша корзина пуста', style: TextStyle(fontSize: 18, color: AppTheme.greyColor)),
+                  const Text('Сіздің себетіңіз бос', style: TextStyle(fontSize: 18, color: AppTheme.greyColor)),
                 ],
               ),
             )
@@ -66,11 +66,11 @@ class CartScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text(
-                              'Итого:',
+                              'Барлығы:',
                               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.textColor),
                             ),
                             Text(
-                              '\$${cart.totalAmount.toStringAsFixed(2)}',
+                              '₸${cart.totalAmount.toStringAsFixed(0)}',
                               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
                             ),
                           ],
@@ -81,12 +81,12 @@ class CartScreen extends StatelessWidget {
                           child: ElevatedButton(
                             onPressed: () {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Оформление заказа...')),
+                                const SnackBar(content: Text('Тапсырыс рәсімделуде...')),
                               );
                               cart.clear();
                               Navigator.of(context).pop();
                             },
-                            child: const Text('Оформить заказ'),
+                            child: const Text('Тапсырысты рәсімдеу'),
                           ),
                         ),
                       ],
