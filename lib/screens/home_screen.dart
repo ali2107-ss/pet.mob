@@ -17,7 +17,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   int _selectedCategoryIndex = 0;
-  final List<String> _categories = ['Все', 'Корм', 'Игрушки', 'Аксессуары'];
+  final List<Map<String, dynamic>> _categories = [
+    {'name': 'Все', 'icon': Icons.pets},
+    {'name': 'Корм', 'icon': Icons.restaurant},
+    {'name': 'Игрушки', 'icon': Icons.toys},
+    {'name': 'Аксессуары', 'icon': Icons.content_cut},
+  ];
   String _searchQuery = '';
   late AnimationController _animationController;
 
@@ -44,32 +49,85 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     final searchedProducts = productData.search(_searchQuery);
     final displayedProducts = _selectedCategoryIndex == 0
         ? searchedProducts
-        : searchedProducts.where((p) => p.category == _categories[_selectedCategoryIndex]).toList();
+        : searchedProducts.where((p) => p.category == _categories[_selectedCategoryIndex]['name']).toList();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('PetMob', style: TextStyle(fontWeight: FontWeight.bold)),
+        automaticallyImplyLeading: false,
+        backgroundColor: AppTheme.backgroundColor,
+        title: Row(
+          children: [
+            const CircleAvatar(
+              radius: 20,
+              backgroundImage: NetworkImage('https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80'),
+            ),
+            const SizedBox(width: 12),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Привет, Иван! 👋',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.textColor,
+                  ),
+                ),
+                Row(
+                  children: [
+                    const Icon(Icons.location_on, size: 12, color: AppTheme.primaryColor),
+                    const SizedBox(width: 4),
+                    Text(
+                      'Москва, Россия',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppTheme.greyColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
         actions: [
           Consumer<CartProvider>(
             builder: (_, cart, ch) => badges.Badge(
               position: badges.BadgePosition.topEnd(top: 0, end: 3),
+              badgeStyle: const badges.BadgeStyle(
+                badgeColor: AppTheme.primaryColor,
+                padding: EdgeInsets.all(4),
+              ),
               badgeAnimation: const badges.BadgeAnimation.scale(
                 animationDuration: Duration(milliseconds: 300),
               ),
               badgeContent: Text(
                 cart.totalItemsCount.toString(),
-                style: const TextStyle(color: Colors.white, fontSize: 10),
+                style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
               ),
               child: ch!,
             ),
-            child: IconButton(
-              icon: const Icon(Icons.shopping_cart_outlined),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (_) => const CartScreen()));
-              },
+            child: Container(
+              margin: const EdgeInsets.only(right: 16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: IconButton(
+                icon: const Icon(Icons.shopping_bag_outlined, color: AppTheme.textColor),
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => const CartScreen()));
+                },
+              ),
             ),
           ),
-          const SizedBox(width: 8),
         ],
       ),
       body: CustomScrollView(
@@ -81,47 +139,133 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Найдите лучшее',
+                    'Позаботьтесь о',
                     style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.w800,
+                      fontSize: 28,
+                      fontWeight: FontWeight.w400,
                       color: AppTheme.textColor,
                     ),
                   ),
                   const Text(
-                    'для вашего питомца',
+                    'вашем любимце',
                     style: TextStyle(
                       fontSize: 32,
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w900,
                       color: AppTheme.primaryColor,
+                      height: 1.1,
                     ),
                   ),
                   const SizedBox(height: 24),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.04),
+                                blurRadius: 15,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: TextField(
+                            onChanged: (value) {
+                              setState(() {
+                                _searchQuery = value;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              hintText: 'Найти корм, игрушки...',
+                              hintStyle: const TextStyle(color: AppTheme.greyColor, fontSize: 14),
+                              prefixIcon: const Icon(Icons.search, color: AppTheme.primaryColor),
+                              border: InputBorder.none,
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Container(
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                          color: AppTheme.primaryColor,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: const Icon(Icons.tune, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  // PROMO BANNER
                   Container(
+                    width: double.infinity,
+                    height: 160,
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
+                      gradient: const LinearGradient(
+                        colors: [AppTheme.primaryColor, Color(0xFFFFB385)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(24),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
-                          blurRadius: 10,
-                          offset: const Offset(0, 5),
+                          color: AppTheme.primaryColor.withOpacity(0.3),
+                          blurRadius: 15,
+                          offset: const Offset(0, 8),
                         ),
                       ],
                     ),
-                    child: TextField(
-                      onChanged: (value) {
-                        setState(() {
-                          _searchQuery = value;
-                        });
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Поиск товаров...',
-                        hintStyle: const TextStyle(color: AppTheme.greyColor),
-                        prefixIcon: const Icon(Icons.search, color: AppTheme.greyColor),
-                        border: InputBorder.none,
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                      ),
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          right: -20,
+                          bottom: -20,
+                          child: Icon(
+                            Icons.pets,
+                            size: 150,
+                            color: Colors.white.withOpacity(0.2),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(24.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'Скидка 20%',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const Text(
+                                'на первый заказ!',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  foregroundColor: AppTheme.primaryColor,
+                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                  minimumSize: Size.zero,
+                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                child: const Text('Получить', style: TextStyle(fontSize: 12)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(height: 32),
@@ -135,50 +279,56 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   ),
                   const SizedBox(height: 16),
                   SizedBox(
-                    height: 40,
+                    height: 100, // Increased height for icon + text
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: _categories.length,
                       itemBuilder: (context, index) {
+                        final isSelected = _selectedCategoryIndex == index;
                         return Padding(
-                          padding: const EdgeInsets.only(right: 12.0),
+                          padding: const EdgeInsets.only(right: 16.0),
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
                                 _selectedCategoryIndex = index;
                               });
                             },
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 300),
-                              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-                              decoration: BoxDecoration(
-                                color: _selectedCategoryIndex == index
-                                    ? AppTheme.primaryColor
-                                    : Colors.white,
-                                borderRadius: BorderRadius.circular(20),
-                                boxShadow: _selectedCategoryIndex == index
-                                    ? [
-                                        BoxShadow(
-                                          color: AppTheme.primaryColor.withOpacity(0.4),
-                                          blurRadius: 10,
-                                          offset: const Offset(0, 4),
-                                        )
-                                      ]
-                                    : [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.05),
-                                          blurRadius: 5,
-                                          offset: const Offset(0, 2),
-                                        )
-                                      ],
-                              ),
-                              child: Text(
-                                _categories[index],
-                                style: TextStyle(
-                                  color: _selectedCategoryIndex == index ? Colors.white : AppTheme.textColor,
-                                  fontWeight: FontWeight.bold,
+                            child: Column(
+                              children: [
+                                AnimatedContainer(
+                                  duration: const Duration(milliseconds: 300),
+                                  width: 60,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                    color: isSelected
+                                        ? AppTheme.primaryColor
+                                        : Colors.white,
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: isSelected
+                                            ? AppTheme.primaryColor.withOpacity(0.3)
+                                            : Colors.black.withOpacity(0.05),
+                                        blurRadius: 10,
+                                        offset: const Offset(0, 4),
+                                      )
+                                    ],
+                                  ),
+                                  child: Icon(
+                                    _categories[index]['icon'],
+                                    color: isSelected ? Colors.white : AppTheme.greyColor,
+                                  ),
                                 ),
-                              ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  _categories[index]['name'],
+                                  style: TextStyle(
+                                    color: isSelected ? AppTheme.primaryColor : AppTheme.greyColor,
+                                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         );
