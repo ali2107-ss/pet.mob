@@ -37,9 +37,10 @@ class _MainScreenState extends State<MainScreen> {
 
     return Stack(
       children: [
+        Container(color: Colors.white), // Базовый белый фон
         Positioned.fill(
           child: Opacity(
-            opacity: 0.12, // Very subtle background
+            opacity: 0.25, // Increased visibility
             child: Image.asset(
               'assets/images/pet_background.png',
               fit: BoxFit.cover,
