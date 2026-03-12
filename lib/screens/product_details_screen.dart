@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/product.dart';
 import '../providers/cart_provider.dart';
+import '../providers/favorite_provider.dart';
 import '../theme.dart';
 import 'cart_screen.dart';
 import 'package:badges/badges.dart' as badges;
@@ -71,6 +72,20 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
               ),
             ),
             actions: [
+              Consumer<FavoriteProvider>(
+                 builder: (ctx, favoriteProvider, child) {
+                    final isFavorite = favoriteProvider.isFavorite(widget.product.id);
+                    return IconButton(
+                      icon: Icon(
+                        isFavorite ? Icons.favorite : Icons.favorite_border,
+                        color: isFavorite ? Colors.red : Colors.white,
+                      ),
+                      onPressed: () {
+                        favoriteProvider.toggleFavorite(widget.product);
+                      },
+                    );
+                 },
+              ),
               Consumer<CartProvider>(
                  builder: (_, cart, ch) => badges.Badge(
                   position: badges.BadgePosition.topEnd(top: 0, end: 3),
@@ -97,9 +112,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
             child: FadeTransition(
               opacity: _fadeAnimation,
               child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
                 ),
                 transform: Matrix4.translationValues(0.0, -32.0, 0.0),
                 padding: const EdgeInsets.all(24.0),
@@ -130,10 +145,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
                             const SizedBox(width: 4),
                             Text(
                               widget.product.rating.toString(),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: AppTheme.textColor,
+                                color: Theme.of(context).textTheme.bodyLarge?.color ?? AppTheme.textColor,
                               ),
                             ),
                           ],
@@ -143,27 +158,27 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
                     const SizedBox(height: 16),
                     Text(
                       widget.product.name,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.textColor,
+                        color: Theme.of(context).textTheme.titleLarge?.color ?? AppTheme.textColor,
                       ),
                     ),
                     const SizedBox(height: 24),
-                    const Text(
+                    Text(
                       'Сипаттама',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.textColor,
+                        color: Theme.of(context).textTheme.titleLarge?.color ?? AppTheme.textColor,
                       ),
                     ),
                     const SizedBox(height: 12),
                     Text(
                       widget.product.description,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
-                        color: AppTheme.greyColor,
+                        color: Theme.of(context).textTheme.bodyMedium?.color ?? AppTheme.greyColor,
                         height: 1.5,
                       ),
                     ),
@@ -178,7 +193,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
       bottomSheet: Container(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).cardTheme.color ?? Colors.white,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
           boxShadow: [
             BoxShadow(
@@ -196,7 +211,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Баға', style: TextStyle(color: AppTheme.greyColor, fontSize: 14)),
+                   Text('Баға', style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color ?? AppTheme.greyColor, fontSize: 14)),
                   const SizedBox(height: 4),
                   Text(
                     '₸${widget.product.price.toStringAsFixed(0)}',

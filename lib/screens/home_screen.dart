@@ -43,7 +43,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     final productData = Provider.of<ProductProvider>(context);
-    final cartData = Provider.of<CartProvider>(context);
     
     // First apply search, then apply category filter.
     final searchedProducts = productData.search(_searchQuery);
@@ -161,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       Expanded(
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: Theme.of(context).cardTheme.color ?? Colors.white,
                             borderRadius: BorderRadius.circular(16),
                             boxShadow: [
                               BoxShadow(
@@ -269,12 +268,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     ),
                   ),
                   const SizedBox(height: 32),
-                  const Text(
+                  Text(
                     'Категории',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: AppTheme.textColor,
+                      color: Theme.of(context).textTheme.titleLarge?.color ?? AppTheme.textColor,
                     ),
                   ),
                   const SizedBox(height: 16),

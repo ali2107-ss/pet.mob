@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/product.dart';
 import '../providers/cart_provider.dart';
+import '../providers/favorite_provider.dart';
 import '../theme.dart';
 
 class ProductCard extends StatelessWidget {
@@ -16,7 +17,7 @@ class ProductCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).cardTheme.color ?? Colors.white,
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
@@ -59,10 +60,28 @@ class ProductCard extends StatelessWidget {
                           const SizedBox(width: 4),
                           Text(
                             product.rating.toString(),
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.black),
                           ),
                         ],
                       ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 8,
+                    left: 8,
+                    child: Consumer<FavoriteProvider>(
+                      builder: (ctx, favoriteProvider, child) {
+                        final isFavorite = favoriteProvider.isFavorite(product.id);
+                        return IconButton(
+                          icon: Icon(
+                            isFavorite ? Icons.favorite : Icons.favorite_border,
+                            color: isFavorite ? Colors.red : Colors.grey[800],
+                          ),
+                          onPressed: () {
+                            favoriteProvider.toggleFavorite(product);
+                          },
+                        );
+                      },
                     ),
                   ),
                 ],

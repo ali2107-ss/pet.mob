@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/product_provider.dart';
 import 'providers/cart_provider.dart';
-import 'screens/home_screen.dart';
+import 'providers/favorite_provider.dart';
+import 'screens/main_screen.dart';
 import 'theme.dart';
 
 void main() {
@@ -18,12 +19,15 @@ class PetMobApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => ProductProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => FavoriteProvider()),
       ],
       child: MaterialApp(
         title: 'ЗооМаг Казахстан',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
-        home: const HomeScreen(),
+        darkTheme: AppTheme.darkTheme,
+        themeMode: ThemeMode.system,
+        home: const MainScreen(),
       ),
     );
   }

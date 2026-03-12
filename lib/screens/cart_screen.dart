@@ -4,7 +4,8 @@ import '../providers/cart_provider.dart';
 import '../theme.dart';
 
 class CartScreen extends StatelessWidget {
-  const CartScreen({Key? key}) : super(key: key);
+  final bool isRoot;
+  const CartScreen({Key? key, this.isRoot = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +14,7 @@ class CartScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Себет'),
+        automaticallyImplyLeading: !isRoot,
       ),
       body: cart.items.isEmpty
           ? Center(
@@ -48,7 +50,7 @@ class CartScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).cardTheme.color ?? Colors.white,
                     borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
                     boxShadow: [
                       BoxShadow(
@@ -65,9 +67,9 @@ class CartScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
+                             Text(
                               'Барлығы:',
-                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.textColor),
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.titleLarge?.color ?? AppTheme.textColor),
                             ),
                             Text(
                               '₸${cart.totalAmount.toStringAsFixed(0)}',
@@ -135,7 +137,7 @@ class _CartItemWidget extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).cardTheme.color ?? Colors.white,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
@@ -164,7 +166,7 @@ class _CartItemWidget extends StatelessWidget {
                 children: [
                   Text(
                     name,
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppTheme.textColor),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.titleMedium?.color ?? AppTheme.textColor),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
