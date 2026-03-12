@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:badges/badges.dart' as badges;
+import 'package:provider/provider.dart';
+import '../providers/cart_provider.dart';
+import '../providers/locale_provider.dart';
+import '../l10n/translation.dart';
 import 'home_screen.dart';
 import 'categories_screen.dart';
-import 'favorites_screen.dart';
 import 'cart_screen.dart';
+import 'favorites_screen.dart';
 import 'profile_screen.dart';
-import '../theme.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -16,60 +20,75 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = [
+  final List<Widget> _screens = [
     const HomeScreen(),
     const CategoriesScreen(),
+    const CartScreen(),
     const FavoritesScreen(),
-    const CartScreen(isRoot: true),
     const ProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final cartItemCount = context.watch<CartProvider>().itemCount;
+    final localeProvider = Provider.of<LocaleProvider>(context);
+    final langCode = localeProvider.locale.languageCode;
+    final t = AppTranslation.translations[langCode] ?? AppTranslation.translations['ru']!;
+
     return Scaffold(
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 300),
-        switchInCurve: Curves.easeInOut,
-        switchOutCurve: Curves.easeInOut,
-        child: _pages[_currentIndex],
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _screens,
       ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            if (Theme.of(context).brightness == Brightness.light)
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 20,
-                offset: const Offset(0, -5),
-              )
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-          child: BottomNavigationBar(
-            currentIndex: _currentIndex,
-            onTap: (index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor ?? Theme.of(context).colorScheme.surface,
-            selectedItemColor: AppTheme.primaryColor,
-            unselectedItemColor: AppTheme.greyColor,
-            showSelectedLabels: true,
-            showUnselectedLabels: true,
-            selectedFontSize: 12,
-            unselectedFontSize: 12,
-            items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home_outlined), activeIcon: Icon(Icons.home), label: 'Басты бет'),
-              BottomNavigationBarItem(icon: Icon(Icons.dashboard_outlined), activeIcon: Icon(Icons.dashboard), label: 'Каталог'),
-              BottomNavigationBarItem(icon: Icon(Icons.favorite_outline), activeIcon: Icon(Icons.favorite), label: 'Таңдаулы'),
-              BottomNavigationBarItem(icon: Icon(Icons.shopping_cart_outlined), activeIcon: Icon(Icons.shopping_cart), label: 'Себет'),
-              BottomNavigationBarItem(icon: Icon(Icons.person_outline), activeIcon: Icon(Icons.person), label: 'Профиль'),
-            ],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        type: BottomNavigationBarType.fixed,
+        items: [
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.home_outlined),
+            activeIcon: const Icon(Icons.home),
+            label: t['home'],
           ),
-        ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.grid_view_outlined),
+            activeIcon: const Icon(Icons.grid_view),
+            label: t['catalog'],
+          ),
+          BottomNavigationBarItem(
+            icon: badges.Badge(
+              showBadge: cartItemCount > 0,
+              badgeContent: Text(
+                cartItemCount.toString(),
+                style: const TextStyle(color: Colors.white, fontSize: 10),
+              ),
+              child: const Icon(Icons.shopping_cart_outlined),
+            ),
+            activeIcon: badges.Badge(
+              showBadge: cartItemCount > 0,
+              badgeContent: Text(
+                cartItemCount.toString(),
+                style: const TextStyle(color: Colors.white, fontSize: 10),
+              ),
+              child: const Icon(Icons.shopping_cart),
+            ),
+            label: t['cart'],
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.favorite_outline),
+            activeIcon: const Icon(Icons.favorite),
+            label: t['favorites'],
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.person_outline),
+            activeIcon: const Icon(Icons.person),
+            label: t['profile'],
+          ),
+        ],
       ),
     );
   }

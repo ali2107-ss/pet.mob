@@ -7,6 +7,8 @@ import 'product_details_screen.dart';
 import 'cart_screen.dart';
 import '../theme.dart';
 import 'package:badges/badges.dart' as badges;
+import '../providers/locale_provider.dart';
+import '../l10n/translation.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -17,12 +19,17 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   int _selectedCategoryIndex = 0;
+  
+  // Base keys instead of hardcoded localized strings
   final List<Map<String, dynamic>> _categories = [
-    {'name': 'Барлығы', 'icon': Icons.pets},
-    {'name': 'Тамақ', 'icon': Icons.restaurant},
-    {'name': 'Ойыншықтар', 'icon': Icons.toys},
-    {'name': 'Аксессуарлар', 'icon': Icons.content_cut},
+    {'key': 'Барлығы', 'locale_key': 'see_all', 'icon': Icons.pets},
+    {'key': 'Тамақ', 'locale_key': 'cat_food', 'icon': Icons.restaurant},
+    {'key': 'Ойыншықтар', 'locale_key': 'cat_toys', 'icon': Icons.toys},
+    {'key': 'Аксессуарлар', 'locale_key': 'cat_accessories', 'icon': Icons.content_cut},
+    {'key': 'Гигиена', 'locale_key': 'cat_hygiene', 'icon': Icons.cleaning_services},
+    {'key': 'Киімдер', 'locale_key': 'cat_clothes', 'icon': Icons.checkroom},
   ];
+
   String _searchQuery = '';
   late AnimationController _animationController;
 
@@ -43,12 +50,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     final productData = Provider.of<ProductProvider>(context);
+    final localeProvider = Provider.of<LocaleProvider>(context);
+    final langCode = localeProvider.locale.languageCode;
+    final t = AppTranslation.translations[langCode] ?? AppTranslation.translations['ru']!;
     
     // First apply search, then apply category filter.
     final searchedProducts = productData.search(_searchQuery);
     final displayedProducts = _selectedCategoryIndex == 0
         ? searchedProducts
-        : searchedProducts.where((p) => p.category == _categories[_selectedCategoryIndex]['name']).toList();
+        : searchedProducts.where((p) => p.category == _categories[_selectedCategoryIndex]['key']).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -64,9 +74,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                  const Text(
-                    'Сәлем, Айдар! 👋',
-                    style: TextStyle(
+                  Text(
+                    t['hello_user']!,
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: AppTheme.textColor,
@@ -77,8 +87,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     const Icon(Icons.location_on, size: 12, color: AppTheme.primaryColor),
                     const SizedBox(width: 4),
                     Text(
-                      'Алматы, Казахстан',
-                      style: TextStyle(
+                      t['city']!,
+                      style: const TextStyle(
                         fontSize: 12,
                         color: AppTheme.greyColor,
                       ),
@@ -137,17 +147,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Қамқорлық жасаңыз',
-                    style: TextStyle(
+                  Text(
+                    t['care_for']!,
+                    style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.w400,
                       color: AppTheme.textColor,
                     ),
                   ),
-                  const Text(
-                    'сүйікті үй жануарыңызға',
-                    style: TextStyle(
+                  Text(
+                    t['your_pet']!,
+                    style: const TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.w900,
                       color: AppTheme.primaryColor,
@@ -177,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                               });
                             },
                             decoration: InputDecoration(
-                              hintText: 'Тамақ, ойыншықтар, аксессуарлар іздеу...',
+                              hintText: t['search_hint']!,
                               hintStyle: const TextStyle(color: AppTheme.greyColor, fontSize: 14),
                               prefixIcon: const Icon(Icons.search, color: AppTheme.primaryColor),
                               border: InputBorder.none,
@@ -234,17 +244,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text(
-                                'Скидка 20%',
-                                style: TextStyle(
+                              Text(
+                                t['discount_20']!,
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              const Text(
-                                'на первый заказ!',
-                                style: TextStyle(
+                              Text(
+                                t['first_order']!,
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
                                 ),
@@ -259,7 +269,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   minimumSize: Size.zero,
                                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                 ),
-                                child: const Text('Получить', style: TextStyle(fontSize: 12)),
+                                child: Text(t['get_btn']!, style: const TextStyle(fontSize: 12)),
                               ),
                             ],
                           ),
@@ -269,7 +279,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   ),
                   const SizedBox(height: 32),
                   Text(
-                    'Категории',
+                    t['catalog'] ?? 'Категории',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -284,6 +294,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       itemCount: _categories.length,
                       itemBuilder: (context, index) {
                         final isSelected = _selectedCategoryIndex == index;
+                        final localeKey = _categories[index]['locale_key'];
+                        final displayLabel = t[localeKey] ?? _categories[index]['key'];
                         return Padding(
                           padding: const EdgeInsets.only(right: 16.0),
                           child: GestureDetector(
@@ -320,7 +332,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 ),
                                 const SizedBox(height: 8),
                                 Text(
-                                  _categories[index]['name'],
+                                  displayLabel,
                                   style: TextStyle(
                                     color: isSelected ? AppTheme.primaryColor : AppTheme.greyColor,
                                     fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
@@ -334,7 +346,36 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       },
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 32),
+                  Text(
+                    t['tips_title'] ?? 'Полезные советы',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).textTheme.titleLarge?.color ?? AppTheme.textColor,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    height: 140,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        _buildTipCard(
+                          t['tip_1'] ?? 'Как приучить котенка?',
+                          'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=500&q=60',
+                        ),
+                        _buildTipCard(
+                          t['tip_2'] ?? 'Правильный рацион',
+                          'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=500&q=60',
+                        ),
+                        _buildTipCard(
+                          t['tip_3'] ?? 'Уход за шерстью',
+                          'https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&w=500&q=60',
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -350,9 +391,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           children: [
                             Icon(Icons.search_off, size: 64, color: AppTheme.greyColor.withOpacity(0.5)),
                             const SizedBox(height: 16),
-                            const Text(
-                              'Товары не найдены',
-                              style: TextStyle(fontSize: 18, color: AppTheme.greyColor),
+                            Text(
+                              t['no_products']!,
+                              style: const TextStyle(fontSize: 18, color: AppTheme.greyColor),
                             ),
                           ],
                         ),
@@ -412,6 +453,59 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           ),
           const SliverToBoxAdapter(child: SizedBox(height: 30)),
         ],
+      ),
+    );
+  }
+
+  Widget _buildTipCard(String title, String imageUrl) {
+    return Container(
+      width: 240,
+      margin: const EdgeInsets.only(right: 16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        image: DecorationImage(
+          image: NetworkImage(imageUrl),
+          fit: BoxFit.cover,
+          colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.4), BlendMode.darken),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          )
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: AppTheme.primaryColor,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Text(
+                'New',
+                style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              title,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -6,6 +6,8 @@ import '../providers/favorite_provider.dart';
 import '../theme.dart';
 import 'cart_screen.dart';
 import 'package:badges/badges.dart' as badges;
+import '../l10n/translation.dart';
+import '../providers/locale_provider.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final Product product;
@@ -36,6 +38,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = Provider.of<LocaleProvider>(context);
+    final langCode = localeProvider.locale.languageCode;
+    final t = AppTranslation.translations[langCode] ?? AppTranslation.translations['ru']!;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: CustomScrollView(
@@ -131,7 +137,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
-                            widget.product.category,
+                            t[_getCategoryKey(widget.product.category)] ?? widget.product.category,
                             style: const TextStyle(
                               color: AppTheme.primaryColor,
                               fontWeight: FontWeight.bold,
@@ -166,7 +172,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
                     ),
                     const SizedBox(height: 24),
                     Text(
-                      'Сипаттама',
+                      t['description']!,
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -211,7 +217,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   Text('Баға', style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color ?? AppTheme.greyColor, fontSize: 14)),
+                   Text(t['price']!, style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color ?? AppTheme.greyColor, fontSize: 14)),
                   const SizedBox(height: 4),
                   Text(
                     '₸${widget.product.price.toStringAsFixed(0)}',
@@ -228,7 +234,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
                   Provider.of<CartProvider>(context, listen: false).addItem(widget.product);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('${widget.product.name} себетке қосылды'),
+                      content: Text('${widget.product.name} ${t['added_to_cart']}'),
                       duration: const Duration(seconds: 2),
                       behavior: SnackBarBehavior.floating,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -237,7 +243,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
                   );
                 },
                 icon: const Icon(Icons.shopping_cart),
-                label: const Text('Себетке'),
+                label: Text(t['to_cart']!),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -248,5 +254,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
         ),
       ),
     );
+  }
+
+  String _getCategoryKey(String originalCategory) {
+    switch (originalCategory) {
+      case 'Тамақ': return 'cat_food';
+      case 'Ойыншықтар': return 'cat_toys';
+      case 'Аксессуарлар': return 'cat_accessories';
+      case 'Гигиена': return 'cat_hygiene';
+      case 'Киімдер': return 'cat_clothes';
+      default: return 'see_all';
+    }
   }
 }

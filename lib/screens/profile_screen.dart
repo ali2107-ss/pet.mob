@@ -1,96 +1,228 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../theme.dart';
 import 'addresses_screen.dart';
 import 'payment_methods_screen.dart';
 import 'order_history_screen.dart';
+import 'auth/login_screen.dart';
+import '../l10n/translation.dart';
+import '../providers/locale_provider.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  // Имитация состояния авторизации
+  bool _isLoggedIn = false;
+
+  void _showLanguageSelector(BuildContext context, LocaleProvider localeProvider) {
+    final langCode = localeProvider.locale.languageCode;
+    final t = AppTranslation.translations[langCode]!;
+
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  t['choose_language']!,
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
+              ListTile(
+                title: Text(t['ru_lang']!),
+                trailing: langCode == 'ru' ? const Icon(Icons.check, color: AppTheme.primaryColor) : null,
+                onTap: () {
+                  localeProvider.setLocale(const Locale('ru'));
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: Text(t['kk_lang']!),
+                trailing: langCode == 'kk' ? const Icon(Icons.check, color: AppTheme.primaryColor) : null,
+                onTap: () {
+                  localeProvider.setLocale(const Locale('kk'));
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: Text(t['en_lang']!),
+                trailing: langCode == 'en' ? const Icon(Icons.check, color: AppTheme.primaryColor) : null,
+                onTap: () {
+                  localeProvider.setLocale(const Locale('en'));
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final localeProvider = Provider.of<LocaleProvider>(context);
+    final langCode = localeProvider.locale.languageCode;
+    final t = AppTranslation.translations[langCode] ?? AppTranslation.translations['ru']!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Профиль'),
+        title: Text(t['profile']!),
         centerTitle: true,
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            icon: const Icon(Icons.settings_outlined),
-            onPressed: () {
-              // Settings implementation
-            },
+            icon: const Icon(Icons.language),
+            onPressed: () => _showLanguageSelector(context, localeProvider),
           ),
+          if (_isLoggedIn)
+            IconButton(
+              icon: const Icon(Icons.settings_outlined),
+              onPressed: () {
+                // Settings implementation
+              },
+            ),
         ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            const CircleAvatar(
-              radius: 50,
-              backgroundImage: NetworkImage('https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80'),
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'Айдар Нұрғалиев',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.textColor),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              'aydarn@example.com',
-              style: TextStyle(fontSize: 16, color: AppTheme.greyColor),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              '+7 (705) 123 45 67',
-              style: TextStyle(fontSize: 14, color: AppTheme.greyColor),
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.accentColor,
-                foregroundColor: AppTheme.primaryColor,
-                minimumSize: const Size(double.infinity, 50),
+            if (!_isLoggedIn) ...[
+              const Icon(Icons.account_circle, size: 100, color: Colors.grey),
+              const SizedBox(height: 16),
+              Text(
+                t['guest_mode']!,
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.textColor),
               ),
-              child: const Text('Профильді өңдеу'),
-            ),
+              const SizedBox(height: 8),
+              Text(
+                t['login_desc']!,
+                style: const TextStyle(fontSize: 16, color: AppTheme.greyColor),
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () async {
+                  await Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const LoginScreen()),
+                  );
+                  // Когда реализуем реальный стейт, здесь будем обновлять UI.
+                  // Пока просто для демонстрации можно установить флаг:
+                  // setState(() { _isLoggedIn = true; });
+                },
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 50),
+                ),
+                child: Text(t['login_register']!),
+              ),
+            ] else ...[
+              const CircleAvatar(
+                radius: 50,
+                backgroundImage: NetworkImage('https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80'),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Айдар Нұрғалиев',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.textColor),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'aydarn@example.com',
+                style: TextStyle(fontSize: 16, color: AppTheme.greyColor),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                '+7 (705) 123 45 67',
+                style: TextStyle(fontSize: 14, color: AppTheme.greyColor),
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.accentColor,
+                  foregroundColor: AppTheme.primaryColor,
+                  minimumSize: const Size(double.infinity, 50),
+                ),
+                child: Text(t['edit_profile']!),
+              ),
+            ],
+            
             const SizedBox(height: 32),
             _buildProfileMenuItem(
               context,
               icon: Icons.location_on_outlined,
-              title: 'Жеткізу мекенжайлары',
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const AddressesScreen())),
+              title: t['delivery_addresses']!,
+              onTap: () {
+                if (!_isLoggedIn) {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LoginScreen()));
+                  return;
+                }
+                Navigator.of(context).push(MaterialPageRoute(builder: (_) => const AddressesScreen()));
+              },
             ),
             _buildProfileMenuItem(
               context,
               icon: Icons.payment_outlined,
-              title: 'Төлем тәсілдері',
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const PaymentMethodsScreen())),
+              title: t['payment_methods']!,
+              onTap: () {
+                if (!_isLoggedIn) {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LoginScreen()));
+                  return;
+                }
+                Navigator.of(context).push(MaterialPageRoute(builder: (_) => const PaymentMethodsScreen()));
+              },
             ),
             _buildProfileMenuItem(
               context,
               icon: Icons.history_outlined,
-              title: 'Тапсырыстар тарихы',
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const OrderHistoryScreen())),
+              title: t['order_history']!,
+              onTap: () {
+                if (!_isLoggedIn) {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LoginScreen()));
+                  return;
+                }
+                Navigator.of(context).push(MaterialPageRoute(builder: (_) => const OrderHistoryScreen()));
+              },
             ),
             _buildProfileMenuItem(
               context,
               icon: Icons.local_offer_outlined,
-              title: 'Промокодтар',
-              onTap: () {},
+              title: t['promocodes']!,
+              onTap: () {
+                if (!_isLoggedIn) {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LoginScreen()));
+                  return;
+                }
+              },
             ),
-            const SizedBox(height: 24),
-            _buildProfileMenuItem(
-              context,
-              icon: Icons.logout,
-              title: 'Шығу',
-              textColor: Colors.red,
-              iconColor: Colors.red,
-              showChevron: false,
-              onTap: () {},
-            ),
+            if (_isLoggedIn) ...[
+              const SizedBox(height: 24),
+              _buildProfileMenuItem(
+                context,
+                icon: Icons.logout,
+                title: t['logout']!,
+                textColor: Colors.red,
+                iconColor: Colors.red,
+                showChevron: false,
+                onTap: () {
+                  setState(() {
+                    _isLoggedIn = false;
+                  });
+                },
+              ),
+            ],
           ],
         ),
       ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/product_provider.dart';
+import '../providers/locale_provider.dart';
+import '../l10n/translation.dart';
 import '../theme.dart';
 import 'product_details_screen.dart';
 import '../widgets/product_card.dart';
@@ -11,20 +13,35 @@ class CategoriesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productData = Provider.of<ProductProvider>(context);
-    final categories = ['Тамақ', 'Ойыншықтар', 'Аксессуарлар'];
+    final localeProvider = Provider.of<LocaleProvider>(context);
+    final langCode = localeProvider.locale.languageCode;
+    final t = AppTranslation.translations[langCode] ?? AppTranslation.translations['ru']!;
+
+    // Using internal category keys as value, map string is label
+    final categoriesMap = [
+      {'key': 'Тамақ', 'label': t['cat_food']},
+      {'key': 'Ойыншықтар', 'label': t['cat_toys']},
+      {'key': 'Аксессуарлар', 'label': t['cat_accessories']},
+      {'key': 'Гигиена', 'label': t['cat_hygiene']},
+      {'key': 'Киімдер', 'label': t['cat_clothes']},
+    ];
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Каталог'),
+        title: Text(t['catalog']!),
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16.0),
-        itemCount: categories.length,
+        itemCount: categoriesMap.length,
         itemBuilder: (context, index) {
-          final category = categories[index];
-          final categoryProducts = productData.getProductsByCategory(category);
+          final categoryKey = categoriesMap[index]['key']!;
+          final categoryLabel = categoriesMap[index]['label']!;
+          final categoryProducts = productData.getProductsByCategory(categoryKey);
+
+          // Skip rendering if category has no products
+          if (categoryProducts.isEmpty) return const SizedBox.shrink();
 
           return Padding(
             padding: const EdgeInsets.only(bottom: 24.0),
@@ -35,7 +52,7 @@ class CategoriesScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      category,
+                      categoryLabel,
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -44,7 +61,7 @@ class CategoriesScreen extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {},
-                      child: const Text('Барлығы'),
+                      child: Text(t['see_all']!),
                     )
                   ],
                 ),

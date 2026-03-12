@@ -4,6 +4,8 @@ import '../models/product.dart';
 import '../providers/cart_provider.dart';
 import '../providers/favorite_provider.dart';
 import '../theme.dart';
+import '../l10n/translation.dart';
+import '../providers/locale_provider.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -13,6 +15,10 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = Provider.of<LocaleProvider>(context);
+    final langCode = localeProvider.locale.languageCode;
+    final t = AppTranslation.translations[langCode] ?? AppTranslation.translations['ru']!;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -104,7 +110,7 @@ class ProductCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    product.category,
+                    t[_getCategoryKey(product.category)] ?? product.category,
                     style: const TextStyle(
                       fontSize: 12,
                       color: AppTheme.greyColor,
@@ -132,6 +138,16 @@ class ProductCard extends StatelessWidget {
         ),
       ),
     );
+  }
+  String _getCategoryKey(String originalCategory) {
+    switch (originalCategory) {
+      case 'Тамақ': return 'cat_food';
+      case 'Ойыншықтар': return 'cat_toys';
+      case 'Аксессуарлар': return 'cat_accessories';
+      case 'Гигиена': return 'cat_hygiene';
+      case 'Киімдер': return 'cat_clothes';
+      default: return 'see_all';
+    }
   }
 }
 
@@ -171,10 +187,15 @@ class _AddToCartButtonState extends State<_AddToCartButton> with SingleTickerPro
       _controller.reverse();
     });
     Provider.of<CartProvider>(context, listen: false).addItem(widget.product);
+    
+    final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
+    final langCode = localeProvider.locale.languageCode;
+    final t = AppTranslation.translations[langCode] ?? AppTranslation.translations['ru']!;
+
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('${widget.product.name} добавлено в корзину'),
+        content: Text('${widget.product.name} ${t['added_to_cart']}'),
         duration: const Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
