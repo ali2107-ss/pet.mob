@@ -61,9 +61,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         : searchedProducts.where((p) => p.category == _categories[_selectedCategoryIndex]['key']).toList();
 
     return Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: AppTheme.backgroundColor,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         title: Row(
           children: [
             const CircleAvatar(

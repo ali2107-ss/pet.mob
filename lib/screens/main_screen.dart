@@ -35,61 +35,76 @@ class _MainScreenState extends State<MainScreen> {
     final langCode = localeProvider.locale.languageCode;
     final t = AppTranslation.translations[langCode] ?? AppTranslation.translations['ru']!;
 
-    return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.home_outlined),
-            activeIcon: const Icon(Icons.home),
-            label: t['home'],
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.grid_view_outlined),
-            activeIcon: const Icon(Icons.grid_view),
-            label: t['catalog'],
-          ),
-          BottomNavigationBarItem(
-            icon: badges.Badge(
-              showBadge: cartItemCount > 0,
-              badgeContent: Text(
-                cartItemCount.toString(),
-                style: const TextStyle(color: Colors.white, fontSize: 10),
-              ),
-              child: const Icon(Icons.shopping_cart_outlined),
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: Opacity(
+            opacity: 0.12, // Very subtle background
+            child: Image.asset(
+              'assets/images/pet_background.png',
+              fit: BoxFit.cover,
             ),
-            activeIcon: badges.Badge(
-              showBadge: cartItemCount > 0,
-              badgeContent: Text(
-                cartItemCount.toString(),
-                style: const TextStyle(color: Colors.white, fontSize: 10),
+          ),
+        ),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          body: IndexedStack(
+            index: _currentIndex,
+            children: _screens,
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: Colors.white.withOpacity(0.9), // Slightly opaque for readability
+            currentIndex: _currentIndex,
+            onTap: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            type: BottomNavigationBarType.fixed,
+            items: [
+              BottomNavigationBarItem(
+                icon: const Icon(Icons.home_outlined),
+                activeIcon: const Icon(Icons.home),
+                label: t['home'],
               ),
-              child: const Icon(Icons.shopping_cart),
-            ),
-            label: t['cart'],
+              BottomNavigationBarItem(
+                icon: const Icon(Icons.grid_view_outlined),
+                activeIcon: const Icon(Icons.grid_view),
+                label: t['catalog'],
+              ),
+              BottomNavigationBarItem(
+                icon: badges.Badge(
+                  showBadge: cartItemCount > 0,
+                  badgeContent: Text(
+                    cartItemCount.toString(),
+                    style: const TextStyle(color: Colors.white, fontSize: 10),
+                  ),
+                  child: const Icon(Icons.shopping_cart_outlined),
+                ),
+                activeIcon: badges.Badge(
+                  showBadge: cartItemCount > 0,
+                  badgeContent: Text(
+                    cartItemCount.toString(),
+                    style: const TextStyle(color: Colors.white, fontSize: 10),
+                  ),
+                  child: const Icon(Icons.shopping_cart),
+                ),
+                label: t['cart'],
+              ),
+              BottomNavigationBarItem(
+                icon: const Icon(Icons.favorite_outline),
+                activeIcon: const Icon(Icons.favorite),
+                label: t['favorites'],
+              ),
+              BottomNavigationBarItem(
+                icon: const Icon(Icons.person_outline),
+                activeIcon: const Icon(Icons.person),
+                label: t['profile'],
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.favorite_outline),
-            activeIcon: const Icon(Icons.favorite),
-            label: t['favorites'],
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.person_outline),
-            activeIcon: const Icon(Icons.person),
-            label: t['profile'],
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
