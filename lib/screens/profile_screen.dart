@@ -5,6 +5,7 @@ import 'addresses_screen.dart';
 import 'payment_methods_screen.dart';
 import 'order_history_screen.dart';
 import 'auth/login_screen.dart';
+import 'map_screen.dart';
 import '../l10n/translation.dart';
 import '../providers/locale_provider.dart';
 
@@ -205,6 +206,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LoginScreen()));
                   return;
                 }
+              },
+            ),
+            _buildProfileMenuItem(
+              context,
+              icon: Icons.map_outlined,
+              title: t['stores_map'] ?? 'Наши магазины',
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (_) => const MapScreen()));
               },
             ),
             if (_isLoggedIn) ...[

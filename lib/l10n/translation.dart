@@ -91,7 +91,9 @@ class AppTranslation {
       'description': 'Описание',
       'price': 'Цена',
       'to_cart': 'В корзину',
-      'similar_products': 'Похожие товары'
+      'similar_products': 'Похожие товары',
+      'stores_map': 'Наши магазины',
+      'build_route': 'Построить маршрут'
     },
     'kk': {
       'profile': 'Профиль',
@@ -184,7 +186,9 @@ class AppTranslation {
       'description': 'Сипаттама',
       'price': 'Баға',
       'to_cart': 'Себетке',
-      'similar_products': 'Ұқсас тауарлар'
+      'similar_products': 'Ұқсас тауарлар',
+      'stores_map': 'Біздің дүкендер',
+      'build_route': 'Маршрутты құру'
     },
     'en': {
       'profile': 'Profile',
@@ -277,7 +281,9 @@ class AppTranslation {
       'description': 'Description',
       'price': 'Price',
       'to_cart': 'To cart',
-      'similar_products': 'Similar Products'
+      'similar_products': 'Similar Products',
+      'stores_map': 'Our stores',
+      'build_route': 'Build Route'
     }
   };
 }
