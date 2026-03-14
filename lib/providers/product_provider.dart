@@ -9,7 +9,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Сухой корм для взрослых собак крупных пород. Укрепляет суставы и поддерживает оптимальный вес.',
       price: 25500,
       category: 'Тамақ',
-      imageUrl: 'https://loremflickr.com/500/500/dog,food?lock=1',
+      imageUrl: 'https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=500&q=80',
       rating: 4.8,
     ),
     Product(
@@ -18,7 +18,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Сухой корм для стерилизованных кошек с лососем. Поддерживает здоровье почек.',
       price: 8500,
       category: 'Тамақ',
-      imageUrl: 'https://loremflickr.com/500/500/cat,food?lock=2',
+      imageUrl: 'https://images.unsplash.com/photo-1601758124510-52d02ddb7cbd?w=500&q=80',
       rating: 4.8,
     ),
     Product(
@@ -27,7 +27,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Корм с говядиной и морковью для кошек. Хрустящие подушечки с нежным паштетом.',
       price: 1200,
       category: 'Тамақ',
-      imageUrl: 'https://loremflickr.com/500/500/cat,food?lock=3',
+      imageUrl: 'https://images.unsplash.com/photo-1615789591457-74a63395c990?w=500&q=80',
       rating: 4.3,
     ),
     Product(
@@ -36,7 +36,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Полнорационный корм для собак всех пород с говядиной и птицей.',
       price: 13400,
       category: 'Тамақ',
-      imageUrl: 'https://loremflickr.com/500/500/dog,food?lock=4',
+      imageUrl: 'https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?w=500&q=80',
       rating: 5.0,
     ),
     Product(
@@ -45,7 +45,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Гипоаллергенный корм с мясом ягненка для собак всех пород.',
       price: 34000,
       category: 'Тамақ',
-      imageUrl: 'https://loremflickr.com/500/500/dog,food?lock=5',
+      imageUrl: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=500&q=80',
       rating: 4.2,
     ),
     Product(
@@ -54,7 +54,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Биологически соответствующий корм для кошек с 6 видами рыбы.',
       price: 41000,
       category: 'Тамақ',
-      imageUrl: 'https://loremflickr.com/500/500/cat,food?lock=6',
+      imageUrl: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500&q=80',
       rating: 4.7,
     ),
     Product(
@@ -63,7 +63,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Влажный корм для кошек в желе с ягненком и курицей.',
       price: 250,
       category: 'Тамақ',
-      imageUrl: 'https://loremflickr.com/500/500/cat,food?lock=7',
+      imageUrl: 'https://images.unsplash.com/photo-1548802673-380ab8ebc7b7?w=500&q=80',
       rating: 4.2,
     ),
     Product(
@@ -72,7 +72,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Гипоаллергенный корм с уткой и рисом для собак средних пород.',
       price: 21500,
       category: 'Тамақ',
-      imageUrl: 'https://loremflickr.com/500/500/dog,food?lock=8',
+      imageUrl: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=500&q=80',
       rating: 4.7,
     ),
     Product(
@@ -81,7 +81,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Комплексный корм с кроликом, рисом и картофелем.',
       price: 18900,
       category: 'Тамақ',
-      imageUrl: 'https://loremflickr.com/500/500/dog,food?lock=9',
+      imageUrl: 'https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?w=500&q=80',
       rating: 4.6,
     ),
     Product(
@@ -90,7 +90,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Корм для котят с курицей. Идеален для роста и развития.',
       price: 9500,
       category: 'Тамақ',
-      imageUrl: 'https://loremflickr.com/500/500/cat,food?lock=10',
+      imageUrl: 'https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?w=500&q=80',
       rating: 4.4,
     ),
     Product(
@@ -99,7 +99,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Корм холистик-класса с индейкой и бурым рисом.',
       price: 14500,
       category: 'Тамақ',
-      imageUrl: 'https://loremflickr.com/500/500/cat,food?lock=11',
+      imageUrl: 'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=500&q=80',
       rating: 4.2,
     ),
     Product(
@@ -108,7 +108,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Консервированный корм для кошек (пауч).',
       price: 180,
       category: 'Тамақ',
-      imageUrl: 'https://loremflickr.com/500/500/cat,food?lock=12',
+      imageUrl: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?w=500&q=80',
       rating: 4.0,
     ),
     Product(
@@ -117,7 +117,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Сухой корм для активных собак.',
       price: 7800,
       category: 'Тамақ',
-      imageUrl: 'https://loremflickr.com/500/500/dog,food?lock=13',
+      imageUrl: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80',
       rating: 4.7,
     ),
     Product(
@@ -126,7 +126,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Корм для кошек с чувствительным пищеварением.',
       price: 11200,
       category: 'Тамақ',
-      imageUrl: 'https://loremflickr.com/500/500/cat,food?lock=14',
+      imageUrl: 'https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=500&q=80',
       rating: 4.5,
     ),
     Product(
@@ -135,7 +135,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Сухой корм для котят до 12 месяцев. Легко усваивается.',
       price: 12500,
       category: 'Тамақ',
-      imageUrl: 'https://loremflickr.com/500/500/cat,food?lock=15',
+      imageUrl: 'https://images.unsplash.com/photo-1518791841217-8f162f1912da?w=500&q=80',
       rating: 4.2,
     ),
     Product(
@@ -144,7 +144,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Интерактивная игрушка для активных кошек. Пробуждает охотничий инстинкт.',
       price: 1500,
       category: 'Ойыншықтар',
-      imageUrl: 'https://loremflickr.com/500/500/cat,toy?lock=16',
+      imageUrl: 'https://images.unsplash.com/photo-1545249390-6bdfa286032f?w=500&q=80',
       rating: 4.7,
     ),
     Product(
@@ -153,7 +153,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Отличный мяч для массажа десен собак и долгих игр на улице.',
       price: 1200,
       category: 'Ойыншықтар',
-      imageUrl: 'https://loremflickr.com/500/500/dog,toy?lock=17',
+      imageUrl: 'https://images.unsplash.com/photo-1576201836106-db1758fd1c97?w=500&q=80',
       rating: 4.4,
     ),
     Product(
@@ -162,7 +162,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Классическая когтеточка из сизаля с игрушкой-мышкой на резинке.',
       price: 8500,
       category: 'Ойыншықтар',
-      imageUrl: 'https://loremflickr.com/500/500/cat,toy?lock=18',
+      imageUrl: 'https://images.unsplash.com/photo-1611003229186-5c477b665b1b?w=500&q=80',
       rating: 4.2,
     ),
     Product(
@@ -171,7 +171,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Тренировочный снаряд для собак. Легкий и безопасный для зубов.',
       price: 5500,
       category: 'Ойыншықтар',
-      imageUrl: 'https://loremflickr.com/500/500/dog,toy?lock=19',
+      imageUrl: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=500&q=80',
       rating: 4.4,
     ),
     Product(
@@ -180,7 +180,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Мягкая мышка с кошачьей мятой внутри для привлечения внимания.',
       price: 800,
       category: 'Ойыншықтар',
-      imageUrl: 'https://loremflickr.com/500/500/cat,toy?lock=20',
+      imageUrl: 'https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?w=500&q=80',
       rating: 4.9,
     ),
     Product(
@@ -189,7 +189,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Игрушка под лакомства. Занимает собаку на долгое время.',
       price: 6500,
       category: 'Ойыншықтар',
-      imageUrl: 'https://loremflickr.com/500/500/dog,toy?lock=21',
+      imageUrl: 'https://images.unsplash.com/photo-1601758174493-45d0a4d3e407?w=500&q=80',
       rating: 4.7,
     ),
     Product(
@@ -198,7 +198,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Классическая игрушка для кошек. Несколько режимов свечения.',
       price: 1100,
       category: 'Ойыншықтар',
-      imageUrl: 'https://loremflickr.com/500/500/cat,toy?lock=22',
+      imageUrl: 'https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?w=500&q=80',
       rating: 4.1,
     ),
     Product(
@@ -207,7 +207,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Летающая тарелка из прочного и безопасного материала.',
       price: 2300,
       category: 'Ойыншықтар',
-      imageUrl: 'https://loremflickr.com/500/500/dog,toy?lock=23',
+      imageUrl: 'https://images.unsplash.com/photo-1477884213360-7e9d7dcc1e48?w=500&q=80',
       rating: 4.0,
     ),
     Product(
@@ -216,7 +216,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Прочный канат с двумя узлами для активных игр с собакой.',
       price: 1800,
       category: 'Ойыншықтар',
-      imageUrl: 'https://loremflickr.com/500/500/dog,toy?lock=24',
+      imageUrl: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=500&q=80',
       rating: 4.3,
     ),
     Product(
@@ -225,7 +225,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Собачья игрушка-енот. Издает звук при нажатии.',
       price: 2900,
       category: 'Ойыншықтар',
-      imageUrl: 'https://loremflickr.com/500/500/dog,toy?lock=25',
+      imageUrl: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=500&q=80',
       rating: 4.7,
     ),
     Product(
@@ -234,7 +234,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Универсальная игрушка для аппортировки.',
       price: 1400,
       category: 'Ойыншықтар',
-      imageUrl: 'https://loremflickr.com/500/500/dog,toy?lock=26',
+      imageUrl: 'https://images.unsplash.com/photo-1560743641-3914f2c45636?w=500&q=80',
       rating: 4.7,
     ),
     Product(
@@ -243,7 +243,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Складной шуршащий тоннель с тремя выходами.',
       price: 4500,
       category: 'Ойыншықтар',
-      imageUrl: 'https://loremflickr.com/500/500/cat,toy?lock=27',
+      imageUrl: 'https://images.unsplash.com/photo-1606214174585-fe31582dc6ee?w=500&q=80',
       rating: 4.6,
     ),
     Product(
@@ -252,7 +252,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Игрушка-пазл для собак для развития интеллекта.',
       price: 7500,
       category: 'Ойыншықтар',
-      imageUrl: 'https://loremflickr.com/500/500/dog,toy?lock=28',
+      imageUrl: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=500&q=80',
       rating: 4.2,
     ),
     Product(
@@ -261,7 +261,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Трехъярусный трек для кошек с звенящими шариками.',
       price: 5200,
       category: 'Ойыншықтар',
-      imageUrl: 'https://loremflickr.com/500/500/cat,toy?lock=29',
+      imageUrl: 'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=500&q=80',
       rating: 4.4,
     ),
     Product(
@@ -270,7 +270,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Мяч, который светится при ударе. Идеально для ночных прогулок.',
       price: 3100,
       category: 'Ойыншықтар',
-      imageUrl: 'https://loremflickr.com/500/500/dog,toy?lock=30',
+      imageUrl: 'https://images.unsplash.com/photo-1477884213360-7e9d7dcc1e48?w=500&q=80',
       rating: 4.2,
     ),
     Product(
@@ -279,7 +279,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Надежный поводок ленточного типа для собак до 15 кг.',
       price: 6800,
       category: 'Аксессуарлар',
-      imageUrl: 'https://loremflickr.com/500/500/dog,leash?lock=31',
+      imageUrl: 'https://images.unsplash.com/photo-1601758174493-45d0a4d3e407?w=500&q=80',
       rating: 4.8,
     ),
     Product(
@@ -288,7 +288,7 @@ class ProductProvider with ChangeNotifier {
       description: 'LED ошейник для безопасных прогулок в темноте. Заряжается от USB.',
       price: 2500,
       category: 'Аксессуарлар',
-      imageUrl: 'https://loremflickr.com/500/500/dog,collar?lock=32',
+      imageUrl: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=500&q=80',
       rating: 4.7,
     ),
     Product(
@@ -297,7 +297,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Тяжелая и устойчивая миска для кошек и собак. Легко мыть.',
       price: 3200,
       category: 'Аксессуарлар',
-      imageUrl: 'https://loremflickr.com/500/500/pet,bowl?lock=33',
+      imageUrl: 'https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=500&q=80',
       rating: 4.4,
     ),
     Product(
@@ -306,7 +306,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Комфортная мягкая шлейка, не давящая на шею собаки.',
       price: 5500,
       category: 'Аксессуарлар',
-      imageUrl: 'https://loremflickr.com/500/500/dog,harness?lock=34',
+      imageUrl: 'https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?w=500&q=80',
       rating: 4.2,
     ),
     Product(
@@ -315,7 +315,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Мягкая круглая лежанка для глубокого сна питомцев.',
       price: 8900,
       category: 'Аксессуарлар',
-      imageUrl: 'https://loremflickr.com/500/500/pet,bed?lock=35',
+      imageUrl: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=500&q=80',
       rating: 4.3,
     ),
     Product(
@@ -324,7 +324,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Стильный рюкзак для транспортировки кошек.',
       price: 12500,
       category: 'Аксессуарлар',
-      imageUrl: 'https://loremflickr.com/500/500/cat,carrier?lock=36',
+      imageUrl: 'https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?w=500&q=80',
       rating: 4.8,
     ),
     Product(
@@ -333,7 +333,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Надежная переноска стандарта IATA для авиаперелетов.',
       price: 17000,
       category: 'Аксессуарлар',
-      imageUrl: 'https://loremflickr.com/500/500/pet,carrier?lock=37',
+      imageUrl: 'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=500&q=80',
       rating: 4.3,
     ),
     Product(
@@ -342,7 +342,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Фонтанчик для кошек. Побуждает пить больше чистой воды.',
       price: 11500,
       category: 'Аксессуарлар',
-      imageUrl: 'https://loremflickr.com/500/500/pet,water,fountain?lock=38',
+      imageUrl: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?w=500&q=80',
       rating: 4.2,
     ),
     Product(
@@ -351,7 +351,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Две миски на регулируемой по высоте подставке.',
       price: 7500,
       category: 'Аксессуарлар',
-      imageUrl: 'https://loremflickr.com/500/500/dog,bowl?lock=39',
+      imageUrl: 'https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?w=500&q=80',
       rating: 4.8,
     ),
     Product(
@@ -360,7 +360,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Металлический блестящий адресник для записки с номером владельца.',
       price: 800,
       category: 'Аксессуарлар',
-      imageUrl: 'https://loremflickr.com/500/500/pet,tag?lock=40',
+      imageUrl: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=500&q=80',
       rating: 4.3,
     ),
     Product(
@@ -369,7 +369,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Умная кормушка с таймером на 4 кормления.',
       price: 19000,
       category: 'Аксессуарлар',
-      imageUrl: 'https://loremflickr.com/500/500/pet,feeder?lock=41',
+      imageUrl: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=500&q=80',
       rating: 4.9,
     ),
     Product(
@@ -378,7 +378,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Защищает пол от брызг воды и крошек корма.',
       price: 2200,
       category: 'Аксессуарлар',
-      imageUrl: 'https://loremflickr.com/500/500/pet,mat?lock=42',
+      imageUrl: 'https://images.unsplash.com/photo-1560743641-3914f2c45636?w=500&q=80',
       rating: 4.8,
     ),
     Product(
@@ -387,7 +387,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Удобный и прочный намордник для средних и крупных пород.',
       price: 4500,
       category: 'Аксессуарлар',
-      imageUrl: 'https://loremflickr.com/500/500/dog,muzzle?lock=43',
+      imageUrl: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=500&q=80',
       rating: 4.8,
     ),
     Product(
@@ -396,7 +396,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Классический кожаный ошейник с металлическими заклепками.',
       price: 3800,
       category: 'Аксессуарлар',
-      imageUrl: 'https://loremflickr.com/500/500/dog,collar?lock=44',
+      imageUrl: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=500&q=80',
       rating: 4.8,
     ),
     Product(
@@ -405,7 +405,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Трехступенчатая лесенка для безопасного подъема на диван.',
       price: 9500,
       category: 'Аксессуарлар',
-      imageUrl: 'https://loremflickr.com/500/500/pet,stairs?lock=45',
+      imageUrl: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=500&q=80',
       rating: 4.6,
     ),
     Product(
@@ -414,7 +414,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Отлично впитывает влагу и полностью блокирует запах.',
       price: 4500,
       category: 'Гигиена',
-      imageUrl: 'https://loremflickr.com/500/500/cat,litter?lock=46',
+      imageUrl: 'https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=500&q=80',
       rating: 4.6,
     ),
     Product(
@@ -423,7 +423,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Облегчает расчесывание и придает шерсти здоровый блеск.',
       price: 3200,
       category: 'Гигиена',
-      imageUrl: 'https://loremflickr.com/500/500/dog,shampoo?lock=47',
+      imageUrl: 'https://images.unsplash.com/photo-1601758174493-45d0a4d3e407?w=500&q=80',
       rating: 4.0,
     ),
     Product(
@@ -432,7 +432,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Лоток-домик. Предотвращает разбрасывание наполнителя.',
       price: 14500,
       category: 'Гигиена',
-      imageUrl: 'https://loremflickr.com/500/500/cat,litterbox?lock=48',
+      imageUrl: 'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=500&q=80',
       rating: 4.7,
     ),
     Product(
@@ -441,7 +441,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Натуральный и экологичный. Подходит для смывания в туалет.',
       price: 2800,
       category: 'Гигиена',
-      imageUrl: 'https://loremflickr.com/500/500/cat,litter?lock=49',
+      imageUrl: 'https://images.unsplash.com/photo-1518791841217-8f162f1912da?w=500&q=80',
       rating: 4.8,
     ),
     Product(
@@ -450,7 +450,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Упаковка 30 шт. Идеально для щенков и приучения к туалету.',
       price: 4100,
       category: 'Гигиена',
-      imageUrl: 'https://loremflickr.com/500/500/dog,pads?lock=50',
+      imageUrl: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80',
       rating: 5.0,
     ),
     Product(
@@ -459,7 +459,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Быстро образует плотные комочки, легко убирать.',
       price: 3600,
       category: 'Гигиена',
-      imageUrl: 'https://loremflickr.com/500/500/cat,litter?lock=51',
+      imageUrl: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?w=500&q=80',
       rating: 4.7,
     ),
     Product(
@@ -468,7 +468,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Инструмент против линьки. Удаляет до 90% отмершего подшерстка.',
       price: 6500,
       category: 'Гигиена',
-      imageUrl: 'https://loremflickr.com/500/500/pet,brush?lock=52',
+      imageUrl: 'https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?w=500&q=80',
       rating: 4.4,
     ),
     Product(
@@ -477,7 +477,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Острые ножницы для безопасной стрижки когтей.',
       price: 2100,
       category: 'Гигиена',
-      imageUrl: 'https://loremflickr.com/500/500/pet,nail,clipper?lock=53',
+      imageUrl: 'https://images.unsplash.com/photo-1545249390-6bdfa286032f?w=500&q=80',
       rating: 4.1,
     ),
     Product(
@@ -486,7 +486,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Мягко очищает ушную раковину собак и кошек.',
       price: 1800,
       category: 'Гигиена',
-      imageUrl: 'https://loremflickr.com/500/500/pet,ear,drops?lock=54',
+      imageUrl: 'https://images.unsplash.com/photo-1548802673-380ab8ebc7b7?w=500&q=80',
       rating: 4.0,
     ),
     Product(
@@ -495,7 +495,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Набор для ухода за зубами собак со вкусом говядины.',
       price: 2400,
       category: 'Гигиена',
-      imageUrl: 'https://loremflickr.com/500/500/dog,toothbrush?lock=55',
+      imageUrl: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=500&q=80',
       rating: 4.4,
     ),
     Product(
@@ -504,7 +504,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Отучает питомца гадить в неположенных местах.',
       price: 1900,
       category: 'Гигиена',
-      imageUrl: 'https://loremflickr.com/500/500/pet,spray?lock=56',
+      imageUrl: 'https://images.unsplash.com/photo-1560743641-3914f2c45636?w=500&q=80',
       rating: 4.8,
     ),
     Product(
@@ -513,7 +513,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Энзимный спрей для удаления пятен мочи и запаха.',
       price: 2600,
       category: 'Гигиена',
-      imageUrl: 'https://loremflickr.com/500/500/pet,spray?lock=57',
+      imageUrl: 'https://images.unsplash.com/photo-1606214174585-fe31582dc6ee?w=500&q=80',
       rating: 4.2,
     ),
     Product(
@@ -522,7 +522,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Влажные салфетки, безопасные для животных. 50 шт.',
       price: 1100,
       category: 'Гигиена',
-      imageUrl: 'https://loremflickr.com/500/500/pet,wipes?lock=58',
+      imageUrl: 'https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?w=500&q=80',
       rating: 5.0,
     ),
     Product(
@@ -531,7 +531,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Сликер с каплями на зубчиках для бережного вычесывания.',
       price: 1500,
       category: 'Гигиена',
-      imageUrl: 'https://loremflickr.com/500/500/pet,brush?lock=59',
+      imageUrl: 'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=500&q=80',
       rating: 4.2,
     ),
     Product(
@@ -540,7 +540,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Гипоаллергенный мягкий шампунь.',
       price: 2800,
       category: 'Гигиена',
-      imageUrl: 'https://loremflickr.com/500/500/cat,shampoo?lock=60',
+      imageUrl: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500&q=80',
       rating: 4.3,
     ),
     Product(
@@ -549,7 +549,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Водонепроницаемый комбинезон-дождевик с капюшоном.',
       price: 6500,
       category: 'Киімдер',
-      imageUrl: 'https://loremflickr.com/500/500/dog,raincoat?lock=61',
+      imageUrl: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=500&q=80',
       rating: 4.9,
     ),
     Product(
@@ -558,7 +558,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Теплый свитер с орнаментом для собак мелких пород.',
       price: 5200,
       category: 'Киімдер',
-      imageUrl: 'https://loremflickr.com/500/500/dog,sweater?lock=62',
+      imageUrl: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=500&q=80',
       rating: 4.2,
     ),
     Product(
@@ -567,7 +567,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Утепленный комбинезон для сильных морозов.',
       price: 11500,
       category: 'Киімдер',
-      imageUrl: 'https://loremflickr.com/500/500/dog,winter,clothes?lock=63',
+      imageUrl: 'https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?w=500&q=80',
       rating: 4.7,
     ),
     Product(
@@ -576,7 +576,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Защищают лапы от реагентов и льда зимой (комплект 4 шт).',
       price: 4800,
       category: 'Киімдер',
-      imageUrl: 'https://loremflickr.com/500/500/dog,shoes?lock=64',
+      imageUrl: 'https://images.unsplash.com/photo-1477884213360-7e9d7dcc1e48?w=500&q=80',
       rating: 4.0,
     ),
     Product(
@@ -585,7 +585,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Легкая хлопковая майка для защиты от солнца.',
       price: 2500,
       category: 'Киімдер',
-      imageUrl: 'https://loremflickr.com/500/500/dog,shirt?lock=65',
+      imageUrl: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=500&q=80',
       rating: 4.9,
     ),
     Product(
@@ -594,7 +594,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Модная спортивная толстовка для стильных собак.',
       price: 3500,
       category: 'Киімдер',
-      imageUrl: 'https://loremflickr.com/500/500/dog,hoodie?lock=66',
+      imageUrl: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=500&q=80',
       rating: 4.8,
     ),
     Product(
@@ -603,7 +603,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Нарядное платье для особых случаев (для мелких собачек).',
       price: 4200,
       category: 'Киімдер',
-      imageUrl: 'https://loremflickr.com/500/500/dog,dress?lock=67',
+      imageUrl: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80',
       rating: 4.4,
     ),
     Product(
@@ -612,7 +612,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Обеспечивает безопасность в темное время суток.',
       price: 1800,
       category: 'Киімдер',
-      imageUrl: 'https://loremflickr.com/500/500/dog,vest?lock=68',
+      imageUrl: 'https://images.unsplash.com/photo-1560743641-3914f2c45636?w=500&q=80',
       rating: 4.0,
     ),
     Product(
@@ -621,7 +621,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Дышащая попона для кошек и собак.',
       price: 2100,
       category: 'Киімдер',
-      imageUrl: 'https://loremflickr.com/500/500/pet,medical,shirt?lock=69',
+      imageUrl: 'https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=500&q=80',
       rating: 4.6,
     ),
     Product(
@@ -630,7 +630,7 @@ class ProductProvider with ChangeNotifier {
       description: 'С силиконовым покрытием, чтобы лапы не скользили по ламинату.',
       price: 1200,
       category: 'Киімдер',
-      imageUrl: 'https://loremflickr.com/500/500/dog,socks?lock=70',
+      imageUrl: 'https://images.unsplash.com/photo-1601758174493-45d0a4d3e407?w=500&q=80',
       rating: 4.6,
     ),
     Product(
@@ -639,7 +639,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Яркий аксессуар для стильной прогулки.',
       price: 900,
       category: 'Киімдер',
-      imageUrl: 'https://loremflickr.com/500/500/dog,bandana?lock=71',
+      imageUrl: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=500&q=80',
       rating: 4.6,
     ),
     Product(
@@ -648,7 +648,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Защищает глаза питомца. Фиксируется под подбородком.',
       price: 1600,
       category: 'Киімдер',
-      imageUrl: 'https://loremflickr.com/500/500/dog,hat?lock=72',
+      imageUrl: 'https://images.unsplash.com/photo-1548802673-380ab8ebc7b7?w=500&q=80',
       rating: 4.1,
     ),
     Product(
@@ -657,7 +657,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Защищает длинные уши от попадания в миску и от холода.',
       price: 2200,
       category: 'Киімдер',
-      imageUrl: 'https://loremflickr.com/500/500/dog,scarf?lock=73',
+      imageUrl: 'https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?w=500&q=80',
       rating: 4.2,
     ),
     Product(
@@ -666,7 +666,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Отлично впитывает воду после мытья.',
       price: 5500,
       category: 'Киімдер',
-      imageUrl: 'https://loremflickr.com/500/500/dog,robe?lock=74',
+      imageUrl: 'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=500&q=80',
       rating: 4.4,
     ),
     Product(
@@ -675,7 +675,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Праздничный наряд для питомца к Новому году.',
       price: 4500,
       category: 'Киімдер',
-      imageUrl: 'https://loremflickr.com/500/500/dog,costume?lock=75',
+      imageUrl: 'https://images.unsplash.com/photo-1606214174585-fe31582dc6ee?w=500&q=80',
       rating: 4.9,
     ),
   ];
