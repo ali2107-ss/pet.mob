@@ -11,8 +11,9 @@ import '../providers/locale_provider.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final Product product;
+  final String heroPrefix;
 
-  const ProductDetailsScreen({Key? key, required this.product}) : super(key: key);
+  const ProductDetailsScreen({Key? key, required this.product, this.heroPrefix = ''}) : super(key: key);
 
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
@@ -55,7 +56,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
                 fit: StackFit.expand,
                 children: [
                   Hero(
-                    tag: 'product_image_${widget.product.id}',
+                    tag: '${widget.heroPrefix}product_image_${widget.product.id}',
                     child: Image.network(
                       widget.product.imageUrl,
                       fit: BoxFit.cover,

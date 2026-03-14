@@ -132,11 +132,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                       ),
                       itemBuilder: (ctx, i) {
                         return ProductCard(
+                          heroPrefix: 'fav_',
                           product: favorites[i],
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (_) => ProductDetailsScreen(product: favorites[i]),
+                                builder: (_) => ProductDetailsScreen(product: favorites[i], heroPrefix: 'fav_'),
                               ),
                             );
                           },

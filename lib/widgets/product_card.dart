@@ -10,8 +10,9 @@ import '../providers/locale_provider.dart';
 class ProductCard extends StatelessWidget {
   final Product product;
   final VoidCallback onTap;
+  final String heroPrefix;
 
-  const ProductCard({Key? key, required this.product, required this.onTap}) : super(key: key);
+  const ProductCard({Key? key, required this.product, required this.onTap, this.heroPrefix = ''}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class ProductCard extends StatelessWidget {
                   ClipRRect(
                     borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
                     child: Hero(
-                      tag: 'product_image_${product.id}',
+                      tag: '${heroPrefix}product_image_${product.id}',
                       child: Image.network(
                         product.imageUrl,
                         width: double.infinity,

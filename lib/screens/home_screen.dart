@@ -464,12 +464,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             );
                           },
                           child: ProductCard(
+                            heroPrefix: 'home_',
                             product: displayedProducts[index],
                             onTap: () {
                               Navigator.of(context).push(
                                 PageRouteBuilder(
                                   transitionDuration: const Duration(milliseconds: 500),
-                                  pageBuilder: (_, __, ___) => ProductDetailsScreen(product: displayedProducts[index]),
+                                  pageBuilder: (_, __, ___) => ProductDetailsScreen(product: displayedProducts[index], heroPrefix: 'home_'),
                                   transitionsBuilder: (_, animation, __, child) {
                                     return FadeTransition(opacity: animation, child: child);
                                   },

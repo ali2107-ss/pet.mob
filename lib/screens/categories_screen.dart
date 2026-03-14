@@ -151,11 +151,12 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                               width: 160,
                               margin: const EdgeInsets.only(right: 16),
                               child: ProductCard(
+                                heroPrefix: 'cat_',
                                 product: categoryProducts[i],
                                 onTap: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (_) => ProductDetailsScreen(product: categoryProducts[i]),
+                                      builder: (_) => ProductDetailsScreen(product: categoryProducts[i], heroPrefix: 'cat_'),
                                     ),
                                   );
                                 },
