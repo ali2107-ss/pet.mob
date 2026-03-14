@@ -93,7 +93,8 @@ class AppTranslation {
       'to_cart': 'В корзину',
       'similar_products': 'Похожие товары',
       'stores_map': 'Наши магазины',
-      'build_route': 'Построить маршрут'
+      'build_route': 'Построить маршрут',
+      'no_favorites': 'В избранном пусто',
     },
     'kk': {
       'profile': 'Профиль',
@@ -188,7 +189,8 @@ class AppTranslation {
       'to_cart': 'Себетке',
       'similar_products': 'Ұқсас тауарлар',
       'stores_map': 'Біздің дүкендер',
-      'build_route': 'Маршрутты құру'
+      'build_route': 'Маршрутты құру',
+      'no_favorites': 'Таңдаулы тізімі бос',
     },
     'en': {
       'profile': 'Profile',
@@ -283,7 +285,8 @@ class AppTranslation {
       'to_cart': 'To cart',
       'similar_products': 'Similar Products',
       'stores_map': 'Our stores',
-      'build_route': 'Build Route'
+      'build_route': 'Build Route',
+      'no_favorites': 'Favorites list is empty',
     }
   };
 }

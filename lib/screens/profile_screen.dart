@@ -79,7 +79,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final t = AppTranslation.translations[langCode] ?? AppTranslation.translations['ru']!;
 
     return Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: Text(t['profile']!),
         centerTitle: true,
         automaticallyImplyLeading: false,

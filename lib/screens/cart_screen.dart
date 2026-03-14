@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
 import '../theme.dart';
+import 'checkout_screen.dart';
 
 class CartScreen extends StatelessWidget {
   final bool isRoot;
-  const CartScreen({Key? key, this.isRoot = false}) : super(key: key);
+  const CartScreen({super.key, this.isRoot = false});
 
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<CartProvider>(context);
     
     return Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: const Text('Себет'),
         automaticallyImplyLeading: !isRoot,
       ),
@@ -21,9 +24,11 @@ class CartScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.shopping_cart_outlined, size: 80, color: AppTheme.greyColor.withOpacity(0.5)),
+                  Icon(Icons.shopping_cart_outlined, size: 80, color: AppTheme.greyColor.withValues(alpha: 0.5)),
                   const SizedBox(height: 16),
                   const Text('Сіздің себетіңіз бос', style: TextStyle(fontSize: 18, color: AppTheme.greyColor)),
+                  const SizedBox(height: 8),
+                  const Text('Каталогтан тауарларды қосыңыз', style: TextStyle(fontSize: 14, color: AppTheme.greyColor)),
                 ],
               ),
             )
@@ -50,11 +55,11 @@ class CartScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).cardTheme.color ?? Colors.white,
+                    color: (Theme.of(context).cardTheme.color ?? Colors.white).withValues(alpha: 0.95),
                     borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha: 0.05),
                         blurRadius: 20,
                         offset: const Offset(0, -5),
                       ),
@@ -67,7 +72,7 @@ class CartScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                             Text(
+                            Text(
                               'Барлығы:',
                               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.titleLarge?.color ?? AppTheme.textColor),
                             ),
@@ -82,11 +87,9 @@ class CartScreen extends StatelessWidget {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Тапсырыс рәсімделуде...')),
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (_) => const CheckoutScreen()),
                               );
-                              cart.clear();
-                              Navigator.of(context).pop();
                             },
                             child: const Text('Тапсырысты рәсімдеу'),
                           ),
@@ -137,11 +140,11 @@ class _CartItemWidget extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Theme.of(context).cardTheme.color ?? Colors.white,
+          color: (Theme.of(context).cardTheme.color ?? Colors.white).withValues(alpha: 0.9),
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.03),
+              color: Colors.black.withValues(alpha: 0.03),
               blurRadius: 10,
               offset: const Offset(0, 5),
             ),
@@ -172,7 +175,7 @@ class _CartItemWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '\$${price.toStringAsFixed(2)}',
+                    '₸${price.toStringAsFixed(0)}',
                     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
                   ),
                 ],
