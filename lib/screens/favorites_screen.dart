@@ -90,11 +90,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                       onSelected: (value) => setState(() => _sortBy = value),
                       itemBuilder: (_) => [
-                        _buildSortItem('default', 'Әдепкі', Icons.auto_awesome),
-                        _buildSortItem('price_asc', 'Бағасы ↑ (арзан)', Icons.arrow_upward),
-                        _buildSortItem('price_desc', 'Бағасы ↓ (қымбат)', Icons.arrow_downward),
-                        _buildSortItem('rating', 'Рейтингі ↓', Icons.star),
-                        _buildSortItem('name', 'Аты (А-Я)', Icons.sort_by_alpha),
+                        _buildSortItem('default', 'По умолчанию', Icons.auto_awesome),
+                        _buildSortItem('price_asc', 'Цена ↑ (дешевле)', Icons.arrow_upward),
+                        _buildSortItem('price_desc', 'Цена ↓ (дороже)', Icons.arrow_downward),
+                        _buildSortItem('rating', 'Рейтинг ↓', Icons.star),
+                        _buildSortItem('name', 'Название (А-Я)', Icons.sort_by_alpha),
                       ],
                     ),
                   ),
@@ -113,7 +113,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                         Text(
                           favoritesData.items.isEmpty
                               ? (t['no_favorites'] ?? 'Таңдаулы тізімі бос')
-                              : (t['no_products'] ?? 'Тауарлар табылмады'),
+                              : (t['no_products'] ?? 'Товары не найдены'),
                           style: const TextStyle(fontSize: 18, color: AppTheme.greyColor),
                         ),
                       ],

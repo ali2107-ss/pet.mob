@@ -34,7 +34,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text('Тапсырысты рәсімдеу'),
+        title: const Text('Оформление заказа'),
         centerTitle: true,
       ),
       body: Column(
@@ -90,7 +90,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             borderRadius: BorderRadius.circular(16),
                           ),
                         ),
-                        child: const Text('Артқа'),
+                        child: const Text('Назад'),
                       ),
                     ),
                   if (_currentStep > 0) const SizedBox(width: 16),
@@ -99,7 +99,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     child: ElevatedButton(
                       onPressed: () => _handleNext(cart),
                       child: Text(
-                        _currentStep == 2 ? 'Тапсырыс беру' : 'Жалғастыру',
+                        _currentStep == 2 ? 'Оформить заказ' : 'Продолжить',
                       ),
                     ),
                   ),
@@ -188,26 +188,26 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Жеткізу мекенжайы',
+            'Адрес доставки',
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           const Text(
-            'Тапсырыс жеткізілетін мекенжайды енгізіңіз',
+            'Введите адрес, куда доставить заказ',
             style: TextStyle(color: AppTheme.greyColor),
           ),
           const SizedBox(height: 24),
           _buildTextField(
             controller: _addressController,
-            label: 'Мекенжай',
-            hint: 'мысалы: Абай көшесі, 52, 10-пәтер',
+            label: 'Адрес',
+            hint: 'например: ул. Абая, 52, кв. 10',
             icon: Icons.location_on_outlined,
             maxLines: 2,
           ),
           const SizedBox(height: 16),
           _buildTextField(
             controller: _phoneController,
-            label: 'Телефон нөмірі',
+            label: 'Номер телефона',
             hint: '+7 (7XX) XXX XX XX',
             icon: Icons.phone_outlined,
             keyboardType: TextInputType.phone,
@@ -215,8 +215,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           const SizedBox(height: 16),
           _buildTextField(
             controller: _commentController,
-            label: 'Тапсырысқа пікір (міндетті емес)',
-            hint: 'Код, қабат, т.б.',
+            label: 'Комментарий к заказу (необязательно)',
+            hint: 'Код, этаж, и т.д.',
             icon: Icons.comment_outlined,
             maxLines: 2,
           ),
@@ -235,8 +235,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Тегін жеткізу', style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primaryColor)),
-                      Text('₸5000-нан жоғары тапсырыстарға', style: TextStyle(fontSize: 12, color: AppTheme.greyColor)),
+                      Text('Бесплатная доставка', style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primaryColor)),
+                      Text('При заказе от ₸5000', style: TextStyle(fontSize: 12, color: AppTheme.greyColor)),
                     ],
                   ),
                 ),
@@ -256,18 +256,18 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Төлем тәсілі',
+            'Способ оплаты',
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           const Text(
-            'Ыңғайлы төлем тәсілін таңдаңыз',
+            'Выберите удобный способ оплаты',
             style: TextStyle(color: AppTheme.greyColor),
           ),
           const SizedBox(height: 24),
           _buildPaymentOption(
             'card',
-            'Банк картасы',
+            'Банковская карта',
             'Visa / Mastercard',
             Icons.credit_card,
           ),
@@ -275,14 +275,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           _buildPaymentOption(
             'kaspi',
             'Kaspi QR / Gold',
-            'Kaspi Bank арқылы',
+            'Через Kaspi Bank',
             Icons.qr_code_2,
           ),
           const SizedBox(height: 12),
           _buildPaymentOption(
             'cash',
-            'Қолма-қол ақша',
-            'Жеткізу кезінде төлеу',
+            'Наличные',
+            'Оплата при получении',
             Icons.money,
           ),
         ],
@@ -358,9 +358,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   Widget _buildReviewStep(CartProvider cart) {
     final paymentLabel = {
-      'card': 'Банк картасы',
+      'card': 'Банковская карта',
       'kaspi': 'Kaspi QR / Gold',
-      'cash': 'Қолма-қол ақша',
+      'cash': 'Наличные',
     };
 
     return SingleChildScrollView(
@@ -370,15 +370,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Тапсырысты тексеру',
+            'Проверка заказа',
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 24),
           // Address summary
           _buildSummaryCard(
             icon: Icons.location_on,
-            title: 'Мекенжай',
-            value: _addressController.text.isEmpty ? 'Көрсетілмеген' : _addressController.text,
+            title: 'Адрес',
+            value: _addressController.text.isEmpty ? 'Не указан' : _addressController.text,
           ),
           const SizedBox(height: 12),
           _buildSummaryCard(
@@ -389,11 +389,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           const SizedBox(height: 12),
           _buildSummaryCard(
             icon: Icons.payment,
-            title: 'Төлем тәсілі',
-            value: paymentLabel[_selectedPayment] ?? 'Картa',
+            title: 'Способ оплаты',
+            value: paymentLabel[_selectedPayment] ?? 'Карта',
           ),
           const SizedBox(height: 24),
-          const Text('Тауарлар', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          const Text('Товары', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
           ...cart.items.values.map((item) => Container(
                 margin: const EdgeInsets.only(bottom: 8),
@@ -430,7 +430,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Барлығы:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                const Text('Итого:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 Text(
                   '₸${cart.totalAmount.toStringAsFixed(0)}',
                   style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
@@ -517,7 +517,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       if (_addressController.text.trim().isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('Мекенжайды енгізіңіз'),
+            content: const Text('Введите адрес доставки'),
             backgroundColor: Colors.red[400],
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -558,13 +558,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
               const SizedBox(height: 24),
               const Text(
-                'Тапсырыс қабылданды! 🎉',
+                'Заказ принят! 🎉',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 12),
               const Text(
-                'Сіздің тапсырысыңыз жолда.\nЖақын арада байланысамыз!',
+                'Ваш заказ в пути.\nМы скоро свяжемся с вами!',
                 style: TextStyle(color: AppTheme.greyColor, fontSize: 15),
                 textAlign: TextAlign.center,
               ),
@@ -577,7 +577,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     Navigator.of(context).pop(); // back to cart
                     Navigator.of(context).pop(); // back to main
                   },
-                  child: const Text('Бас бетке'),
+                  child: const Text('На главную'),
                 ),
               ),
             ],

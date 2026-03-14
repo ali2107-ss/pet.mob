@@ -10,6 +10,7 @@ import '../theme.dart';
 import 'package:badges/badges.dart' as badges;
 import '../providers/locale_provider.dart';
 import '../l10n/translation.dart';
+import '../providers/auth_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -67,40 +68,61 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Row(
-          children: [
-            const CircleAvatar(
-              radius: 20,
-              backgroundImage: NetworkImage('https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80'),
-            ),
-            const SizedBox(width: 12),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+        title: Consumer<AuthProvider>(
+          builder: (context, auth, _) {
+            if (auth.isLoggedIn) {
+              return Row(
+                children: [
+                  const CircleAvatar(
+                    radius: 20,
+                    backgroundImage: NetworkImage('https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80'),
+                  ),
+                  const SizedBox(width: 12),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        t['hello_user']!,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: AppTheme.textColor,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          const Icon(Icons.location_on, size: 12, color: AppTheme.primaryColor),
+                          const SizedBox(width: 4),
+                          Text(
+                            t['city']!,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: AppTheme.greyColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            } else {
+              return Row(
+                children: [
+                  const Icon(Icons.pets, color: AppTheme.primaryColor, size: 28),
+                  const SizedBox(width: 8),
                   Text(
-                    t['hello_user']!,
+                    t['login_title'] ?? 'ZooMag',
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: AppTheme.textColor,
+                      color: AppTheme.primaryColor,
                     ),
                   ),
-                Row(
-                  children: [
-                    const Icon(Icons.location_on, size: 12, color: AppTheme.primaryColor),
-                    const SizedBox(width: 4),
-                    Text(
-                      t['city']!,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: AppTheme.greyColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
+                ],
+              );
+            }
+          },
         ),
         actions: [
           Consumer<CartProvider>(
@@ -521,7 +543,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 children: [
                   Icon(Icons.arrow_forward, color: Colors.white70, size: 14),
                   SizedBox(width: 4),
-                  Text('Оқу', style: TextStyle(color: Colors.white70, fontSize: 12)),
+                  Text('Читать', style: TextStyle(color: Colors.white70, fontSize: 12)),
                 ],
               ),
             ],

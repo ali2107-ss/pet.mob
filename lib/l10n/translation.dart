@@ -95,6 +95,10 @@ class AppTranslation {
       'stores_map': 'Наши магазины',
       'build_route': 'Построить маршрут',
       'no_favorites': 'В избранном пусто',
+      'choose_language': 'Выберите язык',
+      'ru_lang': 'Русский',
+      'kk_lang': 'Қазақша',
+      'en_lang': 'English',
     },
     'kk': {
       'profile': 'Профиль',
@@ -191,6 +195,10 @@ class AppTranslation {
       'stores_map': 'Біздің дүкендер',
       'build_route': 'Маршрутты құру',
       'no_favorites': 'Таңдаулы тізімі бос',
+      'choose_language': 'Тілді таңдаңыз',
+      'ru_lang': 'Русский',
+      'kk_lang': 'Қазақша',
+      'en_lang': 'English',
     },
     'en': {
       'profile': 'Profile',
@@ -287,6 +295,10 @@ class AppTranslation {
       'stores_map': 'Our stores',
       'build_route': 'Build Route',
       'no_favorites': 'Favorites list is empty',
+      'choose_language': 'Choose language',
+      'ru_lang': 'Русский',
+      'kk_lang': 'Қазақша',
+      'en_lang': 'English',
     }
   };
 }

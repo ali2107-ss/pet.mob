@@ -7,7 +7,9 @@ import 'order_history_screen.dart';
 import 'auth/login_screen.dart';
 import 'map_screen.dart';
 import '../l10n/translation.dart';
+import '../l10n/translation.dart';
 import '../providers/locale_provider.dart';
+import '../providers/auth_provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -17,9 +19,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  // Имитация состояния авторизации
-  bool _isLoggedIn = false;
-
   void _showLanguageSelector(BuildContext context, LocaleProvider localeProvider) {
     final langCode = localeProvider.locale.languageCode;
     final t = AppTranslation.translations[langCode]!;
@@ -78,6 +77,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final langCode = localeProvider.locale.languageCode;
     final t = AppTranslation.translations[langCode] ?? AppTranslation.translations['ru']!;
 
+    final authProvider = Provider.of<AuthProvider>(context);
+    final _isLoggedIn = authProvider.isLoggedIn;
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
@@ -90,7 +92,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             icon: const Icon(Icons.language),
             onPressed: () => _showLanguageSelector(context, localeProvider),
           ),
-          if (_isLoggedIn)
+          if (Provider.of<AuthProvider>(context).isLoggedIn)
             IconButton(
               icon: const Icon(Icons.settings_outlined),
               onPressed: () {
@@ -121,9 +123,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   await Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => const LoginScreen()),
                   );
-                  // Когда реализуем реальный стейт, здесь будем обновлять UI.
-                  // Пока просто для демонстрации можно установить флаг:
-                  // setState(() { _isLoggedIn = true; });
+                  // Для демонстрации просто логинимся:
+                  authProvider.login();
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 50),
@@ -136,9 +137,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 backgroundImage: NetworkImage('https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80'),
               ),
               const SizedBox(height: 16),
-              const Text(
-                'Айдар Нұрғалиев',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.textColor),
+              Text(
+                authProvider.userName,
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.textColor),
               ),
               const SizedBox(height: 4),
               Text(
@@ -192,10 +193,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: Icons.history_outlined,
               title: t['order_history']!,
               onTap: () {
-                if (!_isLoggedIn) {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LoginScreen()));
-                  return;
-                }
                 Navigator.of(context).push(MaterialPageRoute(builder: (_) => const OrderHistoryScreen()));
               },
             ),
@@ -228,9 +225,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 iconColor: Colors.red,
                 showChevron: false,
                 onTap: () {
-                  setState(() {
-                    _isLoggedIn = false;
-                  });
+                  authProvider.logout();
                 },
               ),
             ],

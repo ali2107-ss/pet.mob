@@ -13,7 +13,7 @@ class OrderHistoryScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Тапсырыстар тарихы'),
+        title: const Text('История заказов'),
         centerTitle: true,
       ),
       body: orders.isEmpty
@@ -24,12 +24,12 @@ class OrderHistoryScreen extends StatelessWidget {
                   Icon(Icons.receipt_long_outlined, size: 80, color: AppTheme.greyColor.withValues(alpha: 0.5)),
                   const SizedBox(height: 16),
                   const Text(
-                    'Тапсырыстар жоқ',
+                    'Заказов пока нет',
                     style: TextStyle(fontSize: 18, color: AppTheme.greyColor),
                   ),
                   const SizedBox(height: 8),
                   const Text(
-                    'Жүріңіз, бірінші тапсырысыңызды беріңіз!',
+                    'Сделайте свой первый заказ!',
                     style: TextStyle(fontSize: 14, color: AppTheme.greyColor),
                   ),
                 ],
@@ -45,9 +45,9 @@ class OrderHistoryScreen extends StatelessWidget {
                 final timeStr = '${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
 
                 final paymentLabel = {
-                  'card': 'Банк картасы',
+                  'card': 'Банковская карта',
                   'kaspi': 'Kaspi QR / Gold',
-                  'cash': 'Қолма-қол',
+                  'cash': 'Наличные',
                 };
 
                 // Determine status based on time
@@ -55,13 +55,13 @@ class OrderHistoryScreen extends StatelessWidget {
                 String status;
                 Color statusColor;
                 if (minutesSince < 5) {
-                  status = 'Өңделуде';
+                  status = 'Обработка';
                   statusColor = Colors.orange;
                 } else if (minutesSince < 30) {
-                  status = 'Жолда';
+                  status = 'В пути';
                   statusColor = Colors.blue;
                 } else {
-                  status = 'Жеткізілді';
+                  status = 'Доставлен';
                   statusColor = Colors.green;
                 }
 
@@ -176,7 +176,7 @@ class OrderHistoryScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '${order.items.length} тауар',
+                              '${order.items.length} товар(ов)',
                               style: const TextStyle(color: AppTheme.greyColor, fontSize: 14),
                             ),
                             Text(

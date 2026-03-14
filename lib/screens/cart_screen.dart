@@ -16,7 +16,7 @@ class CartScreen extends StatelessWidget {
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text('Себет'),
+        title: const Text('Корзина'),
         automaticallyImplyLeading: !isRoot,
       ),
       body: cart.items.isEmpty
@@ -26,9 +26,9 @@ class CartScreen extends StatelessWidget {
                 children: [
                   Icon(Icons.shopping_cart_outlined, size: 80, color: AppTheme.greyColor.withValues(alpha: 0.5)),
                   const SizedBox(height: 16),
-                  const Text('Сіздің себетіңіз бос', style: TextStyle(fontSize: 18, color: AppTheme.greyColor)),
+                  const Text('Ваша корзина пуста', style: TextStyle(fontSize: 18, color: AppTheme.greyColor)),
                   const SizedBox(height: 8),
-                  const Text('Каталогтан тауарларды қосыңыз', style: TextStyle(fontSize: 14, color: AppTheme.greyColor)),
+                  const Text('Добавьте товары из каталога', style: TextStyle(fontSize: 14, color: AppTheme.greyColor)),
                 ],
               ),
             )
@@ -73,7 +73,7 @@ class CartScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Барлығы:',
+                              'Итого:',
                               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.titleLarge?.color ?? AppTheme.textColor),
                             ),
                             Text(
@@ -91,7 +91,7 @@ class CartScreen extends StatelessWidget {
                                 MaterialPageRoute(builder: (_) => const CheckoutScreen()),
                               );
                             },
-                            child: const Text('Тапсырысты рәсімдеу'),
+                            child: const Text('Оформить заказ'),
                           ),
                         ),
                       ],
