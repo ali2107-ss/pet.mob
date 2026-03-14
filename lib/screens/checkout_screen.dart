@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
 import '../providers/order_provider.dart';
+import '../providers/partner_provider.dart';
 import '../theme.dart';
 
 class CheckoutScreen extends StatefulWidget {
@@ -531,6 +532,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     } else {
       // Place order
       final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+      final partnerProvider = Provider.of<PartnerProvider>(context, listen: false);
+
+      // Пополняем баланс партнёра за каждый его товар в корзине
+      for (final item in cart.items.values) {
+        partnerProvider.simulateSale(item.product.id, item.quantity);
+      }
+
       orderProvider.addOrder(
         cart.items.values.toList(),
         cart.totalAmount,

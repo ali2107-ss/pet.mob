@@ -10,6 +10,8 @@ import '../l10n/translation.dart';
 import '../l10n/translation.dart';
 import '../providers/locale_provider.dart';
 import '../providers/auth_provider.dart';
+import '../providers/partner_provider.dart';
+import 'partner/partner_main_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -217,6 +219,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             if (_isLoggedIn) ...[
               const SizedBox(height: 24),
+              // Кнопка режима партнёра
+              Container(
+                margin: const EdgeInsets.only(bottom: 16),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [AppTheme.primaryColor, Color(0xFFFFB385)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(color: AppTheme.primaryColor.withOpacity(0.3), blurRadius: 10, offset: const Offset(0, 4)),
+                  ],
+                ),
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                  leading: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), shape: BoxShape.circle),
+                    child: const Icon(Icons.storefront, color: Colors.white),
+                  ),
+                  title: const Text('Режим партнёра', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white)),
+                  subtitle: const Text('Управляйте товарами и балансом', style: TextStyle(color: Colors.white70, fontSize: 12)),
+                  trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 16),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const PartnerMainScreen()),
+                    );
+                  },
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                ),
+              ),
               _buildProfileMenuItem(
                 context,
                 icon: Icons.logout,

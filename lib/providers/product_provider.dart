@@ -1,7 +1,14 @@
 import 'package:flutter/foundation.dart';
 import '../models/product.dart';
+import 'partner_provider.dart';
 
 class ProductProvider with ChangeNotifier {
+  PartnerProvider? _partnerProvider;
+
+  void setPartnerProvider(PartnerProvider partnerProvider) {
+    _partnerProvider = partnerProvider;
+  }
+
   final List<Product> _items = [
     Product(
       id: 'p1',
@@ -680,19 +687,22 @@ class ProductProvider with ChangeNotifier {
     ),
   ];
 
-  List<Product> get items => [..._items];
+  List<Product> get items {
+    final partnerProducts = _partnerProvider?.products.map((p) => p.toProduct()).toList() ?? [];
+    return [..._items, ...partnerProducts];
+  }
 
   List<Product> getProductsByCategory(String category) {
     if (category == 'Барлығы') return items;
-    return _items.where((prod) => prod.category == category).toList();
+    return items.where((prod) => prod.category == category).toList();
   }
 
   Product findById(String id) {
-    return _items.firstWhere((prod) => prod.id == id);
+    return items.firstWhere((prod) => prod.id == id);
   }
 
   List<Product> search(String query) {
     if (query.isEmpty) return items;
-    return _items.where((prod) => prod.name.toLowerCase().contains(query.toLowerCase())).toList();
+    return items.where((prod) => prod.name.toLowerCase().contains(query.toLowerCase())).toList();
   }
 }

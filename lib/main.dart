@@ -6,6 +6,7 @@ import 'providers/favorite_provider.dart';
 import 'providers/locale_provider.dart';
 import 'providers/order_provider.dart';
 import 'providers/auth_provider.dart';
+import 'providers/partner_provider.dart';
 import 'screens/main_screen.dart';
 import 'theme.dart';
 
@@ -20,7 +21,14 @@ class PetMobApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ProductProvider()),
+        ChangeNotifierProvider(create: (_) => PartnerProvider()),
+        ChangeNotifierProxyProvider<PartnerProvider, ProductProvider>(
+          create: (_) => ProductProvider(),
+          update: (_, partner, product) {
+            product!.setPartnerProvider(partner);
+            return product;
+          },
+        ),
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => FavoriteProvider()),
         ChangeNotifierProvider(create: (_) => LocaleProvider()),
