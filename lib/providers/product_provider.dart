@@ -688,8 +688,16 @@ class ProductProvider with ChangeNotifier {
   ];
 
   List<Product> get items {
-    final partnerProducts = _partnerProvider?.products.map((p) => p.toProduct()).toList() ?? [];
+    final partnerProducts = _partnerProvider?.products
+        .where((p) => p.isActive)
+        .map((p) => p.toProduct())
+        .toList() ?? [];
     return [..._items, ...partnerProducts];
+  }
+
+  /// Проверяет, является ли товар партнёрским
+  bool isPartnerProduct(String id) {
+    return _partnerProvider?.products.any((p) => p.id == id) ?? false;
   }
 
   List<Product> getProductsByCategory(String category) {

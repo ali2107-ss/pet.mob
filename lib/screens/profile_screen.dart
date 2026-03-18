@@ -7,7 +7,6 @@ import 'order_history_screen.dart';
 import 'auth/login_screen.dart';
 import 'map_screen.dart';
 import '../l10n/translation.dart';
-import '../l10n/translation.dart';
 import '../providers/locale_provider.dart';
 import '../providers/auth_provider.dart';
 import '../providers/partner_provider.dart';
@@ -244,6 +243,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   subtitle: const Text('Управляйте товарами и балансом', style: TextStyle(color: Colors.white70, fontSize: 12)),
                   trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 16),
                   onTap: () {
+                    context.read<PartnerProvider>().enterPartnerMode();
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => const PartnerMainScreen()),
                     );
