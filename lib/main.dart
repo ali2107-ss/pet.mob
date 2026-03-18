@@ -15,7 +15,7 @@ void main() {
 }
 
 class PetMobApp extends StatelessWidget {
-  const PetMobApp({Key? key}) : super(key: key);
+  const PetMobApp({super.key});
 
   @override
   Widget build(BuildContext context) {

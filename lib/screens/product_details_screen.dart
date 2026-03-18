@@ -13,7 +13,7 @@ class ProductDetailsScreen extends StatefulWidget {
   final Product product;
   final String heroPrefix;
 
-  const ProductDetailsScreen({Key? key, required this.product, this.heroPrefix = ''}) : super(key: key);
+  const ProductDetailsScreen({super.key, required this.product, this.heroPrefix = ''});
 
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();

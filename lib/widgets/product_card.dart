@@ -12,7 +12,7 @@ class ProductCard extends StatelessWidget {
   final VoidCallback onTap;
   final String heroPrefix;
 
-  const ProductCard({Key? key, required this.product, required this.onTap, this.heroPrefix = ''}) : super(key: key);
+  const ProductCard({super.key, required this.product, required this.onTap, this.heroPrefix = ''});
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +155,7 @@ class ProductCard extends StatelessWidget {
 class _AddToCartButton extends StatefulWidget {
   final Product product;
 
-  const _AddToCartButton({Key? key, required this.product}) : super(key: key);
+  const _AddToCartButton({super.key, required this.product});
 
   @override
   State<_AddToCartButton> createState() => _AddToCartButtonState();

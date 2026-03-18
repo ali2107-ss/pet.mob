@@ -14,7 +14,7 @@ import '../providers/partner_provider.dart';
 import 'partner/partner_main_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -80,7 +80,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final t = AppTranslation.translations[langCode] ?? AppTranslation.translations['ru']!;
 
     final authProvider = Provider.of<AuthProvider>(context);
-    final _isLoggedIn = authProvider.isLoggedIn;
+    final isLoggedIn = authProvider.isLoggedIn;
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -107,7 +107,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            if (!_isLoggedIn) ...[
+            if (!isLoggedIn) ...[
               const Icon(Icons.account_circle, size: 100, color: Colors.grey),
               const SizedBox(height: 16),
               Text(
@@ -171,7 +171,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: Icons.location_on_outlined,
               title: t['delivery_addresses']!,
               onTap: () {
-                if (!_isLoggedIn) {
+                if (!isLoggedIn) {
                   Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LoginScreen()));
                   return;
                 }
@@ -183,7 +183,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: Icons.payment_outlined,
               title: t['payment_methods']!,
               onTap: () {
-                if (!_isLoggedIn) {
+                if (!isLoggedIn) {
                   Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LoginScreen()));
                   return;
                 }
@@ -203,7 +203,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: Icons.local_offer_outlined,
               title: t['promocodes']!,
               onTap: () {
-                if (!_isLoggedIn) {
+                if (!isLoggedIn) {
                   Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LoginScreen()));
                   return;
                 }
@@ -217,7 +217,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Navigator.of(context).push(MaterialPageRoute(builder: (_) => const MapScreen()));
               },
             ),
-            if (_isLoggedIn) ...[
+            if (isLoggedIn) ...[
               const SizedBox(height: 24),
               // Кнопка режима партнёра
               Container(

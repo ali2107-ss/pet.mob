@@ -4,7 +4,7 @@ import '../../providers/partner_provider.dart';
 import '../../theme.dart';
 
 class PartnerBalanceScreen extends StatelessWidget {
-  const PartnerBalanceScreen({Key? key}) : super(key: key);
+  const PartnerBalanceScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +134,7 @@ class _IncomeRow extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Image.network(product.imageUrl, width: 44, height: 44, fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(width: 44, height: 44, color: Colors.grey[200])),
+                errorBuilder: (_, _, _) => Container(width: 44, height: 44, color: Colors.grey[200])),
           ),
           const SizedBox(width: 12),
           Expanded(

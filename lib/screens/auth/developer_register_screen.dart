@@ -5,7 +5,7 @@ import '../../l10n/translation.dart';
 import '../../providers/locale_provider.dart';
 
 class DeveloperRegisterScreen extends StatefulWidget {
-  const DeveloperRegisterScreen({Key? key}) : super(key: key);
+  const DeveloperRegisterScreen({super.key});
 
   @override
   State<DeveloperRegisterScreen> createState() => _DeveloperRegisterScreenState();

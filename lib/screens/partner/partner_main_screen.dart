@@ -8,7 +8,7 @@ import 'partner_balance_screen.dart';
 import '../profile_screen.dart';
 
 class PartnerMainScreen extends StatefulWidget {
-  const PartnerMainScreen({Key? key}) : super(key: key);
+  const PartnerMainScreen({super.key});
 
   @override
   State<PartnerMainScreen> createState() => _PartnerMainScreenState();

@@ -4,7 +4,7 @@ import '../../providers/partner_provider.dart';
 import '../../theme.dart';
 
 class PartnerProductsScreen extends StatelessWidget {
-  const PartnerProductsScreen({Key? key}) : super(key: key);
+  const PartnerProductsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class PartnerProductsScreen extends StatelessWidget {
                       ClipRRect(
                         borderRadius: const BorderRadius.horizontal(left: Radius.circular(20)),
                         child: Image.network(p.imageUrl, width: 100, height: 100, fit: BoxFit.cover,
-                            errorBuilder: (_, __, ___) => Container(width: 100, height: 100, color: Colors.grey[200],
+                            errorBuilder: (_, _, _) => Container(width: 100, height: 100, color: Colors.grey[200],
                                 child: const Icon(Icons.image_not_supported, color: Colors.grey))),
                       ),
                       Expanded(
@@ -197,7 +197,7 @@ class _AddProductSheetState extends State<_AddProductSheet> {
               ),
               const SizedBox(height: 12),
               DropdownButtonFormField<String>(
-                value: _selectedCategory,
+                initialValue: _selectedCategory,
                 decoration: _inputDecoration('Категория', Icons.category_outlined),
                 items: _categories.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
                 onChanged: (v) => setState(() => _selectedCategory = v!),

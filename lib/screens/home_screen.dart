@@ -13,7 +13,7 @@ import '../l10n/translation.dart';
 import '../providers/auth_provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -470,8 +470,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                               Navigator.of(context).push(
                                 PageRouteBuilder(
                                   transitionDuration: const Duration(milliseconds: 500),
-                                  pageBuilder: (_, __, ___) => ProductDetailsScreen(product: displayedProducts[index], heroPrefix: 'home_'),
-                                  transitionsBuilder: (_, animation, __, child) {
+                                  pageBuilder: (_, _, _) => ProductDetailsScreen(product: displayedProducts[index], heroPrefix: 'home_'),
+                                  transitionsBuilder: (_, animation, _, child) {
                                     return FadeTransition(opacity: animation, child: child);
                                   },
                                 ),

@@ -5,7 +5,7 @@ import '../../l10n/translation.dart';
 import '../../providers/locale_provider.dart';
 
 class UserRegisterScreen extends StatefulWidget {
-  const UserRegisterScreen({Key? key}) : super(key: key);
+  const UserRegisterScreen({super.key});
 
   @override
   State<UserRegisterScreen> createState() => _UserRegisterScreenState();

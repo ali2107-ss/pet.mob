@@ -23,8 +23,9 @@ Future<void> main() async {
       int vol = id ~/ 100000;
       int part = id ~/ 1000;
       int basket = 1;
-      if (vol >= 0 && vol <= 143) basket = 1;
-      else if (vol <= 287) basket = 2;
+      if (vol >= 0 && vol <= 143) {
+        basket = 1;
+      } else if (vol <= 287) basket = 2;
       else if (vol <= 431) basket = 3;
       else if (vol <= 719) basket = 4;
       else if (vol <= 1007) basket = 5;
