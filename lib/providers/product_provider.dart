@@ -480,8 +480,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Отлично впитывает влагу и полностью блокирует запах.',
       price: 4500,
       category: 'Гигиена',
-      imageUrl:
-          'https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=500&q=80',
+      imageUrl: 'https://basket-10.wbbasket.ru/vol1388/part138847/138847941/images/big/1.webp',
       rating: 4.6,
     ),
     Product(
@@ -490,8 +489,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Облегчает расчесывание и придает шерсти здоровый блеск.',
       price: 3200,
       category: 'Гигиена',
-      imageUrl:
-          'https://images.unsplash.com/photo-1601758174493-45d0a4d3e407?w=500&q=80',
+      imageUrl: 'https://ir.ozone.ru/s3/multimedia-1-e/c1000/7476477530.jpg',
       rating: 4.0,
     ),
     Product(
@@ -500,8 +498,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Лоток-домик. Предотвращает разбрасывание наполнителя.',
       price: 14500,
       category: 'Гигиена',
-      imageUrl:
-          'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=500&q=80',
+      imageUrl: 'https://basket-10.wbbasket.ru/vol1358/part135817/135817796/images/c516x688/1.webp',
       rating: 4.7,
     ),
     Product(
@@ -510,8 +507,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Натуральный и экологичный. Подходит для смывания в туалет.',
       price: 2800,
       category: 'Гигиена',
-      imageUrl:
-          'https://images.unsplash.com/photo-1518791841217-8f162f1912da?w=500&q=80',
+      imageUrl: 'https://ir.ozone.ru/s3/multimedia-m/c1000/6603325618.jpg',
       rating: 4.8,
     ),
     Product(
@@ -520,8 +516,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Упаковка 30 шт. Идеально для щенков и приучения к туалету.',
       price: 4100,
       category: 'Гигиена',
-      imageUrl:
-          'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80',
+      imageUrl: 'https://goods-photos.static1-sima-land.com/items/2413087/0/700-nw.jpg',
       rating: 5.0,
     ),
     Product(
@@ -530,8 +525,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Быстро образует плотные комочки, легко убирать.',
       price: 3600,
       category: 'Гигиена',
-      imageUrl:
-          'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?w=500&q=80',
+      imageUrl: 'https://ir.ozone.ru/s3/multimedia-1-7/c1000/7258388875.jpg',
       rating: 4.7,
     ),
     Product(
@@ -541,8 +535,7 @@ class ProductProvider with ChangeNotifier {
           'Инструмент против линьки. Удаляет до 90% отмершего подшерстка.',
       price: 6500,
       category: 'Гигиена',
-      imageUrl:
-          'https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?w=500&q=80',
+      imageUrl: 'https://basket-17.wbbasket.ru/vol2819/part281926/281926768/images/c516x688/1.webp',
       rating: 4.4,
     ),
     Product(
@@ -551,8 +544,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Острые ножницы для безопасной стрижки когтей.',
       price: 2100,
       category: 'Гигиена',
-      imageUrl:
-          'https://images.unsplash.com/photo-1545249390-6bdfa286032f?w=500&q=80',
+      imageUrl: 'https://ir.ozone.ru/s3/multimedia-r/c1000/6367259175.jpg',
       rating: 4.1,
     ),
     Product(
@@ -561,8 +553,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Мягко очищает ушную раковину собак и кошек.',
       price: 1800,
       category: 'Гигиена',
-      imageUrl:
-          'https://images.unsplash.com/photo-1548802673-380ab8ebc7b7?w=500&q=80',
+      imageUrl: 'https://www.zootovar-spb.ru/images/34/42/344284.jpg',
       rating: 4.0,
     ),
     Product(
@@ -571,8 +562,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Набор для ухода за зубами собак со вкусом говядины.',
       price: 2400,
       category: 'Гигиена',
-      imageUrl:
-          'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=500&q=80',
+      imageUrl: 'https://ir.ozone.ru/s3/multimedia-3/6777825087.jpg',
       rating: 4.4,
     ),
     Product(
@@ -581,8 +571,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Отучает питомца гадить в неположенных местах.',
       price: 1900,
       category: 'Гигиена',
-      imageUrl:
-          'https://images.unsplash.com/photo-1560743641-3914f2c45636?w=500&q=80',
+      imageUrl: 'https://ir.ozone.ru/s3/multimedia-7/c1000/6426533119.jpg',
       rating: 4.8,
     ),
     Product(
@@ -591,8 +580,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Энзимный спрей для удаления пятен мочи и запаха.',
       price: 2600,
       category: 'Гигиена',
-      imageUrl:
-          'https://images.unsplash.com/photo-1606214174585-fe31582dc6ee?w=500&q=80',
+      imageUrl: 'https://ir.ozone.ru/s3/multimedia-1-p/c1000/7266739669.jpg',
       rating: 4.2,
     ),
     Product(
@@ -601,8 +589,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Влажные салфетки, безопасные для животных. 50 шт.',
       price: 1100,
       category: 'Гигиена',
-      imageUrl:
-          'https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?w=500&q=80',
+      imageUrl: 'https://image.made-in-china.com/202f0j00wQjoZYyWLkgq/Circular-Shape-for-Cleaning-Animals-Paws-and-Nose-and-Ears-Pet-Wet-Wipes.webp',
       rating: 5.0,
     ),
     Product(
@@ -611,8 +598,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Сликер с каплями на зубчиках для бережного вычесывания.',
       price: 1500,
       category: 'Гигиена',
-      imageUrl:
-          'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=500&q=80',
+      imageUrl: 'https://claws.com.ua/wp-content/uploads/2015/01/comb_soft.jpg',
       rating: 4.2,
     ),
     Product(
@@ -621,8 +607,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Гипоаллергенный мягкий шампунь.',
       price: 2800,
       category: 'Гигиена',
-      imageUrl:
-          'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500&q=80',
+      imageUrl: 'https://avatars.mds.yandex.net/get-mpic/16508997/2a00000198a0fcdd39e16bd7e5cacc30c06a/orig',
       rating: 4.3,
     ),
     Product(
@@ -631,8 +616,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Водонепроницаемый комбинезон-дождевик с капюшоном.',
       price: 6500,
       category: 'Киімдер',
-      imageUrl:
-          'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=500&q=80',
+      imageUrl: 'https://catalog-cdn.detmir.st/media/dtDUGDNKqIGu5F4Qf0xpzxhnxZJw8OfbK84AOxWuzw0=.jpeg',
       rating: 4.9,
     ),
     Product(
@@ -641,8 +625,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Теплый свитер с орнаментом для собак мелких пород.',
       price: 5200,
       category: 'Киімдер',
-      imageUrl:
-          'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=500&q=80',
+      imageUrl: 'https://vip-dog.com/image/cache/catalog/Tovary/Kofty/57abc99a19ebf4e79266945883a6763d-550x550.jpg',
       rating: 4.2,
     ),
     Product(
@@ -651,8 +634,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Утепленный комбинезон для сильных морозов.',
       price: 11500,
       category: 'Киімдер',
-      imageUrl:
-          'https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?w=500&q=80',
+      imageUrl: 'https://ir.ozone.ru/s3/multimedia-l/c1000/6105155553.jpg',
       rating: 4.7,
     ),
     Product(
@@ -661,13 +643,12 @@ class ProductProvider with ChangeNotifier {
       description: 'Защищают лапы от реагентов и льда зимой (комплект 4 шт).',
       price: 4800,
       category: 'Киімдер',
-      imageUrl:
-          'https://images.unsplash.com/photo-1477884213360-7e9d7dcc1e48?w=500&q=80',
+      imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS67FhTpcQYQwFRTWwpugg79mk8vuncstvVgg&s',
       rating: 4.0,
     ),
     Product(
       id: 'p65',
-      name: 'Футболка летняя "Boss"',
+      name: 'Футболка летняя Boss',
       description: 'Легкая хлопковая майка для защиты от солнца.',
       price: 2500,
       category: 'Киімдер',
@@ -681,8 +662,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Модная спортивная толстовка для стильных собак.',
       price: 3500,
       category: 'Киімдер',
-      imageUrl:
-          'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=500&q=80',
+      imageUrl: 'https://i.ebayimg.com/images/g/GBcAAOSwO9JmjH5X/s-l1200.webp',
       rating: 4.8,
     ),
     Product(
@@ -691,8 +671,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Нарядное платье для особых случаев (для мелких собачек).',
       price: 4200,
       category: 'Киімдер',
-      imageUrl:
-          'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80',
+      imageUrl: 'https://ae04.alicdn.com/kf/S57aad23eb4b744bb85bc85cf55b346eeV.jpg',
       rating: 4.4,
     ),
     Product(
@@ -701,8 +680,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Обеспечивает безопасность в темное время суток.',
       price: 1800,
       category: 'Киімдер',
-      imageUrl:
-          'https://images.unsplash.com/photo-1560743641-3914f2c45636?w=500&q=80',
+      imageUrl: 'https://basket-04.wbbasket.ru/vol590/part59087/59087795/images/c516x688/1.webp',
       rating: 4.0,
     ),
     Product(
@@ -711,8 +689,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Дышащая попона для кошек и собак.',
       price: 2100,
       category: 'Киімдер',
-      imageUrl:
-          'https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=500&q=80',
+      imageUrl: 'https://resources.cdn-kaspi.kz/img/m/p/h4a/hb3/85395781320734.png?format=gallery-large',
       rating: 4.6,
     ),
     Product(
@@ -722,8 +699,7 @@ class ProductProvider with ChangeNotifier {
           'С силиконовым покрытием, чтобы лапы не скользили по ламинату.',
       price: 1200,
       category: 'Киімдер',
-      imageUrl:
-          'https://images.unsplash.com/photo-1601758174493-45d0a4d3e407?w=500&q=80',
+      imageUrl: 'https://avatars.mds.yandex.net/get-mpic/4410238/2a00000199a6c491dcf2045c6ffe5ba98459/orig',
       rating: 4.6,
     ),
     Product(
@@ -732,8 +708,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Яркий аксессуар для стильной прогулки.',
       price: 900,
       category: 'Киімдер',
-      imageUrl:
-          'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=500&q=80',
+      imageUrl: 'https://ae01.alicdn.com/kf/S55dbf073788340749cb8c4a063763ad8j.jpg?width=800&height=800&hash=1600',
       rating: 4.6,
     ),
     Product(
@@ -742,8 +717,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Защищает глаза питомца. Фиксируется под подбородком.',
       price: 1600,
       category: 'Киімдер',
-      imageUrl:
-          'https://images.unsplash.com/photo-1548802673-380ab8ebc7b7?w=500&q=80',
+      imageUrl: 'https://ae04.alicdn.com/kf/Sb12bed7c34d747c5b91006172ab25544n.jpg',
       rating: 4.1,
     ),
     Product(
@@ -752,8 +726,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Защищает длинные уши от попадания в миску и от холода.',
       price: 2200,
       category: 'Киімдер',
-      imageUrl:
-          'https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?w=500&q=80',
+      imageUrl: 'https://markvet.ru/upload/iblock/6f3/12h6wwzgquihl2kdkxenqfkr4ndxlqzr.jpg',
       rating: 4.2,
     ),
     Product(
@@ -762,8 +735,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Отлично впитывает воду после мытья.',
       price: 5500,
       category: 'Киімдер',
-      imageUrl:
-          'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=500&q=80',
+      imageUrl: 'https://www.zoofashion.ru/upload/iblock/487/efbdv7y50n02szftdt4sly1h9q33xoae.jpg',
       rating: 4.4,
     ),
     Product(
@@ -772,8 +744,7 @@ class ProductProvider with ChangeNotifier {
       description: 'Праздничный наряд для питомца к Новому году.',
       price: 4500,
       category: 'Киімдер',
-      imageUrl:
-          'https://images.unsplash.com/photo-1606214174585-fe31582dc6ee?w=500&q=80',
+      imageUrl: 'https://image.kazanexpress.ru/ctnu08fd16b9lm2b19mg/feedback_40.jpg',
       rating: 4.9,
     ),
   ];

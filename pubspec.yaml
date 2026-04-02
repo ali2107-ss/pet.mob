@@ -43,6 +43,7 @@ dependencies:
   confetti: ^0.7.0
   audioplayers: ^5.2.0
   vibration: ^1.8.4
+  supabase_flutter: ^2.12.2
 
 dev_dependencies:
   flutter_test:
