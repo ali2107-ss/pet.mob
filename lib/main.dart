@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:provider/provider.dart';
 import 'providers/product_provider.dart';
 import 'providers/cart_provider.dart';
@@ -10,7 +11,15 @@ import 'providers/partner_provider.dart';
 import 'screens/main_screen.dart';
 import 'theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Инициализация Supabase. Замените ключи на ваши реальные!
+  await Supabase.initialize(
+    url: 'YOUR_SUPABASE_URL',
+    anonKey: 'YOUR_SUPABASE_ANON_KEY',
+  );
+
   runApp(const PetMobApp());
 }
 
