@@ -6,6 +6,7 @@ import 'payment_methods_screen.dart';
 import 'order_history_screen.dart';
 import 'auth/login_screen.dart';
 import 'map_screen.dart';
+import 'settings_screen.dart';
 import '../l10n/translation.dart';
 import '../providers/locale_provider.dart';
 import '../providers/auth_provider.dart';
@@ -97,7 +98,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             IconButton(
               icon: const Icon(Icons.settings_outlined),
               onPressed: () {
-                // Settings implementation
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                );
               },
             ),
         ],
@@ -248,7 +251,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       MaterialPageRoute(builder: (_) => const PartnerMainScreen()),
                     );
                   },
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 ),
               ),
               _buildProfileMenuItem(
@@ -311,7 +313,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         trailing: showChevron ? const Icon(Icons.chevron_right, color: AppTheme.greyColor) : null,
         onTap: onTap,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
     );
   }
