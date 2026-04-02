@@ -7,6 +7,7 @@ import 'order_history_screen.dart';
 import 'auth/login_screen.dart';
 import 'map_screen.dart';
 import 'settings_screen.dart';
+import 'my_pets_screen.dart';
 import '../l10n/translation.dart';
 import '../providers/locale_provider.dart';
 import '../providers/auth_provider.dart';
@@ -242,15 +243,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             _buildProfileMenuItem(
               context,
-              icon: Icons.local_offer_outlined,
-              title: t['promocodes']!,
+              icon: Icons.pets,
+              title: t['my_pets'] ?? 'Мои питомцы',
               onTap: () {
-                if (!isLoggedIn) {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const LoginScreen()),
-                  );
-                  return;
-                }
+                Navigator.of(
+                  context,
+                ).push(MaterialPageRoute(builder: (_) => const MyPetsScreen()));
               },
             ),
             _buildProfileMenuItem(

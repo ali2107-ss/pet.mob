@@ -11,14 +11,8 @@ class AddressesScreen extends StatefulWidget {
 class _AddressesScreenState extends State<AddressesScreen> {
   int _primaryIndex = 0;
   final List<Map<String, String>> _addresses = [
-    {
-      'title': 'Үй',
-      'address': 'Алматы қ., Абай даңғылы, 105',
-    },
-    {
-      'title': 'Жұмыс',
-      'address': 'Алматы қ., Сәтбаев көшесі, 90',
-    },
+    {'title': 'Үй', 'address': 'Алматы қ., Абай даңғылы, 105'},
+    {'title': 'Жұмыс', 'address': 'Алматы қ., Сәтбаев көшесі, 90'},
   ];
 
   @override
@@ -47,28 +41,79 @@ class _AddressesScreenState extends State<AddressesScreen> {
                   color: Colors.black.withOpacity(0.04),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
-                )
+                ),
               ],
             ),
             child: ListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 12,
+              ),
               leading: Icon(
                 Icons.location_on,
                 color: isPrimary ? AppTheme.primaryColor : AppTheme.greyColor,
               ),
               title: Text(
                 _addresses[i]['title']!,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
               subtitle: Text(
                 _addresses[i]['address']!,
                 style: const TextStyle(color: AppTheme.greyColor),
               ),
-              trailing: IconButton(
-                icon: const Icon(Icons.edit_outlined),
-                onPressed: () {
-                  // Edit address
+              trailing: PopupMenuButton<String>(
+                onSelected: (value) {
+                  if (value == 'delete') {
+                    showDialog(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                        title: const Text('Удалить адрес?'),
+                        content: Text(
+                          'Вы уверены, что хотите удалить "${_addresses[i]['title']}"?',
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(ctx),
+                            child: const Text('Отмена'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                _addresses.removeAt(i);
+                                if (_primaryIndex >= _addresses.length) {
+                                  _primaryIndex = 0;
+                                }
+                              });
+                              Navigator.pop(ctx);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Адрес удален')),
+                              );
+                            },
+                            child: const Text(
+                              'Удалить',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
                 },
+                itemBuilder: (BuildContext context) => [
+                  const PopupMenuItem(
+                    value: 'delete',
+                    child: Row(
+                      children: [
+                        Icon(Icons.delete_outline, color: Colors.red),
+                        SizedBox(width: 8),
+                        Text('Удалить', style: TextStyle(color: Colors.red)),
+                      ],
+                    ),
+                  ),
+                ],
               ),
               onTap: () {
                 setState(() {
