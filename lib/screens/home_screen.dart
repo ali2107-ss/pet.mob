@@ -101,18 +101,16 @@ class _HomeScreenState extends State<HomeScreen>
             if (auth.isLoggedIn) {
               return Row(
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 20,
-                    backgroundImage: NetworkImage(
-                      'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80',
-                    ),
+                    backgroundImage: NetworkImage(auth.avatarUrl),
                   ),
                   const SizedBox(width: 12),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        t['hello_user']!,
+                        '${t['hello_user']!}, ${auth.userName} 👋',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,

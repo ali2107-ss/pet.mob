@@ -28,8 +28,8 @@ class AppTranslation {
       'cat_clothes': 'Одежда',
       'see_all': 'Все',
 
-      'hello_user': 'Привет, Айдар! 👋',
-      'city': 'Алматы, Казахстан',
+      'hello_user': 'Привет',
+      'city': 'Атырау, Казахстан',
       'care_for': 'Позаботьтесь',
       'your_pet': 'о любимом питомце',
       'search_hint': 'Поиск корма, игрушек, аксессуаров...',
@@ -137,8 +137,8 @@ class AppTranslation {
       'cat_clothes': 'Киімдер',
       'see_all': 'Барлығы',
 
-      'hello_user': 'Сәлем, Айдар! 👋',
-      'city': 'Алматы, Казахстан',
+      'hello_user': 'Сәлем',
+      'city': 'Атырау, Казахстан',
       'care_for': 'Қамқорлық жасаңыз',
       'your_pet': 'сүйікті үй жануарыңызға',
       'search_hint': 'Тамақ, ойыншықтар, аксессуарлар іздеу...',
@@ -243,8 +243,8 @@ class AppTranslation {
       'cat_clothes': 'Clothes',
       'see_all': 'See All',
 
-      'hello_user': 'Hello, Aidar! 👋',
-      'city': 'Almaty, Kazakhstan',
+      'hello_user': 'Hello',
+      'city': 'Atyrau, Kazakhstan',
       'care_for': 'Take care',
       'your_pet': 'of your loving pet',
       'search_hint': 'Search food, toys, accessories...',

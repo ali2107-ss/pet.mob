@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../main_screen.dart';
 import '../../l10n/translation.dart';
 import '../../providers/locale_provider.dart';
+import '../../providers/auth_provider.dart';
 
 class UserRegisterScreen extends StatefulWidget {
   const UserRegisterScreen({super.key});
@@ -17,29 +18,114 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _phoneController = TextEditingController();
+  bool _isLoading = false;
 
-  void _register(Map<String, String> t) {
-    if (_formKey.currentState?.validate() ?? false) {
-      showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: Text(t['success']!),
-          content: Text(t['reg_user_success']!),
+  Future<void> _register(Map<String, String> t) async {
+    if (!(_formKey.currentState?.validate() ?? false)) return;
+
+    setState(() => _isLoading = true);
+    try {
+      final auth = Provider.of<AuthProvider>(context, listen: false);
+      final email = _emailController.text.trim();
+      final needsOtp = await auth.register(
+        email,
+        _passwordController.text.trim(),
+        _nameController.text.trim(),
+      );
+
+      if (mounted) {
+        if (needsOtp) {
+          _showOtpDialog(email, t);
+        } else {
+          _showSuccess(t);
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Ошибка: $e')));
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  void _showOtpDialog(String email, Map<String, String> t) {
+    final otpController = TextEditingController();
+    bool isVerifying = false;
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => StatefulBuilder(
+        builder: (context, setStateDialog) => AlertDialog(
+          title: Text(t['email_confirm'] ?? 'Подтверждение Email'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(t['email_code_sent'] ?? 'Мы отправили код подтверждения на ваш email. Введите его ниже:'),
+              const SizedBox(height: 16),
+              TextField(
+                controller: otpController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: t['code_from_email'] ?? 'Код из Email',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ],
+          ),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.pop(ctx);
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => const MainScreen()),
-                  (route) => false,
-                );
-              },
-              child: Text(t['ok']!),
+              onPressed: isVerifying ? null : () => Navigator.pop(ctx),
+              child: Text(t['cancel'] ?? 'Отмена'),
+            ),
+            ElevatedButton(
+              onPressed: isVerifying
+                  ? null
+                  : () async {
+                      setStateDialog(() => isVerifying = true);
+                      try {
+                         final auth = Provider.of<AuthProvider>(context, listen: false);
+                         await auth.verifyOTP(email, otpController.text.trim());
+                         if (mounted) {
+                           Navigator.pop(ctx);
+                           _showSuccess(t);
+                         }
+                      } catch (e) {
+                        setStateDialog(() => isVerifying = false);
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Ошибка кода: $e')));
+                      }
+                    },
+              child: isVerifying ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator()) : Text(t['confirm'] ?? 'Подтвердить'),
             ),
           ],
         ),
-      );
-    }
+      ),
+    );
+  }
+
+  void _showSuccess(Map<String, String> t) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(t['success']!),
+        content: Text(t['reg_user_success']!),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => const MainScreen()),
+                (route) => false,
+              );
+            },
+            child: Text(t['ok']!),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -128,13 +214,15 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
               SizedBox(
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () => _register(t),
+                  onPressed: _isLoading ? null : () => _register(t),
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: Text(t['register_btn']!, style: const TextStyle(fontSize: 16)),
+                  child: _isLoading 
+                      ? const CircularProgressIndicator() 
+                      : Text(t['register_btn']!, style: const TextStyle(fontSize: 16)),
                 ),
               ),
             ],

@@ -150,8 +150,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       builder: (context) => const LoginScreen(),
                     ),
                   );
-                  // Для демонстрации просто логинимся:
-                  authProvider.login();
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 50),
@@ -159,11 +157,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Text(t['login_register']!),
               ),
             ] else ...[
-              const CircleAvatar(
+              CircleAvatar(
                 radius: 50,
-                backgroundImage: NetworkImage(
-                  'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80',
-                ),
+                backgroundImage: NetworkImage(authProvider.avatarUrl),
               ),
               const SizedBox(height: 16),
               Text(
@@ -176,12 +172,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               const SizedBox(height: 4),
               Text(
-                'aydarn@example.com',
+                authProvider.userEmail,
                 style: TextStyle(fontSize: 16, color: AppTheme.greyColor),
               ),
               const SizedBox(height: 4),
               Text(
-                '+7 (705) 123 45 67',
+                authProvider.userPhone,
                 style: TextStyle(fontSize: 14, color: AppTheme.greyColor),
               ),
               const SizedBox(height: 24),

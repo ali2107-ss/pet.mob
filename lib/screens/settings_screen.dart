@@ -99,6 +99,66 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Секция профиля
+            Text(
+              t['profile'] ?? 'Профиль',
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: AppTheme.primaryColor,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardTheme.color ?? Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.04),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  TextField(
+                    controller: TextEditingController(text: context.read<AuthProvider>().userName),
+                    decoration: InputDecoration(
+                      labelText: t['full_name'] ?? 'Имя',
+                      prefixIcon: const Icon(Icons.person_outline),
+                    ),
+                    onSubmitted: (value) async {
+                      await context.read<AuthProvider>().updateProfile(name: value);
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Имя обновлено')),
+                        );
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: t['phone_number'] ?? 'Номер телефона',
+                      prefixIcon: const Icon(Icons.phone_outlined),
+                    ),
+                    onSubmitted: (value) async {
+                      await context.read<AuthProvider>().updateProfile(phone: value);
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Телефон обновлен')),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 32),
+
             // Секция уведомлений
             Text(
               t['notifications'] ?? 'Уведомления',
@@ -153,7 +213,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
             const SizedBox(height: 32),
-
             // Секция языка и внешнего вида
             Text(
               t['appearance'] ?? 'Внешний вид',

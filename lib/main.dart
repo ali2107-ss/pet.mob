@@ -16,8 +16,8 @@ void main() async {
   
   // Инициализация Supabase. Замените ключи на ваши реальные!
   await Supabase.initialize(
-    url: 'YOUR_SUPABASE_URL',
-    anonKey: 'YOUR_SUPABASE_ANON_KEY',
+    url: 'https://sxtjvdpuwidarlksnnat.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4dGp2ZHB1d2lkYXJsa3NubmF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxMzA4NDYsImV4cCI6MjA5MDcwNjg0Nn0.NYgX9o2z5ZOedkuHsfvGivDTaLjCID0D51JqehsYjBE',
   );
 
   runApp(const PetMobApp());
