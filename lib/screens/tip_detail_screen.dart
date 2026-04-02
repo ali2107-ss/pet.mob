@@ -15,16 +15,17 @@ class TipDetailScreen extends StatelessWidget {
     this.readTime = '5 мин',
   });
 
-  // Статические данные статей
   static List<Map<String, String>> getTips(String langCode) {
     switch (langCode) {
       case 'kk':
         return [
           {
             'title': 'Котенканы лотокқа қалай үйрету керек?',
-            'image': 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=800&q=80',
+            'image':
+                'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=800&q=80',
             'readTime': '5 мин',
-            'content': '''🐱 Котенканы лотокқа үйрету — сабырлылық пен дұрыс әдістерді қажет ететін процесс.
+            'content':
+                '''🐱 Котенканы лотокқа үйрету — сабырлылық пен дұрыс әдістерді қажет ететін процесс.
 
 📍 Лотокты дұрыс орнатыңыз
 Лотокты тыныш, қол жетімді жерге қойыңыз. Тамақтанатын жерден алыс болсын. Мысық жеке кеңістікті ұнатады.
@@ -45,7 +46,8 @@ class TipDetailScreen extends StatelessWidget {
           },
           {
             'title': 'Иттерге арналған дұрыс тамақтану',
-            'image': 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=800&q=80',
+            'image':
+                'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=800&q=80',
             'readTime': '7 мин',
             'content': '''🐕 Итіңіздің денсаулығы дұрыс тамақтанудан басталады.
 
@@ -73,9 +75,11 @@ class TipDetailScreen extends StatelessWidget {
           },
           {
             'title': 'Жүнге күтім жасау',
-            'image': 'https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&w=800&q=80',
+            'image':
+                'https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&w=800&q=80',
             'readTime': '4 мин',
-            'content': '''✨ Жүнге дұрыс күтім — сіздің питомцыңыздың сұлулығы мен денсаулығының кілті.
+            'content':
+                '''✨ Жүнге дұрыс күтім — сіздің питомцыңыздың сұлулығы мен денсаулығының кілті.
 
 🪮 Тарау жиілігі
 - Ұзын жүнді: күнделікті
@@ -101,9 +105,11 @@ class TipDetailScreen extends StatelessWidget {
         return [
           {
             'title': 'How to litter train a kitten?',
-            'image': 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=800&q=80',
+            'image':
+                'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=800&q=80',
             'readTime': '5 min',
-            'content': '''🐱 Litter training a kitten requires patience and the right approach.
+            'content':
+                '''🐱 Litter training a kitten requires patience and the right approach.
 
 📍 Place the litter box correctly
 Put it in a quiet, accessible area away from food. Cats prefer private spaces.
@@ -124,7 +130,8 @@ If they have an accident, don't punish. It causes fear. Just clean up and try ag
           },
           {
             'title': 'Proper diet for dogs',
-            'image': 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=800&q=80',
+            'image':
+                'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=800&q=80',
             'readTime': '7 min',
             'content': '''🐕 Your dog's health starts with proper nutrition.
 
@@ -152,9 +159,11 @@ Consult your vet. Raw-fed dogs may need vitamin supplements.
           },
           {
             'title': 'Coat care tips',
-            'image': 'https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&w=800&q=80',
+            'image':
+                'https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&w=800&q=80',
             'readTime': '4 min',
-            'content': '''✨ Proper coat care is key to your pet's beauty and health.
+            'content':
+                '''✨ Proper coat care is key to your pet's beauty and health.
 
 🪮 Brushing frequency
 - Long coat: daily
@@ -180,9 +189,11 @@ Food with Omega-3 and Omega-6 fatty acids makes coats shiny. Consider adding fis
         return [
           {
             'title': 'Как приучить котенка к лотку?',
-            'image': 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=800&q=80',
+            'image':
+                'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=800&q=80',
             'readTime': '5 мин',
-            'content': '''🐱 Приучение котенка к лотку — процесс, требующий терпения и правильного подхода.
+            'content':
+                '''🐱 Приучение котенка к лотку — процесс, требующий терпения и правильного подхода.
 
 📍 Правильно расположите лоток
 Поставьте лоток в тихое, доступное место, подальше от еды. Кошки предпочитают уединённые места.
@@ -203,9 +214,11 @@ Food with Omega-3 and Omega-6 fatty acids makes coats shiny. Consider adding fis
           },
           {
             'title': 'Правильный рацион для собак',
-            'image': 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=800&q=80',
+            'image':
+                'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=800&q=80',
             'readTime': '7 мин',
-            'content': '''🐕 Здоровье вашей собаки начинается с правильного питания.
+            'content':
+                '''🐕 Здоровье вашей собаки начинается с правильного питания.
 
 🥩 Основные питательные вещества
 Собакам нужны белки (мясо, рыба), углеводы (рис, овощи) и жиры (рыбий жир).
@@ -231,9 +244,11 @@ Food with Omega-3 and Omega-6 fatty acids makes coats shiny. Consider adding fis
           },
           {
             'title': 'Уход за шерстью',
-            'image': 'https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&w=800&q=80',
+            'image':
+                'https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&w=800&q=80',
             'readTime': '4 мин',
-            'content': '''✨ Правильный уход за шерстью — залог красоты и здоровья вашего питомца.
+            'content':
+                '''✨ Правильный уход за шерстью — залог красоты и здоровья вашего питомца.
 
 🪮 Частота расчёсывания
 - Длинная шерсть: ежедневно
@@ -298,7 +313,10 @@ Food with Omega-3 and Omega-6 fatty acids makes coats shiny. Consider adding fis
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
+                          ),
                           decoration: BoxDecoration(
                             color: AppTheme.primaryColor,
                             borderRadius: BorderRadius.circular(20),
@@ -306,7 +324,11 @@ Food with Omega-3 and Omega-6 fatty acids makes coats shiny. Consider adding fis
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Icon(Icons.access_time, color: Colors.white, size: 14),
+                              const Icon(
+                                Icons.access_time,
+                                color: Colors.white,
+                                size: 14,
+                              ),
                               const SizedBox(width: 4),
                               Text(
                                 readTime,
@@ -340,7 +362,9 @@ Food with Omega-3 and Omega-6 fatty acids makes coats shiny. Consider adding fis
             child: Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).scaffoldBackgroundColor,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(24),
+                ),
               ),
               transform: Matrix4.translationValues(0.0, -24.0, 0.0),
               padding: const EdgeInsets.fromLTRB(24, 32, 24, 40),
@@ -349,7 +373,9 @@ Food with Omega-3 and Omega-6 fatty acids makes coats shiny. Consider adding fis
                 style: TextStyle(
                   fontSize: 16,
                   height: 1.8,
-                  color: Theme.of(context).textTheme.bodyLarge?.color ?? AppTheme.textColor,
+                  color:
+                      Theme.of(context).textTheme.bodyLarge?.color ??
+                      AppTheme.textColor,
                 ),
               ),
             ),

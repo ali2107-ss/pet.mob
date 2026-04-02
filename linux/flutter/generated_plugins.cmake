@@ -3,12 +3,9 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-<<<<<<< HEAD
   audioplayers_linux
-=======
   gtk
   url_launcher_linux
->>>>>>> 7278b3f22b440e59ad92a59209b8b4e49884e6d5
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
