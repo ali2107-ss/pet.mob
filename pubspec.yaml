@@ -40,10 +40,20 @@ dependencies:
   shared_preferences: ^2.5.4
   flutter_map: ^8.2.2
   latlong2: ^0.9.1
+<<<<<<< HEAD
   confetti: ^0.7.0
   audioplayers: ^5.2.0
   vibration: ^1.8.4
   supabase_flutter: ^2.12.2
+=======
+<<<<<<< HEAD
+  confetti: ^0.7.0
+  audioplayers: ^5.2.0
+  vibration: ^1.8.4
+=======
+  supabase_flutter: ^2.12.2
+>>>>>>> 7278b3f22b440e59ad92a59209b8b4e49884e6d5
+>>>>>>> 32e30e646cd100deb88e6cc43f705bec054aa544
 
 dev_dependencies:
   flutter_test:

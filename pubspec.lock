@@ -153,6 +153,10 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.19.1"
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 32e30e646cd100deb88e6cc43f705bec054aa544
   confetti:
     dependency: "direct main"
     description:
@@ -161,6 +165,10 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.0"
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 32e30e646cd100deb88e6cc43f705bec054aa544
   convert:
     dependency: transitive
     description:
@@ -169,6 +177,10 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.2"
+<<<<<<< HEAD
+=======
+>>>>>>> 7278b3f22b440e59ad92a59209b8b4e49884e6d5
+>>>>>>> 32e30e646cd100deb88e6cc43f705bec054aa544
   crypto:
     dependency: transitive
     description:
@@ -373,6 +385,10 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.20.2"
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 32e30e646cd100deb88e6cc43f705bec054aa544
   js:
     dependency: transitive
     description:
@@ -381,6 +397,10 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.7"
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 32e30e646cd100deb88e6cc43f705bec054aa544
   jwt_decode:
     dependency: transitive
     description:
@@ -389,6 +409,10 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.1"
+<<<<<<< HEAD
+=======
+>>>>>>> 7278b3f22b440e59ad92a59209b8b4e49884e6d5
+>>>>>>> 32e30e646cd100deb88e6cc43f705bec054aa544
   latlong2:
     dependency: "direct main"
     description:
@@ -754,6 +778,19 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.1"
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+  synchronized:
+    dependency: transitive
+    description:
+      name: synchronized
+      sha256: c254ade258ec8282947a0acbbc90b9575b4f19673533ee46f2f6e9b3aeefd7c0
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.4.0"
+=======
+>>>>>>> 32e30e646cd100deb88e6cc43f705bec054aa544
   supabase:
     dependency: transitive
     description:
@@ -770,6 +807,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.12.2"
+<<<<<<< HEAD
   synchronized:
     dependency: transitive
     description:
@@ -778,6 +816,9 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.0"
+=======
+>>>>>>> 7278b3f22b440e59ad92a59209b8b4e49884e6d5
+>>>>>>> 32e30e646cd100deb88e6cc43f705bec054aa544
   term_glyph:
     dependency: transitive
     description:
@@ -922,6 +963,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
+<<<<<<< HEAD
   web_socket:
     dependency: transitive
     description:
@@ -938,6 +980,9 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.3"
+=======
+<<<<<<< HEAD
+>>>>>>> 32e30e646cd100deb88e6cc43f705bec054aa544
   win32:
     dependency: transitive
     description:
@@ -954,6 +999,27 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+<<<<<<< HEAD
+=======
+=======
+  web_socket:
+    dependency: transitive
+    description:
+      name: web_socket
+      sha256: "34d64019aa8e36bf9842ac014bb5d2f5586ca73df5e4d9bf5c936975cae6982c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
+  web_socket_channel:
+    dependency: transitive
+    description:
+      name: web_socket_channel
+      sha256: d645757fb0f4773d602444000a8131ff5d48c9e47adfe9772652dd1a4f2d45c8
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.3"
+>>>>>>> 7278b3f22b440e59ad92a59209b8b4e49884e6d5
+>>>>>>> 32e30e646cd100deb88e6cc43f705bec054aa544
   wkt_parser:
     dependency: transitive
     description:
