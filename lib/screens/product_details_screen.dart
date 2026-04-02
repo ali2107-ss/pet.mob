@@ -13,21 +13,32 @@ class ProductDetailsScreen extends StatefulWidget {
   final Product product;
   final String heroPrefix;
 
-  const ProductDetailsScreen({super.key, required this.product, this.heroPrefix = ''});
+  const ProductDetailsScreen({
+    super.key,
+    required this.product,
+    this.heroPrefix = '',
+  });
 
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
 }
 
-class _ProductDetailsScreenState extends State<ProductDetailsScreen> with SingleTickerProviderStateMixin {
+class _ProductDetailsScreenState extends State<ProductDetailsScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;
 
   @override
   void initState() {
     super.initState();
-    _fadeController = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
-    _fadeAnimation = CurvedAnimation(parent: _fadeController, curve: Curves.easeIn);
+    _fadeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+    _fadeAnimation = CurvedAnimation(
+      parent: _fadeController,
+      curve: Curves.easeIn,
+    );
     _fadeController.forward();
   }
 
@@ -41,7 +52,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
   Widget build(BuildContext context) {
     final localeProvider = Provider.of<LocaleProvider>(context);
     final langCode = localeProvider.locale.languageCode;
-    final t = AppTranslation.translations[langCode] ?? AppTranslation.translations['ru']!;
+    final t =
+        AppTranslation.translations[langCode] ??
+        AppTranslation.translations['ru']!;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -56,11 +69,22 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
                 fit: StackFit.expand,
                 children: [
                   Hero(
-                    tag: '${widget.heroPrefix}product_image_${widget.product.id}',
-                    child: Image.network(
-                      widget.product.imageUrl,
+                    tag:
+                        '${widget.heroPrefix}product_image_${widget.product.id}',
+                    child: FadeInImage.assetNetwork(
+                      placeholder: 'assets/images/pet_background.png',
+                      image: widget.product.imageUrl,
                       fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(color: Colors.grey[200]),
+                      imageErrorBuilder: (context, error, stackTrace) =>
+                          Container(
+                            color: Colors.grey[200],
+                            alignment: Alignment.center,
+                            child: const Icon(
+                              Icons.image_not_supported,
+                              size: 56,
+                              color: Colors.grey,
+                            ),
+                          ),
                     ),
                   ),
                   const DecoratedBox(
@@ -68,10 +92,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.black45,
-                          Colors.transparent,
-                        ],
+                        colors: [Colors.black45, Colors.transparent],
                       ),
                     ),
                   ),
@@ -80,21 +101,23 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
             ),
             actions: [
               Consumer<FavoriteProvider>(
-                 builder: (ctx, favoriteProvider, child) {
-                    final isFavorite = favoriteProvider.isFavorite(widget.product.id);
-                    return IconButton(
-                      icon: Icon(
-                        isFavorite ? Icons.favorite : Icons.favorite_border,
-                        color: isFavorite ? Colors.red : Colors.white,
-                      ),
-                      onPressed: () {
-                        favoriteProvider.toggleFavorite(widget.product);
-                      },
-                    );
-                 },
+                builder: (ctx, favoriteProvider, child) {
+                  final isFavorite = favoriteProvider.isFavorite(
+                    widget.product.id,
+                  );
+                  return IconButton(
+                    icon: Icon(
+                      isFavorite ? Icons.favorite : Icons.favorite_border,
+                      color: isFavorite ? Colors.red : Colors.white,
+                    ),
+                    onPressed: () {
+                      favoriteProvider.toggleFavorite(widget.product);
+                    },
+                  );
+                },
               ),
               Consumer<CartProvider>(
-                 builder: (_, cart, ch) => badges.Badge(
+                builder: (_, cart, ch) => badges.Badge(
                   position: badges.BadgePosition.topEnd(top: 0, end: 3),
                   badgeAnimation: const badges.BadgeAnimation.scale(
                     animationDuration: Duration(milliseconds: 300),
@@ -106,9 +129,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
                   child: ch!,
                 ),
                 child: IconButton(
-                  icon: const Icon(Icons.shopping_bag_outlined, color: Colors.white),
+                  icon: const Icon(
+                    Icons.shopping_bag_outlined,
+                    color: Colors.white,
+                  ),
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => const CartScreen()));
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const CartScreen()),
+                    );
                   },
                 ),
               ),
@@ -121,7 +149,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
               child: Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).scaffoldBackgroundColor,
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(32),
+                  ),
                 ),
                 transform: Matrix4.translationValues(0.0, -32.0, 0.0),
                 padding: const EdgeInsets.all(24.0),
@@ -132,13 +162,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
+                          ),
                           decoration: BoxDecoration(
                             color: AppTheme.accentColor,
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
-                            t[_getCategoryKey(widget.product.category)] ?? widget.product.category,
+                            t[_getCategoryKey(widget.product.category)] ??
+                                widget.product.category,
                             style: const TextStyle(
                               color: AppTheme.primaryColor,
                               fontWeight: FontWeight.bold,
@@ -148,14 +182,22 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
                         ),
                         Row(
                           children: [
-                            const Icon(Icons.star, color: Colors.orange, size: 20),
+                            const Icon(
+                              Icons.star,
+                              color: Colors.orange,
+                              size: 20,
+                            ),
                             const SizedBox(width: 4),
                             Text(
                               widget.product.rating.toString(),
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: Theme.of(context).textTheme.bodyLarge?.color ?? AppTheme.textColor,
+                                color:
+                                    Theme.of(
+                                      context,
+                                    ).textTheme.bodyLarge?.color ??
+                                    AppTheme.textColor,
                               ),
                             ),
                           ],
@@ -168,7 +210,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).textTheme.titleLarge?.color ?? AppTheme.textColor,
+                        color:
+                            Theme.of(context).textTheme.titleLarge?.color ??
+                            AppTheme.textColor,
                       ),
                     ),
                     const SizedBox(height: 24),
@@ -177,7 +221,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).textTheme.titleLarge?.color ?? AppTheme.textColor,
+                        color:
+                            Theme.of(context).textTheme.titleLarge?.color ??
+                            AppTheme.textColor,
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -185,7 +231,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
                       widget.product.description,
                       style: TextStyle(
                         fontSize: 16,
-                        color: Theme.of(context).textTheme.bodyMedium?.color ?? AppTheme.greyColor,
+                        color:
+                            Theme.of(context).textTheme.bodyMedium?.color ??
+                            AppTheme.greyColor,
                         height: 1.5,
                       ),
                     ),
@@ -218,7 +266,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   Text(t['price']!, style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color ?? AppTheme.greyColor, fontSize: 14)),
+                  Text(
+                    t['price']!,
+                    style: TextStyle(
+                      color:
+                          Theme.of(context).textTheme.bodyMedium?.color ??
+                          AppTheme.greyColor,
+                      fontSize: 14,
+                    ),
+                  ),
                   const SizedBox(height: 4),
                   Text(
                     '₸${widget.product.price.toStringAsFixed(0)}',
@@ -232,13 +288,20 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
               ),
               ElevatedButton.icon(
                 onPressed: () {
-                  Provider.of<CartProvider>(context, listen: false).addItem(widget.product);
+                  Provider.of<CartProvider>(
+                    context,
+                    listen: false,
+                  ).addItem(widget.product);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('${widget.product.name} ${t['added_to_cart']}'),
+                      content: Text(
+                        '${widget.product.name} ${t['added_to_cart']}',
+                      ),
                       duration: const Duration(seconds: 2),
                       behavior: SnackBarBehavior.floating,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       backgroundColor: AppTheme.primaryColor,
                     ),
                   );
@@ -246,8 +309,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
                 icon: const Icon(Icons.shopping_cart),
                 label: Text(t['to_cart']!),
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 32,
+                    vertical: 16,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                 ),
               ),
             ],
@@ -259,12 +327,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> with Single
 
   String _getCategoryKey(String originalCategory) {
     switch (originalCategory) {
-      case 'Тамақ': return 'cat_food';
-      case 'Ойыншықтар': return 'cat_toys';
-      case 'Аксессуарлар': return 'cat_accessories';
-      case 'Гигиена': return 'cat_hygiene';
-      case 'Киімдер': return 'cat_clothes';
-      default: return 'see_all';
+      case 'Тамақ':
+        return 'cat_food';
+      case 'Ойыншықтар':
+        return 'cat_toys';
+      case 'Аксессуарлар':
+        return 'cat_accessories';
+      case 'Гигиена':
+        return 'cat_hygiene';
+      case 'Киімдер':
+        return 'cat_clothes';
+      default:
+        return 'see_all';
     }
   }
 }

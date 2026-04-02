@@ -12,13 +12,20 @@ class ProductCard extends StatelessWidget {
   final VoidCallback onTap;
   final String heroPrefix;
 
-  const ProductCard({super.key, required this.product, required this.onTap, this.heroPrefix = ''});
+  const ProductCard({
+    super.key,
+    required this.product,
+    required this.onTap,
+    this.heroPrefix = '',
+  });
 
   @override
   Widget build(BuildContext context) {
     final localeProvider = Provider.of<LocaleProvider>(context);
     final langCode = localeProvider.locale.languageCode;
-    final t = AppTranslation.translations[langCode] ?? AppTranslation.translations['ru']!;
+    final t =
+        AppTranslation.translations[langCode] ??
+        AppTranslation.translations['ru']!;
 
     return GestureDetector(
       onTap: onTap,
@@ -41,14 +48,26 @@ class ProductCard extends StatelessWidget {
               child: Stack(
                 children: [
                   ClipRRect(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(24),
+                    ),
                     child: Hero(
                       tag: '${heroPrefix}product_image_${product.id}',
-                      child: Image.network(
-                        product.imageUrl,
+                      child: FadeInImage.assetNetwork(
+                        placeholder: 'assets/images/pet_background.png',
+                        image: product.imageUrl,
                         width: double.infinity,
                         fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) => Container(color: Colors.grey[200]),
+                        imageErrorBuilder: (context, error, stackTrace) =>
+                            Container(
+                              color: Colors.grey[200],
+                              alignment: Alignment.center,
+                              child: const Icon(
+                                Icons.image_not_supported,
+                                size: 40,
+                                color: Colors.grey,
+                              ),
+                            ),
                       ),
                     ),
                   ),
@@ -56,18 +75,29 @@ class ProductCard extends StatelessWidget {
                     top: 12,
                     right: 12,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.9),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.star, color: Colors.orange, size: 16),
+                          const Icon(
+                            Icons.star,
+                            color: Colors.orange,
+                            size: 16,
+                          ),
                           const SizedBox(width: 4),
                           Text(
                             product.rating.toString(),
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.black),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              color: Colors.black,
+                            ),
                           ),
                         ],
                       ),
@@ -78,7 +108,9 @@ class ProductCard extends StatelessWidget {
                     left: 8,
                     child: Consumer<FavoriteProvider>(
                       builder: (ctx, favoriteProvider, child) {
-                        final isFavorite = favoriteProvider.isFavorite(product.id);
+                        final isFavorite = favoriteProvider.isFavorite(
+                          product.id,
+                        );
                         return IconButton(
                           icon: Icon(
                             isFavorite ? Icons.favorite : Icons.favorite_border,
@@ -140,14 +172,21 @@ class ProductCard extends StatelessWidget {
       ),
     );
   }
+
   String _getCategoryKey(String originalCategory) {
     switch (originalCategory) {
-      case 'Тамақ': return 'cat_food';
-      case 'Ойыншықтар': return 'cat_toys';
-      case 'Аксессуарлар': return 'cat_accessories';
-      case 'Гигиена': return 'cat_hygiene';
-      case 'Киімдер': return 'cat_clothes';
-      default: return 'see_all';
+      case 'Тамақ':
+        return 'cat_food';
+      case 'Ойыншықтар':
+        return 'cat_toys';
+      case 'Аксессуарлар':
+        return 'cat_accessories';
+      case 'Гигиена':
+        return 'cat_hygiene';
+      case 'Киімдер':
+        return 'cat_clothes';
+      default:
+        return 'see_all';
     }
   }
 }
@@ -161,7 +200,8 @@ class _AddToCartButton extends StatefulWidget {
   State<_AddToCartButton> createState() => _AddToCartButtonState();
 }
 
-class _AddToCartButtonState extends State<_AddToCartButton> with SingleTickerProviderStateMixin {
+class _AddToCartButtonState extends State<_AddToCartButton>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
 
@@ -172,9 +212,10 @@ class _AddToCartButtonState extends State<_AddToCartButton> with SingleTickerPro
       vsync: this,
       duration: const Duration(milliseconds: 150),
     );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.8).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0.8,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -188,10 +229,12 @@ class _AddToCartButtonState extends State<_AddToCartButton> with SingleTickerPro
       _controller.reverse();
     });
     Provider.of<CartProvider>(context, listen: false).addItem(widget.product);
-    
+
     final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
     final langCode = localeProvider.locale.languageCode;
-    final t = AppTranslation.translations[langCode] ?? AppTranslation.translations['ru']!;
+    final t =
+        AppTranslation.translations[langCode] ??
+        AppTranslation.translations['ru']!;
 
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
