@@ -21,7 +21,10 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  void _showLanguageSelector(BuildContext context, LocaleProvider localeProvider) {
+  void _showLanguageSelector(
+    BuildContext context,
+    LocaleProvider localeProvider,
+  ) {
     final langCode = localeProvider.locale.languageCode;
     final t = AppTranslation.translations[langCode]!;
 
@@ -39,12 +42,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   t['choose_language']!,
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               ListTile(
                 title: Text(t['ru_lang']!),
-                trailing: langCode == 'ru' ? const Icon(Icons.check, color: AppTheme.primaryColor) : null,
+                trailing: langCode == 'ru'
+                    ? const Icon(Icons.check, color: AppTheme.primaryColor)
+                    : null,
                 onTap: () {
                   localeProvider.setLocale(const Locale('ru'));
                   Navigator.pop(context);
@@ -52,7 +60,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               ListTile(
                 title: Text(t['kk_lang']!),
-                trailing: langCode == 'kk' ? const Icon(Icons.check, color: AppTheme.primaryColor) : null,
+                trailing: langCode == 'kk'
+                    ? const Icon(Icons.check, color: AppTheme.primaryColor)
+                    : null,
                 onTap: () {
                   localeProvider.setLocale(const Locale('kk'));
                   Navigator.pop(context);
@@ -60,7 +70,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               ListTile(
                 title: Text(t['en_lang']!),
-                trailing: langCode == 'en' ? const Icon(Icons.check, color: AppTheme.primaryColor) : null,
+                trailing: langCode == 'en'
+                    ? const Icon(Icons.check, color: AppTheme.primaryColor)
+                    : null,
                 onTap: () {
                   localeProvider.setLocale(const Locale('en'));
                   Navigator.pop(context);
@@ -77,7 +89,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final localeProvider = Provider.of<LocaleProvider>(context);
     final langCode = localeProvider.locale.languageCode;
-    final t = AppTranslation.translations[langCode] ?? AppTranslation.translations['ru']!;
+    final t =
+        AppTranslation.translations[langCode] ??
+        AppTranslation.translations['ru']!;
 
     final authProvider = Provider.of<AuthProvider>(context);
     final isLoggedIn = authProvider.isLoggedIn;
@@ -99,7 +113,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: const Icon(Icons.settings_outlined),
               onPressed: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                  MaterialPageRoute(
+                    builder: (context) => const SettingsScreen(),
+                  ),
                 );
               },
             ),
@@ -114,7 +130,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: 16),
               Text(
                 t['guest_mode']!,
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.textColor),
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.textColor,
+                ),
               ),
               const SizedBox(height: 8),
               Text(
@@ -125,7 +145,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ElevatedButton(
                 onPressed: () async {
                   await Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const LoginScreen()),
+                    MaterialPageRoute(
+                      builder: (context) => const LoginScreen(),
+                    ),
                   );
                   // Для демонстрации просто логинимся:
                   authProvider.login();
@@ -138,12 +160,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ] else ...[
               const CircleAvatar(
                 radius: 50,
-                backgroundImage: NetworkImage('https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80'),
+                backgroundImage: NetworkImage(
+                  'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80',
+                ),
               ),
               const SizedBox(height: 16),
               Text(
                 authProvider.userName,
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.textColor),
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.textColor,
+                ),
               ),
               const SizedBox(height: 4),
               Text(
@@ -166,7 +194,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Text(t['edit_profile']!),
               ),
             ],
-            
+
             const SizedBox(height: 32),
             _buildProfileMenuItem(
               context,
@@ -174,10 +202,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               title: t['delivery_addresses']!,
               onTap: () {
                 if (!isLoggedIn) {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LoginScreen()));
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const LoginScreen()),
+                  );
                   return;
                 }
-                Navigator.of(context).push(MaterialPageRoute(builder: (_) => const AddressesScreen()));
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const AddressesScreen()),
+                );
               },
             ),
             _buildProfileMenuItem(
@@ -186,10 +218,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
               title: t['payment_methods']!,
               onTap: () {
                 if (!isLoggedIn) {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LoginScreen()));
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const LoginScreen()),
+                  );
                   return;
                 }
-                Navigator.of(context).push(MaterialPageRoute(builder: (_) => const PaymentMethodsScreen()));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const PaymentMethodsScreen(),
+                  ),
+                );
               },
             ),
             _buildProfileMenuItem(
@@ -197,7 +235,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: Icons.history_outlined,
               title: t['order_history']!,
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (_) => const OrderHistoryScreen()));
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const OrderHistoryScreen()),
+                );
               },
             ),
             _buildProfileMenuItem(
@@ -206,7 +246,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               title: t['promocodes']!,
               onTap: () {
                 if (!isLoggedIn) {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LoginScreen()));
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const LoginScreen()),
+                  );
                   return;
                 }
               },
@@ -216,7 +258,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: Icons.map_outlined,
               title: t['stores_map'] ?? 'Наши магазины',
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (_) => const MapScreen()));
+                Navigator.of(
+                  context,
+                ).push(MaterialPageRoute(builder: (_) => const MapScreen()));
               },
             ),
             if (isLoggedIn) ...[
@@ -232,23 +276,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
-                    BoxShadow(color: AppTheme.primaryColor.withOpacity(0.3), blurRadius: 10, offset: const Offset(0, 4)),
+                    BoxShadow(
+                      color: AppTheme.primaryColor.withOpacity(0.3),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
                   ],
                 ),
                 child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 8,
+                  ),
                   leading: Container(
                     padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), shape: BoxShape.circle),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.2),
+                      shape: BoxShape.circle,
+                    ),
                     child: const Icon(Icons.storefront, color: Colors.white),
                   ),
-                  title: const Text('Режим партнёра', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white)),
-                  subtitle: const Text('Управляйте товарами и балансом', style: TextStyle(color: Colors.white70, fontSize: 12)),
-                  trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 16),
+                  title: const Text(
+                    'Режим партнёра',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
+                  subtitle: const Text(
+                    'Управляйте товарами и балансом',
+                    style: TextStyle(color: Colors.white70, fontSize: 12),
+                  ),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.white,
+                    size: 16,
+                  ),
                   onTap: () {
                     context.read<PartnerProvider>().enterPartnerMode();
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const PartnerMainScreen()),
+                      MaterialPageRoute(
+                        builder: (_) => const PartnerMainScreen(),
+                      ),
                     );
                   },
                 ),
@@ -290,7 +360,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             color: Colors.black.withOpacity(0.04),
             blurRadius: 10,
             offset: const Offset(0, 4),
-          )
+          ),
         ],
       ),
       child: ListTile(
@@ -311,7 +381,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             color: textColor,
           ),
         ),
-        trailing: showChevron ? const Icon(Icons.chevron_right, color: AppTheme.greyColor) : null,
+        trailing: showChevron
+            ? const Icon(Icons.chevron_right, color: AppTheme.greyColor)
+            : null,
         onTap: onTap,
       ),
     );

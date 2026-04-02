@@ -16,7 +16,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _notificationsEnabled = true;
   bool _darkModeEnabled = false;
 
-  void _showLanguageSelector(BuildContext context, LocaleProvider localeProvider) {
+  void _showLanguageSelector(
+    BuildContext context,
+    LocaleProvider localeProvider,
+  ) {
     final langCode = localeProvider.locale.languageCode;
     final t = AppTranslation.translations[langCode]!;
 
@@ -34,12 +37,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   t['choose_language']!,
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               ListTile(
                 title: Text(t['ru_lang']!),
-                trailing: langCode == 'ru' ? const Icon(Icons.check, color: AppTheme.primaryColor) : null,
+                trailing: langCode == 'ru'
+                    ? const Icon(Icons.check, color: AppTheme.primaryColor)
+                    : null,
                 onTap: () {
                   localeProvider.setLocale(const Locale('ru'));
                   Navigator.pop(context);
@@ -47,7 +55,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               ListTile(
                 title: Text(t['kk_lang']!),
-                trailing: langCode == 'kk' ? const Icon(Icons.check, color: AppTheme.primaryColor) : null,
+                trailing: langCode == 'kk'
+                    ? const Icon(Icons.check, color: AppTheme.primaryColor)
+                    : null,
                 onTap: () {
                   localeProvider.setLocale(const Locale('kk'));
                   Navigator.pop(context);
@@ -55,7 +65,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               ListTile(
                 title: Text(t['en_lang']!),
-                trailing: langCode == 'en' ? const Icon(Icons.check, color: AppTheme.primaryColor) : null,
+                trailing: langCode == 'en'
+                    ? const Icon(Icons.check, color: AppTheme.primaryColor)
+                    : null,
                 onTap: () {
                   localeProvider.setLocale(const Locale('en'));
                   Navigator.pop(context);
@@ -72,7 +84,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     final localeProvider = Provider.of<LocaleProvider>(context);
     final langCode = localeProvider.locale.languageCode;
-    final t = AppTranslation.translations[langCode] ?? AppTranslation.translations['ru']!;
+    final t =
+        AppTranslation.translations[langCode] ??
+        AppTranslation.translations['ru']!;
 
     return Scaffold(
       appBar: AppBar(
@@ -88,7 +102,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             // Секция уведомлений
             Text(
               t['notifications'] ?? 'Уведомления',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: AppTheme.primaryColor,
+              ),
             ),
             const SizedBox(height: 16),
             Container(
@@ -100,18 +118,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     color: Colors.black.withOpacity(0.04),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
-                  )
+                  ),
                 ],
               ),
               child: ListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 8,
+                ),
                 leading: Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.notifications_outlined, color: AppTheme.primaryColor),
+                  child: const Icon(
+                    Icons.notifications_outlined,
+                    color: AppTheme.primaryColor,
+                  ),
                 ),
                 title: const Text(
                   'Включить уведомления',
@@ -133,7 +157,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             // Секция языка и внешнего вида
             Text(
               t['appearance'] ?? 'Внешний вид',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: AppTheme.primaryColor,
+              ),
             ),
             const SizedBox(height: 16),
             Container(
@@ -146,24 +174,36 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     color: Colors.black.withOpacity(0.04),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
-                  )
+                  ),
                 ],
               ),
               child: ListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 8,
+                ),
                 leading: Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.language, color: AppTheme.primaryColor),
+                  child: const Icon(
+                    Icons.language,
+                    color: AppTheme.primaryColor,
+                  ),
                 ),
                 title: Text(
                   t['language']!,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-                trailing: const Icon(Icons.chevron_right, color: AppTheme.greyColor),
+                trailing: const Icon(
+                  Icons.chevron_right,
+                  color: AppTheme.greyColor,
+                ),
                 onTap: () => _showLanguageSelector(context, localeProvider),
               ),
             ),
@@ -176,18 +216,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     color: Colors.black.withOpacity(0.04),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
-                  )
+                  ),
                 ],
               ),
               child: ListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 8,
+                ),
                 leading: Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.dark_mode_outlined, color: AppTheme.primaryColor),
+                  child: const Icon(
+                    Icons.dark_mode_outlined,
+                    color: AppTheme.primaryColor,
+                  ),
                 ),
                 title: const Text(
                   'Темный режим',
@@ -209,7 +255,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             // Секция безопасности
             Text(
               t['security'] ?? 'Безопасность',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: AppTheme.primaryColor,
+              ),
             ),
             const SizedBox(height: 16),
             Container(
@@ -222,27 +272,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     color: Colors.black.withOpacity(0.04),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
-                  )
+                  ),
                 ],
               ),
               child: ListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 8,
+                ),
                 leading: Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.lock_outline, color: AppTheme.primaryColor),
+                  child: const Icon(
+                    Icons.lock_outline,
+                    color: AppTheme.primaryColor,
+                  ),
                 ),
                 title: const Text(
                   'Изменить пароль',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
-                trailing: const Icon(Icons.chevron_right, color: AppTheme.greyColor),
+                trailing: const Icon(
+                  Icons.chevron_right,
+                  color: AppTheme.greyColor,
+                ),
                 onTap: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Функция будет реализована позже')),
+                    const SnackBar(
+                      content: Text('Функция будет реализована позже'),
+                    ),
                   );
                 },
               ),
@@ -256,18 +317,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     color: Colors.black.withOpacity(0.04),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
-                  )
+                  ),
                 ],
               ),
               child: ListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 8,
+                ),
                 leading: Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.fingerprint, color: AppTheme.primaryColor),
+                  child: const Icon(
+                    Icons.fingerprint,
+                    color: AppTheme.primaryColor,
+                  ),
                 ),
                 title: const Text(
                   'Двухфакторная аутентификация',
@@ -278,7 +345,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   activeColor: AppTheme.primaryColor,
                   onChanged: (value) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Функция будет реализована позже')),
+                      const SnackBar(
+                        content: Text('Функция будет реализована позже'),
+                      ),
                     );
                   },
                 ),
@@ -289,7 +358,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             // Секция информации
             Text(
               t['about'] ?? 'О приложении',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: AppTheme.primaryColor,
+              ),
             ),
             const SizedBox(height: 16),
             Container(
@@ -302,18 +375,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     color: Colors.black.withOpacity(0.04),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
-                  )
+                  ),
                 ],
               ),
               child: const ListTile(
-                contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 8,
+                ),
                 leading: Icon(Icons.info_outline, color: AppTheme.primaryColor),
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Версия приложения',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     SizedBox(height: 4),
                     Text(
@@ -333,27 +412,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     color: Colors.black.withOpacity(0.04),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
-                  )
+                  ),
                 ],
               ),
               child: ListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 8,
+                ),
                 leading: Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.description_outlined, color: AppTheme.primaryColor),
+                  child: const Icon(
+                    Icons.description_outlined,
+                    color: AppTheme.primaryColor,
+                  ),
                 ),
                 title: const Text(
                   'Политика конфиденциальности',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
-                trailing: const Icon(Icons.chevron_right, color: AppTheme.greyColor),
+                trailing: const Icon(
+                  Icons.chevron_right,
+                  color: AppTheme.greyColor,
+                ),
                 onTap: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Открытие политики конфиденциальности')),
+                    const SnackBar(
+                      content: Text('Открытие политики конфиденциальности'),
+                    ),
                   );
                 },
               ),

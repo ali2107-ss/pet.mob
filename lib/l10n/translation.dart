@@ -27,7 +27,7 @@ class AppTranslation {
       'cat_hygiene': 'Гигиена',
       'cat_clothes': 'Одежда',
       'see_all': 'Все',
-      
+
       'hello_user': 'Привет, Айдар! 👋',
       'city': 'Алматы, Казахстан',
       'care_for': 'Позаботьтесь',
@@ -37,7 +37,7 @@ class AppTranslation {
       'first_order': 'на первый заказ!',
       'get_btn': 'Получить',
       'no_products': 'Товары не найдены',
-      
+
       'login_title': 'ЗооМаг',
       'email': 'Электронная почта',
       'password': 'Пароль',
@@ -48,7 +48,7 @@ class AppTranslation {
       'physical_desc': 'Покупки для себя и своих питомцев',
       'developer': 'Разработчик / Партнер',
       'developer_desc': 'Профессиональный аккаунт с доступом к API',
-      
+
       'reg_user_title': 'Регистрация (Физ. лицо)',
       'reg_create_account': 'Создание аккаунта',
       'reg_user_desc': 'Для покупок товаров и управления питомцами',
@@ -65,7 +65,8 @@ class AppTranslation {
 
       'reg_dev_title': 'Регистрация (Разработчик)',
       'partner_program': 'Партнерская программа и API',
-      'reg_dev_desc': 'Заполните форму для получения прав разработчика и интеграции с нашими сервисами',
+      'reg_dev_desc':
+          'Заполните форму для получения прав разработчика и интеграции с нашими сервисами',
       'main_info': 'Основная информация',
       'company_name': 'Название компании / ИП',
       'rep_name': 'Имя представителя',
@@ -76,12 +77,15 @@ class AppTranslation {
       'dev_password': 'Пароль для Developer Portal',
       'integration_details': 'Детали интеграции',
       'api_intent': 'Для каких целей нужен доступ к API?',
-      'agree_terms': 'Я согласен с Пользовательским соглашением корпоративных клиентов',
-      'agree_api': 'Я обязуюсь соблюдать Политики безопасности использования API ЗооМаг',
+      'agree_terms':
+          'Я согласен с Пользовательским соглашением корпоративных клиентов',
+      'agree_api':
+          'Я обязуюсь соблюдать Политики безопасности использования API ЗооМаг',
       'submit_app': 'Подать заявку на регистрацию',
       'need_agree': 'Необходимо принять условия использования и правила API',
       'app_sent': 'Заявка отправлена',
-      'app_sent_desc': 'Ваша заявка на получение аккаунта разработчика успешно отправлена на модерацию. После проверки вы получите доступ к API ключам.',
+      'app_sent_desc':
+          'Ваша заявка на получение аккаунта разработчика успешно отправлена на модерацию. После проверки вы получите доступ к API ключам.',
       'understood': 'Понятно',
       'added_to_cart': 'добавлено в корзину',
       'tips_title': 'Полезные советы',
@@ -131,7 +135,7 @@ class AppTranslation {
       'cat_hygiene': 'Гигиена',
       'cat_clothes': 'Киімдер',
       'see_all': 'Барлығы',
-      
+
       'hello_user': 'Сәлем, Айдар! 👋',
       'city': 'Алматы, Казахстан',
       'care_for': 'Қамқорлық жасаңыз',
@@ -141,7 +145,7 @@ class AppTranslation {
       'first_order': 'алғашқы тапсырысқа!',
       'get_btn': 'Алу',
       'no_products': 'Тауарлар табылмады',
-      
+
       'login_title': 'ЗооМаг',
       'email': 'Электрондық пошта',
       'password': 'Құпиясөз',
@@ -152,7 +156,7 @@ class AppTranslation {
       'physical_desc': 'Өзіңіз және үй жануарыңыз үшін',
       'developer': 'Әзірлеуші / Серіктес',
       'developer_desc': 'API рұқсаты бар кәсіби аккаунт',
-      
+
       'reg_user_title': 'Тіркелу (Жеке тұлға)',
       'reg_create_account': 'Аккаунт құру',
       'reg_user_desc': 'Тауарлар сатып алу және басқару үшін',
@@ -185,7 +189,8 @@ class AppTranslation {
       'submit_app': 'Тіркелуге өтінім жіберу',
       'need_agree': 'Келісімге қол қою міндетті',
       'app_sent': 'Өтінім жіберілді',
-      'app_sent_desc': 'Өтініміңіз тексеруге жіберілді. Сәтті өткен жағдайда API кілттері беріледі.',
+      'app_sent_desc':
+          'Өтініміңіз тексеруге жіберілді. Сәтті өткен жағдайда API кілттері беріледі.',
       'understood': 'Түсінікті',
       'added_to_cart': 'себетке қосылды',
       'tips_title': 'Пайдалы кеңестер',
@@ -235,7 +240,7 @@ class AppTranslation {
       'cat_hygiene': 'Hygiene',
       'cat_clothes': 'Clothes',
       'see_all': 'See All',
-      
+
       'hello_user': 'Hello, Aidar! 👋',
       'city': 'Almaty, Kazakhstan',
       'care_for': 'Take care',
@@ -245,7 +250,7 @@ class AppTranslation {
       'first_order': 'on first order!',
       'get_btn': 'Get',
       'no_products': 'Products not found',
-      
+
       'login_title': 'ZooMag',
       'email': 'Email Address',
       'password': 'Password',
@@ -256,7 +261,7 @@ class AppTranslation {
       'physical_desc': 'Purchases for yourself and your pets',
       'developer': 'Developer / Partner',
       'developer_desc': 'Professional account with API access',
-      
+
       'reg_user_title': 'Registration (Private)',
       'reg_create_account': 'Account Creation',
       'reg_user_desc': 'For purchasing products and managing pets',
@@ -289,7 +294,8 @@ class AppTranslation {
       'submit_app': 'Submit application',
       'need_agree': 'Agreement is required',
       'app_sent': 'Application sent',
-      'app_sent_desc': 'Your application is under review. You will get API keys on success.',
+      'app_sent_desc':
+          'Your application is under review. You will get API keys on success.',
       'understood': 'Understood',
       'added_to_cart': 'added to cart',
       'tips_title': 'Useful Tips',
@@ -311,6 +317,6 @@ class AppTranslation {
       'ru_lang': 'Русский',
       'kk_lang': 'Қазақша',
       'en_lang': 'English',
-    }
+    },
   };
 }
