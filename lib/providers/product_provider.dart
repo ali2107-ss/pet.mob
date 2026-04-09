@@ -480,7 +480,8 @@ class ProductProvider with ChangeNotifier {
       description: 'Отлично впитывает влагу и полностью блокирует запах.',
       price: 4500,
       category: 'Гигиена',
-      imageUrl: 'https://basket-10.wbbasket.ru/vol1388/part138847/138847941/images/big/1.webp',
+      imageUrl:
+          'https://basket-10.wbbasket.ru/vol1388/part138847/138847941/images/big/1.webp',
       rating: 4.6,
     ),
     Product(
@@ -498,7 +499,8 @@ class ProductProvider with ChangeNotifier {
       description: 'Лоток-домик. Предотвращает разбрасывание наполнителя.',
       price: 14500,
       category: 'Гигиена',
-      imageUrl: 'https://basket-10.wbbasket.ru/vol1358/part135817/135817796/images/c516x688/1.webp',
+      imageUrl:
+          'https://basket-10.wbbasket.ru/vol1358/part135817/135817796/images/c516x688/1.webp',
       rating: 4.7,
     ),
     Product(
@@ -516,7 +518,8 @@ class ProductProvider with ChangeNotifier {
       description: 'Упаковка 30 шт. Идеально для щенков и приучения к туалету.',
       price: 4100,
       category: 'Гигиена',
-      imageUrl: 'https://goods-photos.static1-sima-land.com/items/2413087/0/700-nw.jpg',
+      imageUrl:
+          'https://goods-photos.static1-sima-land.com/items/2413087/0/700-nw.jpg',
       rating: 5.0,
     ),
     Product(
@@ -535,7 +538,8 @@ class ProductProvider with ChangeNotifier {
           'Инструмент против линьки. Удаляет до 90% отмершего подшерстка.',
       price: 6500,
       category: 'Гигиена',
-      imageUrl: 'https://basket-17.wbbasket.ru/vol2819/part281926/281926768/images/c516x688/1.webp',
+      imageUrl:
+          'https://basket-17.wbbasket.ru/vol2819/part281926/281926768/images/c516x688/1.webp',
       rating: 4.4,
     ),
     Product(
@@ -589,7 +593,8 @@ class ProductProvider with ChangeNotifier {
       description: 'Влажные салфетки, безопасные для животных. 50 шт.',
       price: 1100,
       category: 'Гигиена',
-      imageUrl: 'https://image.made-in-china.com/202f0j00wQjoZYyWLkgq/Circular-Shape-for-Cleaning-Animals-Paws-and-Nose-and-Ears-Pet-Wet-Wipes.webp',
+      imageUrl:
+          'https://image.made-in-china.com/202f0j00wQjoZYyWLkgq/Circular-Shape-for-Cleaning-Animals-Paws-and-Nose-and-Ears-Pet-Wet-Wipes.webp',
       rating: 5.0,
     ),
     Product(
@@ -607,7 +612,8 @@ class ProductProvider with ChangeNotifier {
       description: 'Гипоаллергенный мягкий шампунь.',
       price: 2800,
       category: 'Гигиена',
-      imageUrl: 'https://avatars.mds.yandex.net/get-mpic/16508997/2a00000198a0fcdd39e16bd7e5cacc30c06a/orig',
+      imageUrl:
+          'https://avatars.mds.yandex.net/get-mpic/16508997/2a00000198a0fcdd39e16bd7e5cacc30c06a/orig',
       rating: 4.3,
     ),
     Product(
@@ -616,7 +622,8 @@ class ProductProvider with ChangeNotifier {
       description: 'Водонепроницаемый комбинезон-дождевик с капюшоном.',
       price: 6500,
       category: 'Киімдер',
-      imageUrl: 'https://catalog-cdn.detmir.st/media/dtDUGDNKqIGu5F4Qf0xpzxhnxZJw8OfbK84AOxWuzw0=.jpeg',
+      imageUrl:
+          'https://catalog-cdn.detmir.st/media/dtDUGDNKqIGu5F4Qf0xpzxhnxZJw8OfbK84AOxWuzw0=.jpeg',
       rating: 4.9,
     ),
     Product(
@@ -625,7 +632,8 @@ class ProductProvider with ChangeNotifier {
       description: 'Теплый свитер с орнаментом для собак мелких пород.',
       price: 5200,
       category: 'Киімдер',
-      imageUrl: 'https://vip-dog.com/image/cache/catalog/Tovary/Kofty/57abc99a19ebf4e79266945883a6763d-550x550.jpg',
+      imageUrl:
+          'https://vip-dog.com/image/cache/catalog/Tovary/Kofty/57abc99a19ebf4e79266945883a6763d-550x550.jpg',
       rating: 4.2,
     ),
     Product(
@@ -643,7 +651,8 @@ class ProductProvider with ChangeNotifier {
       description: 'Защищают лапы от реагентов и льда зимой (комплект 4 шт).',
       price: 4800,
       category: 'Киімдер',
-      imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS67FhTpcQYQwFRTWwpugg79mk8vuncstvVgg&s',
+      imageUrl:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS67FhTpcQYQwFRTWwpugg79mk8vuncstvVgg&s',
       rating: 4.0,
     ),
     Product(
@@ -671,7 +680,8 @@ class ProductProvider with ChangeNotifier {
       description: 'Нарядное платье для особых случаев (для мелких собачек).',
       price: 4200,
       category: 'Киімдер',
-      imageUrl: 'https://ae04.alicdn.com/kf/S57aad23eb4b744bb85bc85cf55b346eeV.jpg',
+      imageUrl:
+          'https://ae04.alicdn.com/kf/S57aad23eb4b744bb85bc85cf55b346eeV.jpg',
       rating: 4.4,
     ),
     Product(
@@ -680,7 +690,8 @@ class ProductProvider with ChangeNotifier {
       description: 'Обеспечивает безопасность в темное время суток.',
       price: 1800,
       category: 'Киімдер',
-      imageUrl: 'https://basket-04.wbbasket.ru/vol590/part59087/59087795/images/c516x688/1.webp',
+      imageUrl:
+          'https://basket-04.wbbasket.ru/vol590/part59087/59087795/images/c516x688/1.webp',
       rating: 4.0,
     ),
     Product(
@@ -689,7 +700,8 @@ class ProductProvider with ChangeNotifier {
       description: 'Дышащая попона для кошек и собак.',
       price: 2100,
       category: 'Киімдер',
-      imageUrl: 'https://resources.cdn-kaspi.kz/img/m/p/h4a/hb3/85395781320734.png?format=gallery-large',
+      imageUrl:
+          'https://resources.cdn-kaspi.kz/img/m/p/h4a/hb3/85395781320734.png?format=gallery-large',
       rating: 4.6,
     ),
     Product(
@@ -699,7 +711,8 @@ class ProductProvider with ChangeNotifier {
           'С силиконовым покрытием, чтобы лапы не скользили по ламинату.',
       price: 1200,
       category: 'Киімдер',
-      imageUrl: 'https://avatars.mds.yandex.net/get-mpic/4410238/2a00000199a6c491dcf2045c6ffe5ba98459/orig',
+      imageUrl:
+          'https://avatars.mds.yandex.net/get-mpic/4410238/2a00000199a6c491dcf2045c6ffe5ba98459/orig',
       rating: 4.6,
     ),
     Product(
@@ -708,7 +721,8 @@ class ProductProvider with ChangeNotifier {
       description: 'Яркий аксессуар для стильной прогулки.',
       price: 900,
       category: 'Киімдер',
-      imageUrl: 'https://ae01.alicdn.com/kf/S55dbf073788340749cb8c4a063763ad8j.jpg?width=800&height=800&hash=1600',
+      imageUrl:
+          'https://ae01.alicdn.com/kf/S55dbf073788340749cb8c4a063763ad8j.jpg?width=800&height=800&hash=1600',
       rating: 4.6,
     ),
     Product(
@@ -717,7 +731,8 @@ class ProductProvider with ChangeNotifier {
       description: 'Защищает глаза питомца. Фиксируется под подбородком.',
       price: 1600,
       category: 'Киімдер',
-      imageUrl: 'https://ae04.alicdn.com/kf/Sb12bed7c34d747c5b91006172ab25544n.jpg',
+      imageUrl:
+          'https://ae04.alicdn.com/kf/Sb12bed7c34d747c5b91006172ab25544n.jpg',
       rating: 4.1,
     ),
     Product(
@@ -726,7 +741,8 @@ class ProductProvider with ChangeNotifier {
       description: 'Защищает длинные уши от попадания в миску и от холода.',
       price: 2200,
       category: 'Киімдер',
-      imageUrl: 'https://markvet.ru/upload/iblock/6f3/12h6wwzgquihl2kdkxenqfkr4ndxlqzr.jpg',
+      imageUrl:
+          'https://markvet.ru/upload/iblock/6f3/12h6wwzgquihl2kdkxenqfkr4ndxlqzr.jpg',
       rating: 4.2,
     ),
     Product(
@@ -735,7 +751,8 @@ class ProductProvider with ChangeNotifier {
       description: 'Отлично впитывает воду после мытья.',
       price: 5500,
       category: 'Киімдер',
-      imageUrl: 'https://www.zoofashion.ru/upload/iblock/487/efbdv7y50n02szftdt4sly1h9q33xoae.jpg',
+      imageUrl:
+          'https://www.zoofashion.ru/upload/iblock/487/efbdv7y50n02szftdt4sly1h9q33xoae.jpg',
       rating: 4.4,
     ),
     Product(
@@ -744,7 +761,8 @@ class ProductProvider with ChangeNotifier {
       description: 'Праздничный наряд для питомца к Новому году.',
       price: 4500,
       category: 'Киімдер',
-      imageUrl: 'https://image.kazanexpress.ru/ctnu08fd16b9lm2b19mg/feedback_40.jpg',
+      imageUrl:
+          'https://image.kazanexpress.ru/ctnu08fd16b9lm2b19mg/feedback_40.jpg',
       rating: 4.9,
     ),
   ];
@@ -775,8 +793,54 @@ class ProductProvider with ChangeNotifier {
 
   List<Product> search(String query) {
     if (query.isEmpty) return items;
+    final queryLower = query.toLowerCase();
     return items
-        .where((prod) => prod.name.toLowerCase().contains(query.toLowerCase()))
+        .where(
+          (prod) =>
+              prod.name.toLowerCase().contains(queryLower) ||
+              prod.description.toLowerCase().contains(queryLower) ||
+              prod.category.toLowerCase().contains(queryLower),
+        )
         .toList();
+  }
+
+  List<Product> filterProducts({
+    List<String>? categories,
+    double minPrice = 0,
+    double maxPrice = 10000,
+    String sortBy = 'popular',
+  }) {
+    List<Product> filtered = items;
+
+    // Filter by categories
+    if (categories != null && categories.isNotEmpty) {
+      filtered = filtered
+          .where((prod) => categories.contains(prod.category))
+          .toList();
+    }
+
+    // Filter by price range
+    filtered = filtered
+        .where((prod) => prod.price >= minPrice && prod.price <= maxPrice)
+        .toList();
+
+    // Sort
+    switch (sortBy) {
+      case 'price_low':
+        filtered.sort((a, b) => a.price.compareTo(b.price));
+        break;
+      case 'price_high':
+        filtered.sort((a, b) => b.price.compareTo(a.price));
+        break;
+      case 'rating':
+        filtered.sort((a, b) => b.rating.compareTo(a.rating));
+        break;
+      case 'popular':
+      default:
+        // Keep original order (by popularity/default)
+        break;
+    }
+
+    return filtered;
   }
 }

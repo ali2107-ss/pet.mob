@@ -25,6 +25,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   int _selectedCategoryIndex = 0;
+  List<String> _selectedFilterCategories = [];
+  double _minPrice = 0;
+  double _maxPrice = 10000;
+  String _sortBy = 'popular';
 
   // Base keys instead of hardcoded localized strings
   final List<Map<String, dynamic>> _categories = [
@@ -80,15 +84,30 @@ class _HomeScreenState extends State<HomeScreen>
         AppTranslation.translations[langCode] ??
         AppTranslation.translations['ru']!;
 
-    // First apply search, then apply category filter.
-    final searchedProducts = productData.search(_searchQuery);
-    final displayedProducts = _selectedCategoryIndex == 0
-        ? searchedProducts
-        : searchedProducts
-              .where(
-                (p) => p.category == _categories[_selectedCategoryIndex]['key'],
-              )
-              .toList();
+    // First apply search, then apply category filter, then apply filters
+    var displayedProducts = productData.search(_searchQuery);
+
+    // Apply category filter
+    if (_selectedCategoryIndex != 0) {
+      displayedProducts = displayedProducts
+          .where(
+            (p) => p.category == _categories[_selectedCategoryIndex]['key'],
+          )
+          .toList();
+    }
+
+    // Apply price and category filters from filter dialog
+    displayedProducts = productData
+        .filterProducts(
+          categories: _selectedFilterCategories.isEmpty
+              ? null
+              : _selectedFilterCategories,
+          minPrice: _minPrice,
+          maxPrice: _maxPrice,
+          sortBy: _sortBy,
+        )
+        .where((p) => displayedProducts.contains(p))
+        .toList();
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -278,13 +297,18 @@ class _HomeScreenState extends State<HomeScreen>
                         ),
                       ),
                       const SizedBox(width: 12),
-                      Container(
-                        padding: const EdgeInsets.all(14),
-                        decoration: BoxDecoration(
-                          color: AppTheme.primaryColor,
-                          borderRadius: BorderRadius.circular(16),
+                      GestureDetector(
+                        onTap: () {
+                          _showFilterDialog(context, t);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(14),
+                          decoration: BoxDecoration(
+                            color: AppTheme.primaryColor,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: const Icon(Icons.tune, color: Colors.white),
                         ),
-                        child: const Icon(Icons.tune, color: Colors.white),
                       ),
                     ],
                   ),
@@ -656,6 +680,34 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
+  void _showFilterDialog(BuildContext context, Map<String, String> t) {
+    final provider = context.read<ProductProvider>();
+    final locale = context.read<LocaleProvider>();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return _FilterDialogContent(
+          t: t,
+          provider: provider,
+          locale: locale,
+          onApplyFilters: (categories, minPrice, maxPrice, sortBy) {
+            setState(() {
+              _selectedFilterCategories = categories;
+              _minPrice = minPrice;
+              _maxPrice = maxPrice;
+              _sortBy = sortBy;
+            });
+          },
+          initialCategories: _selectedFilterCategories,
+          initialMinPrice: _minPrice,
+          initialMaxPrice: _maxPrice,
+          initialSortBy: _sortBy,
+        );
+      },
+    );
+  }
+
   void _showPromoDialog(BuildContext context, Map<String, String> t) {
     // Звуки
     _playSuccessSound();
@@ -993,6 +1045,282 @@ class _PromoDialogContentState extends State<_PromoDialogContent>
           ],
         ),
       ),
+    );
+  }
+}
+
+class _FilterDialogContent extends StatefulWidget {
+  final Map<String, String> t;
+  final ProductProvider provider;
+  final LocaleProvider locale;
+  final Function(List<String>, double, double, String) onApplyFilters;
+  final List<String> initialCategories;
+  final double initialMinPrice;
+  final double initialMaxPrice;
+  final String initialSortBy;
+
+  const _FilterDialogContent({
+    required this.t,
+    required this.provider,
+    required this.locale,
+    required this.onApplyFilters,
+    required this.initialCategories,
+    required this.initialMinPrice,
+    required this.initialMaxPrice,
+    required this.initialSortBy,
+  });
+
+  @override
+  State<_FilterDialogContent> createState() => _FilterDialogContentState();
+}
+
+class _FilterDialogContentState extends State<_FilterDialogContent> {
+  late List<String> selectedCategories;
+  late RangeValues priceRange;
+  late String sortBy;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedCategories = widget.initialCategories.toList();
+    priceRange = RangeValues(
+      widget.initialMinPrice,
+      widget.initialMaxPrice == 0 ? 20000 : widget.initialMaxPrice,
+    );
+    sortBy = widget.initialSortBy;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      child: Container(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.8,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Header
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    widget.t['filter'] ?? 'Фильтры',
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppTheme.primaryColor.withOpacity(0.1),
+                      ),
+                      child: Icon(Icons.close, color: AppTheme.primaryColor),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Content
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Categories
+                    Text(
+                      widget.t['category'] ?? 'Категории',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    _buildCategoryChips(),
+                    const SizedBox(height: 24),
+
+                    // Price Range
+                    Text(
+                      '${widget.t['price'] ?? 'Цена'}: ${priceRange.start.toStringAsFixed(0)} - ${priceRange.end.toStringAsFixed(0)} ₸',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    RangeSlider(
+                      values: priceRange,
+                      min: 0,
+                      max: 20000,
+                      activeColor: AppTheme.primaryColor,
+                      onChanged: (RangeValues values) {
+                        setState(() {
+                          priceRange = values;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Sort By
+                    Text(
+                      widget.t['sorting'] ?? 'Сортировка',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    _buildSortOptions(),
+                    const SizedBox(height: 24),
+                  ],
+                ),
+              ),
+            ),
+            // Buttons
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () {
+                        setState(() {
+                          selectedCategories = [];
+                          priceRange = RangeValues(0, 20000);
+                          sortBy = 'popular';
+                        });
+                      },
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        side: BorderSide(color: AppTheme.primaryColor),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Text(
+                        widget.t['reset'] ?? 'Сбросить',
+                        style: TextStyle(
+                          color: AppTheme.primaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Apply filters via callback
+                        widget.onApplyFilters(
+                          selectedCategories,
+                          priceRange.start,
+                          priceRange.end,
+                          sortBy,
+                        );
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.primaryColor,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Text(
+                        widget.t['apply'] ?? 'Применить',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCategoryChips() {
+    final categories = [
+      'Тамақ',
+      'Ойыншықтар',
+      'Аксессуарлар',
+      'Гигиена',
+      'Киімдер',
+    ];
+
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: categories.map((category) {
+        final isSelected = selectedCategories.contains(category);
+        return FilterChip(
+          label: Text(category),
+          selected: isSelected,
+          onSelected: (selected) {
+            setState(() {
+              if (selected) {
+                selectedCategories.add(category);
+              } else {
+                selectedCategories.remove(category);
+              }
+            });
+          },
+          backgroundColor: Colors.white,
+          selectedColor: AppTheme.primaryColor.withOpacity(0.3),
+          side: BorderSide(
+            color: isSelected ? AppTheme.primaryColor : Colors.grey[300]!,
+          ),
+          labelStyle: TextStyle(
+            color: isSelected ? AppTheme.primaryColor : Colors.black,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildSortOptions() {
+    final options = [
+      ('popular', widget.t['popular'] ?? 'Популярные'),
+      (
+        'price_low',
+        '${widget.t['price'] ?? 'Цена'}: ${widget.t['low'] ?? 'низкие'}',
+      ),
+      (
+        'price_high',
+        '${widget.t['price'] ?? 'Цена'}: ${widget.t['high'] ?? 'высокие'}',
+      ),
+      ('rating', widget.t['by_rating'] ?? 'По рейтингу'),
+    ];
+
+    return Column(
+      children: options.map((option) {
+        return RadioListTile<String>(
+          title: Text(option.$2),
+          value: option.$1,
+          groupValue: sortBy,
+          onChanged: (value) {
+            setState(() {
+              sortBy = value!;
+            });
+          },
+          activeColor: AppTheme.primaryColor,
+          contentPadding: EdgeInsets.zero,
+        );
+      }).toList(),
     );
   }
 }
