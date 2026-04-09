@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/product.dart';
 import '../providers/cart_provider.dart';
 import '../theme.dart';
 import 'checkout_screen.dart';
@@ -11,7 +12,7 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<CartProvider>(context);
-    
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
@@ -24,11 +25,21 @@ class CartScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.shopping_cart_outlined, size: 80, color: AppTheme.greyColor.withValues(alpha: 0.5)),
+                  Icon(
+                    Icons.shopping_cart_outlined,
+                    size: 80,
+                    color: AppTheme.greyColor.withValues(alpha: 0.5),
+                  ),
                   const SizedBox(height: 16),
-                  const Text('Ваша корзина пуста', style: TextStyle(fontSize: 18, color: AppTheme.greyColor)),
+                  const Text(
+                    'Ваша корзина пуста',
+                    style: TextStyle(fontSize: 18, color: AppTheme.greyColor),
+                  ),
                   const SizedBox(height: 8),
-                  const Text('Добавьте товары из каталога', style: TextStyle(fontSize: 14, color: AppTheme.greyColor)),
+                  const Text(
+                    'Добавьте товары из каталога',
+                    style: TextStyle(fontSize: 14, color: AppTheme.greyColor),
+                  ),
                 ],
               ),
             )
@@ -41,13 +52,25 @@ class CartScreen extends StatelessWidget {
                     itemBuilder: (ctx, i) {
                       final cartItem = cart.items.values.toList()[i];
                       final productId = cart.items.keys.toList()[i];
+                      if (cartItem.product == null) {
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 16),
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[100],
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: const Center(child: Text('Товар не найден')),
+                        );
+                      }
                       return _CartItemWidget(
                         id: cartItem.id,
                         productId: productId,
-                        name: cartItem.product.name,
+                        name: cartItem.product!.name,
                         quantity: cartItem.quantity,
-                        price: cartItem.product.price,
-                        imageUrl: cartItem.product.imageUrl,
+                        price: cartItem.product!.price,
+                        imageUrl: cartItem.product!.imageUrl,
+                        product: cartItem.product!,
                       );
                     },
                   ),
@@ -55,8 +78,11 @@ class CartScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: (Theme.of(context).cardTheme.color ?? Colors.white).withValues(alpha: 0.95),
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+                    color: (Theme.of(context).cardTheme.color ?? Colors.white)
+                        .withValues(alpha: 0.95),
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(32),
+                    ),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withValues(alpha: 0.05),
@@ -74,11 +100,23 @@ class CartScreen extends StatelessWidget {
                           children: [
                             Text(
                               'Итого:',
-                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.titleLarge?.color ?? AppTheme.textColor),
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color:
+                                    Theme.of(
+                                      context,
+                                    ).textTheme.titleLarge?.color ??
+                                    AppTheme.textColor,
+                              ),
                             ),
                             Text(
                               '₸${cart.totalAmount.toStringAsFixed(0)}',
-                              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
+                              style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: AppTheme.primaryColor,
+                              ),
                             ),
                           ],
                         ),
@@ -88,7 +126,9 @@ class CartScreen extends StatelessWidget {
                           child: ElevatedButton(
                             onPressed: () {
                               Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const CheckoutScreen()),
+                                MaterialPageRoute(
+                                  builder: (_) => const CheckoutScreen(),
+                                ),
                               );
                             },
                             child: const Text('Оформить заказ'),
@@ -111,6 +151,7 @@ class _CartItemWidget extends StatelessWidget {
   final int quantity;
   final double price;
   final String imageUrl;
+  final Product product;
 
   const _CartItemWidget({
     required this.id,
@@ -119,6 +160,7 @@ class _CartItemWidget extends StatelessWidget {
     required this.quantity,
     required this.price,
     required this.imageUrl,
+    required this.product,
   });
 
   @override
@@ -140,7 +182,9 @@ class _CartItemWidget extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: (Theme.of(context).cardTheme.color ?? Colors.white).withValues(alpha: 0.9),
+          color: (Theme.of(context).cardTheme.color ?? Colors.white).withValues(
+            alpha: 0.9,
+          ),
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
@@ -159,7 +203,8 @@ class _CartItemWidget extends StatelessWidget {
                 width: 80,
                 height: 80,
                 fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(width: 80, height: 80, color: Colors.grey[200]),
+                errorBuilder: (context, error, stackTrace) =>
+                    Container(width: 80, height: 80, color: Colors.grey[200]),
               ),
             ),
             const SizedBox(width: 16),
@@ -169,14 +214,24 @@ class _CartItemWidget extends StatelessWidget {
                 children: [
                   Text(
                     name,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Theme.of(context).textTheme.titleMedium?.color ?? AppTheme.textColor),
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color:
+                          Theme.of(context).textTheme.titleMedium?.color ??
+                          AppTheme.textColor,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 8),
                   Text(
                     '₸${price.toStringAsFixed(0)}',
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.primaryColor,
+                    ),
                   ),
                 ],
               ),
@@ -184,17 +239,34 @@ class _CartItemWidget extends StatelessWidget {
             Row(
               children: [
                 IconButton(
-                  icon: const Icon(Icons.remove_circle_outline, color: AppTheme.greyColor),
+                  icon: const Icon(
+                    Icons.remove_circle_outline,
+                    color: AppTheme.greyColor,
+                  ),
                   onPressed: () {
-                    Provider.of<CartProvider>(context, listen: false).removeSingleItem(productId);
+                    Provider.of<CartProvider>(
+                      context,
+                      listen: false,
+                    ).removeSingleItem(productId);
                   },
                 ),
-                Text('$quantity', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text(
+                  '$quantity',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 IconButton(
-                  icon: const Icon(Icons.add_circle_outline, color: AppTheme.primaryColor),
+                  icon: const Icon(
+                    Icons.add_circle_outline,
+                    color: AppTheme.primaryColor,
+                  ),
                   onPressed: () {
-                    final product = Provider.of<CartProvider>(context, listen: false).items[productId]!.product;
-                    Provider.of<CartProvider>(context, listen: false).addItem(product);
+                    Provider.of<CartProvider>(
+                      context,
+                      listen: false,
+                    ).addItem(product);
                   },
                 ),
               ],

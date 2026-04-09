@@ -194,7 +194,7 @@ class ProductCard extends StatelessWidget {
 class _AddToCartButton extends StatefulWidget {
   final Product product;
 
-  const _AddToCartButton({super.key, required this.product});
+  const _AddToCartButton({required this.product});
 
   @override
   State<_AddToCartButton> createState() => _AddToCartButtonState();

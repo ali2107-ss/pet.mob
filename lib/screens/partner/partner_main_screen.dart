@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:async';
 import '../../providers/partner_provider.dart';
 import '../../theme.dart';
 import 'partner_dashboard_screen.dart';
@@ -15,12 +16,43 @@ class PartnerMainScreen extends StatefulWidget {
 
 class _PartnerMainScreenState extends State<PartnerMainScreen> {
   int _currentIndex = 0;
+  Timer? _refreshTimer;
 
   final List<Widget> _screens = [
     const PartnerDashboardScreen(),
     const PartnerProductsScreen(),
     const PartnerBalanceScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    // Загружаем данные из Supabase при входе в режим партнера
+    Future.microtask(() async {
+      final partnerProvider = Provider.of<PartnerProvider>(
+        context,
+        listen: false,
+      );
+      await partnerProvider.initializePartner();
+    });
+
+    // Периодический refresh каждые 10 секунд
+    _refreshTimer = Timer.periodic(const Duration(seconds: 10), (_) async {
+      if (mounted) {
+        final partnerProvider = Provider.of<PartnerProvider>(
+          context,
+          listen: false,
+        );
+        await partnerProvider.refreshProductsFromSupabase();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _refreshTimer?.cancel();
+    super.dispose();
+  }
 
   void _confirmExit() {
     showDialog(
@@ -48,7 +80,10 @@ class _PartnerMainScreenState extends State<PartnerMainScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Отмена', style: TextStyle(color: AppTheme.greyColor)),
+            child: const Text(
+              'Отмена',
+              style: TextStyle(color: AppTheme.greyColor),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
@@ -59,7 +94,9 @@ class _PartnerMainScreenState extends State<PartnerMainScreen> {
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
             child: const Text('Выйти'),
           ),
@@ -76,7 +113,10 @@ class _PartnerMainScreenState extends State<PartnerMainScreen> {
         Positioned.fill(
           child: Opacity(
             opacity: 0.25,
-            child: Image.asset('assets/images/pet_background.png', fit: BoxFit.cover),
+            child: Image.asset(
+              'assets/images/pet_background.png',
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         Scaffold(
@@ -91,7 +131,11 @@ class _PartnerMainScreenState extends State<PartnerMainScreen> {
                   color: Colors.red.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Icon(Icons.exit_to_app, color: Colors.red, size: 20),
+                child: const Icon(
+                  Icons.exit_to_app,
+                  color: Colors.red,
+                  size: 20,
+                ),
               ),
               onPressed: _confirmExit,
               tooltip: 'Выйти из режима партнёра',
@@ -99,7 +143,10 @@ class _PartnerMainScreenState extends State<PartnerMainScreen> {
             title: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
                       colors: [AppTheme.primaryColor, Color(0xFFFFB385)],
@@ -133,7 +180,11 @@ class _PartnerMainScreenState extends State<PartnerMainScreen> {
                     color: Colors.green.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Icon(Icons.trending_up, color: Colors.green, size: 20),
+                  child: const Icon(
+                    Icons.trending_up,
+                    color: Colors.green,
+                    size: 20,
+                  ),
                 ),
                 onPressed: () {
                   final partner = context.read<PartnerProvider>();
@@ -149,7 +200,9 @@ class _PartnerMainScreenState extends State<PartnerMainScreen> {
                         ),
                         backgroundColor: Colors.orange,
                         behavior: SnackBarBehavior.floating,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                     );
                     return;
@@ -166,7 +219,9 @@ class _PartnerMainScreenState extends State<PartnerMainScreen> {
                       ),
                       backgroundColor: Colors.green,
                       behavior: SnackBarBehavior.floating,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
                   );
                 },

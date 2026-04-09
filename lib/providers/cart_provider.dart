@@ -30,7 +30,9 @@ class CartProvider with ChangeNotifier {
   double get totalAmount {
     double total = 0.0;
     _items.forEach((key, cartItem) {
-      total += cartItem.product.price * cartItem.quantity;
+      if (cartItem.product != null) {
+        total += cartItem.product!.price * cartItem.quantity;
+      }
     });
     return total;
   }
@@ -52,7 +54,14 @@ class CartProvider with ChangeNotifier {
         final quantity = row['quantity'] as int;
         final product = allProducts.firstWhere(
           (p) => p.id == productId,
-          orElse: () => Product(id: productId, name: 'Unknown', description: '', price: 0, category: '', imageUrl: ''),
+          orElse: () => Product(
+            id: productId,
+            name: 'Unknown',
+            description: '',
+            price: 0,
+            category: '',
+            imageUrl: '',
+          ),
         );
         if (product.name != 'Unknown') {
           _items[productId] = CartItem(
@@ -70,7 +79,34 @@ class CartProvider with ChangeNotifier {
 
   Future<void> addItem(Product product) async {
     final user = _supabase.auth.currentUser;
-    
+
+    // Проверяем наличие товара на складе перед добавлением
+    try {
+      final stockData = await _supabase
+          .from('partner_products')
+          .select('stock')
+          .eq('id', product.id)
+          .maybeSingle();
+
+      final availableStock = stockData != null
+          ? (stockData['stock'] as int)
+          : 0;
+      final currentQuantity = _items.containsKey(product.id)
+          ? _items[product.id]!.quantity
+          : 0;
+
+      // Если товара меньше чем в корзине + 1, не добавляем
+      if (availableStock <= currentQuantity) {
+        debugPrint(
+          'Error: Not enough stock for product ${product.id}. Available: $availableStock, In cart: $currentQuantity',
+        );
+        throw Exception('Недостаточно товара на складе');
+      }
+    } catch (e) {
+      debugPrint('Error checking stock: $e');
+      throw Exception('Ошибка при проверке наличия товара');
+    }
+
     if (_items.containsKey(product.id)) {
       _items.update(
         product.id,
@@ -83,10 +119,7 @@ class CartProvider with ChangeNotifier {
     } else {
       _items.putIfAbsent(
         product.id,
-        () => CartItem(
-          id: DateTime.now().toString(),
-          product: product,
-        ),
+        () => CartItem(id: DateTime.now().toString(), product: product),
       );
     }
 
@@ -104,14 +137,14 @@ class CartProvider with ChangeNotifier {
   Future<void> removeItem(String productId) async {
     final user = _supabase.auth.currentUser;
     _items.remove(productId);
-    
+
     if (user != null) {
-      await _supabase
-          .from('cart_items')
-          .delete()
-          .match({'user_id': user.id, 'product_id': productId});
+      await _supabase.from('cart_items').delete().match({
+        'user_id': user.id,
+        'product_id': productId,
+      });
     }
-    
+
     notifyListeners();
   }
 
@@ -129,17 +162,18 @@ class CartProvider with ChangeNotifier {
         ),
       );
       if (user != null) {
-        await _supabase.from('cart_items').update({
-          'quantity': _items[productId]!.quantity,
-        }).match({'user_id': user.id, 'product_id': productId});
+        await _supabase
+            .from('cart_items')
+            .update({'quantity': _items[productId]!.quantity})
+            .match({'user_id': user.id, 'product_id': productId});
       }
     } else {
       _items.remove(productId);
       if (user != null) {
-        await _supabase
-            .from('cart_items')
-            .delete()
-            .match({'user_id': user.id, 'product_id': productId});
+        await _supabase.from('cart_items').delete().match({
+          'user_id': user.id,
+          'product_id': productId,
+        });
       }
     }
     notifyListeners();

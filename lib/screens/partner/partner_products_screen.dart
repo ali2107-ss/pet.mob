@@ -37,12 +37,18 @@ class _PartnerProductsScreenState extends State<PartnerProductsScreen>
     return Scaffold(
       backgroundColor: Colors.transparent,
       floatingActionButton: ScaleTransition(
-        scale: CurvedAnimation(parent: _fabAnimController, curve: Curves.elasticOut),
+        scale: CurvedAnimation(
+          parent: _fabAnimController,
+          curve: Curves.elasticOut,
+        ),
         child: FloatingActionButton.extended(
           onPressed: () => _showAddProductSheet(context),
           backgroundColor: AppTheme.primaryColor,
           icon: const Icon(Icons.add_rounded, color: Colors.white, size: 24),
-          label: const Text('Добавить', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          label: const Text(
+            'Добавить',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
           elevation: 8,
         ),
       ),
@@ -63,12 +69,20 @@ class _PartnerProductsScreenState extends State<PartnerProductsScreen>
               color: AppTheme.primaryColor.withOpacity(0.08),
               shape: BoxShape.circle,
             ),
-            child: Icon(Icons.inventory_2_outlined, size: 80, color: AppTheme.primaryColor.withOpacity(0.5)),
+            child: Icon(
+              Icons.inventory_2_outlined,
+              size: 80,
+              color: AppTheme.primaryColor.withOpacity(0.5),
+            ),
           ),
           const SizedBox(height: 24),
           const Text(
             'У вас пока нет товаров',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.textColor),
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: AppTheme.textColor,
+            ),
           ),
           const SizedBox(height: 8),
           const Text(
@@ -99,18 +113,41 @@ class _PartnerProductsScreenState extends State<PartnerProductsScreen>
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [AppTheme.primaryColor.withOpacity(0.1), AppTheme.primaryColor.withOpacity(0.05)],
+              colors: [
+                AppTheme.primaryColor.withOpacity(0.1),
+                AppTheme.primaryColor.withOpacity(0.05),
+              ],
             ),
             borderRadius: BorderRadius.circular(16),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _MiniStat(label: 'Всего', value: '${partner.products.length}', icon: Icons.inventory_2),
-              Container(width: 1, height: 30, color: AppTheme.greyColor.withOpacity(0.2)),
-              _MiniStat(label: 'Активных', value: '${partner.activeProducts}', icon: Icons.check_circle_outline),
-              Container(width: 1, height: 30, color: AppTheme.greyColor.withOpacity(0.2)),
-              _MiniStat(label: 'Продано', value: '${partner.totalSold}', icon: Icons.shopping_bag_outlined),
+              _MiniStat(
+                label: 'Всего',
+                value: '${partner.products.length}',
+                icon: Icons.inventory_2,
+              ),
+              Container(
+                width: 1,
+                height: 30,
+                color: AppTheme.greyColor.withOpacity(0.2),
+              ),
+              _MiniStat(
+                label: 'Активных',
+                value: '${partner.activeProducts}',
+                icon: Icons.check_circle_outline,
+              ),
+              Container(
+                width: 1,
+                height: 30,
+                color: AppTheme.greyColor.withOpacity(0.2),
+              ),
+              _MiniStat(
+                label: 'Продано',
+                value: '${partner.totalSold}',
+                icon: Icons.shopping_bag_outlined,
+              ),
             ],
           ),
         ),
@@ -127,7 +164,9 @@ class _PartnerProductsScreenState extends State<PartnerProductsScreen>
                 onEdit: () => _showEditProductSheet(context, p),
                 onDelete: () => _confirmDelete(context, p),
                 onToggleActive: () {
-                  context.read<PartnerProvider>().toggleProductActive(p.id);
+                  context
+                      .read<PartnerProvider>()
+                      .toggleProductActiveWithSupabase(p.id);
                 },
               );
             },
@@ -168,7 +207,11 @@ class _PartnerProductsScreenState extends State<PartnerProductsScreen>
                 color: Colors.red.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.delete_outline, color: Colors.red, size: 20),
+              child: const Icon(
+                Icons.delete_outline,
+                color: Colors.red,
+                size: 20,
+              ),
             ),
             const SizedBox(width: 12),
             const Expanded(child: Text('Удалить товар?')),
@@ -181,11 +224,16 @@ class _PartnerProductsScreenState extends State<PartnerProductsScreen>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Отмена', style: TextStyle(color: AppTheme.greyColor)),
+            child: const Text(
+              'Отмена',
+              style: TextStyle(color: AppTheme.greyColor),
+            ),
           ),
           ElevatedButton(
-            onPressed: () {
-              context.read<PartnerProvider>().deleteProduct(product.id);
+            onPressed: () async {
+              await context.read<PartnerProvider>().deleteProductWithSupabase(
+                product.id,
+              );
               Navigator.pop(ctx);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -198,14 +246,18 @@ class _PartnerProductsScreenState extends State<PartnerProductsScreen>
                   ),
                   backgroundColor: Colors.red,
                   behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
               );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
             child: const Text('Удалить'),
           ),
@@ -221,7 +273,11 @@ class _MiniStat extends StatelessWidget {
   final String value;
   final IconData icon;
 
-  const _MiniStat({required this.label, required this.value, required this.icon});
+  const _MiniStat({
+    required this.label,
+    required this.value,
+    required this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -229,8 +285,18 @@ class _MiniStat extends StatelessWidget {
       children: [
         Icon(icon, size: 18, color: AppTheme.primaryColor),
         const SizedBox(height: 4),
-        Text(value, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppTheme.textColor)),
-        Text(label, style: const TextStyle(fontSize: 11, color: AppTheme.greyColor)),
+        Text(
+          value,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+            color: AppTheme.textColor,
+          ),
+        ),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 11, color: AppTheme.greyColor),
+        ),
       ],
     );
   }
@@ -263,9 +329,15 @@ class _ProductCard extends StatelessWidget {
           color: Theme.of(context).cardTheme.color ?? Colors.white,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
-            BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 15, offset: const Offset(0, 5)),
+            BoxShadow(
+              color: Colors.black.withOpacity(0.06),
+              blurRadius: 15,
+              offset: const Offset(0, 5),
+            ),
           ],
-          border: product.isActive ? null : Border.all(color: Colors.grey.withOpacity(0.3)),
+          border: product.isActive
+              ? null
+              : Border.all(color: Colors.grey.withOpacity(0.3)),
         ),
         child: Column(
           children: [
@@ -290,7 +362,11 @@ class _ProductCard extends StatelessWidget {
                             width: 110,
                             height: 110,
                             color: Colors.grey[200],
-                            child: const Icon(Icons.image_not_supported, color: Colors.grey, size: 32),
+                            child: const Icon(
+                              Icons.image_not_supported,
+                              color: Colors.grey,
+                              size: 32,
+                            ),
                           ),
                         ),
                         if (!product.isActive)
@@ -299,7 +375,11 @@ class _ProductCard extends StatelessWidget {
                             height: 110,
                             color: Colors.black.withOpacity(0.4),
                             child: const Center(
-                              child: Icon(Icons.visibility_off, color: Colors.white, size: 28),
+                              child: Icon(
+                                Icons.visibility_off,
+                                color: Colors.white,
+                                size: 28,
+                              ),
                             ),
                           ),
                       ],
@@ -315,7 +395,10 @@ class _ProductCard extends StatelessWidget {
                       children: [
                         Text(
                           product.name,
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -333,7 +416,9 @@ class _ProductCard extends StatelessWidget {
                           children: [
                             _StatusBadge(
                               label: 'Склад: ${product.stock}',
-                              color: product.stock > 0 ? Colors.blue : Colors.red,
+                              color: product.stock > 0
+                                  ? Colors.blue
+                                  : Colors.red,
                               icon: Icons.warehouse_outlined,
                             ),
                             const SizedBox(width: 6),
@@ -354,7 +439,9 @@ class _ProductCard extends StatelessWidget {
                   children: [
                     IconButton(
                       icon: Icon(
-                        product.isActive ? Icons.visibility : Icons.visibility_off,
+                        product.isActive
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                         color: product.isActive ? Colors.green : Colors.grey,
                         size: 20,
                       ),
@@ -362,12 +449,20 @@ class _ProductCard extends StatelessWidget {
                       tooltip: product.isActive ? 'Скрыть' : 'Показать',
                     ),
                     IconButton(
-                      icon: const Icon(Icons.edit_outlined, color: AppTheme.primaryColor, size: 20),
+                      icon: const Icon(
+                        Icons.edit_outlined,
+                        color: AppTheme.primaryColor,
+                        size: 20,
+                      ),
                       onPressed: onEdit,
                       tooltip: 'Редактировать',
                     ),
                     IconButton(
-                      icon: const Icon(Icons.delete_outline, color: Colors.red, size: 20),
+                      icon: const Icon(
+                        Icons.delete_outline,
+                        color: Colors.red,
+                        size: 20,
+                      ),
                       onPressed: onDelete,
                       tooltip: 'Удалить',
                     ),
@@ -386,11 +481,18 @@ class _ProductCard extends StatelessWidget {
                       children: [
                         Text(
                           'Выручка: ₸${product.revenue.toStringAsFixed(0)}',
-                          style: TextStyle(fontSize: 11, color: Colors.green[700], fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: Colors.green[700],
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                         Text(
                           '${((product.sold / (product.sold + product.stock)) * 100).toStringAsFixed(0)}% продано',
-                          style: const TextStyle(fontSize: 11, color: AppTheme.greyColor),
+                          style: const TextStyle(
+                            fontSize: 11,
+                            color: AppTheme.greyColor,
+                          ),
                         ),
                       ],
                     ),
@@ -420,7 +522,11 @@ class _StatusBadge extends StatelessWidget {
   final String label;
   final Color color;
   final IconData icon;
-  const _StatusBadge({required this.label, required this.color, required this.icon});
+  const _StatusBadge({
+    required this.label,
+    required this.color,
+    required this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -435,7 +541,14 @@ class _StatusBadge extends StatelessWidget {
         children: [
           Icon(icon, size: 12, color: color),
           const SizedBox(width: 4),
-          Text(label, style: TextStyle(fontSize: 11, color: color, fontWeight: FontWeight.w600)),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 11,
+              color: color,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ],
       ),
     );
@@ -465,11 +578,36 @@ class _ProductFormSheetState extends State<_ProductFormSheet> {
   bool get isEditing => widget.product != null;
 
   final List<Map<String, dynamic>> _categories = [
-    {'name': 'Корм', 'key': 'Тамақ', 'icon': Icons.restaurant, 'color': Colors.orange},
-    {'name': 'Игрушки', 'key': 'Ойыншықтар', 'icon': Icons.toys, 'color': Colors.purple},
-    {'name': 'Аксессуары', 'key': 'Аксессуарлар', 'icon': Icons.pets, 'color': Colors.blue},
-    {'name': 'Гигиена', 'key': 'Гигиена', 'icon': Icons.cleaning_services, 'color': Colors.teal},
-    {'name': 'Одежда', 'key': 'Киімдер', 'icon': Icons.checkroom, 'color': Colors.pink},
+    {
+      'name': 'Корм',
+      'key': 'Тамақ',
+      'icon': Icons.restaurant,
+      'color': Colors.orange,
+    },
+    {
+      'name': 'Игрушки',
+      'key': 'Ойыншықтар',
+      'icon': Icons.toys,
+      'color': Colors.purple,
+    },
+    {
+      'name': 'Аксессуары',
+      'key': 'Аксессуарлар',
+      'icon': Icons.pets,
+      'color': Colors.blue,
+    },
+    {
+      'name': 'Гигиена',
+      'key': 'Гигиена',
+      'icon': Icons.cleaning_services,
+      'color': Colors.teal,
+    },
+    {
+      'name': 'Одежда',
+      'key': 'Киімдер',
+      'icon': Icons.checkroom,
+      'color': Colors.pink,
+    },
   ];
 
   // Примеры фото для быстрого добавления
@@ -486,10 +624,18 @@ class _ProductFormSheetState extends State<_ProductFormSheet> {
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.product?.name ?? '');
-    _descController = TextEditingController(text: widget.product?.description ?? '');
-    _priceController = TextEditingController(text: widget.product?.price.toStringAsFixed(0) ?? '');
-    _imageController = TextEditingController(text: widget.product?.imageUrl ?? '');
-    _stockController = TextEditingController(text: widget.product?.stock.toString() ?? '');
+    _descController = TextEditingController(
+      text: widget.product?.description ?? '',
+    );
+    _priceController = TextEditingController(
+      text: widget.product?.price.toStringAsFixed(0) ?? '',
+    );
+    _imageController = TextEditingController(
+      text: widget.product?.imageUrl ?? '',
+    );
+    _stockController = TextEditingController(
+      text: widget.product?.stock.toString() ?? '',
+    );
     _selectedCategory = widget.product?.category ?? 'Тамақ';
   }
 
@@ -558,7 +704,10 @@ class _ProductFormSheetState extends State<_ProductFormSheet> {
                       const SizedBox(width: 12),
                       Text(
                         isEditing ? 'Редактировать товар' : 'Новый товар',
-                        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
@@ -624,7 +773,10 @@ class _ProductFormSheetState extends State<_ProductFormSheet> {
                   const SizedBox(height: 8),
 
                   // Быстрый выбор фото
-                  const Text('Быстрый выбор фото:', style: TextStyle(fontSize: 12, color: AppTheme.greyColor)),
+                  const Text(
+                    'Быстрый выбор фото:',
+                    style: TextStyle(fontSize: 12, color: AppTheme.greyColor),
+                  ),
                   const SizedBox(height: 8),
                   SizedBox(
                     height: 60,
@@ -635,20 +787,28 @@ class _ProductFormSheetState extends State<_ProductFormSheet> {
                         final url = _quickImages[i];
                         final isSelected = _imageController.text == url;
                         return GestureDetector(
-                          onTap: () => setState(() => _imageController.text = url),
+                          onTap: () =>
+                              setState(() => _imageController.text = url),
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 200),
                             margin: const EdgeInsets.only(right: 8),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: isSelected ? AppTheme.primaryColor : Colors.transparent,
+                                color: isSelected
+                                    ? AppTheme.primaryColor
+                                    : Colors.transparent,
                                 width: 2,
                               ),
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
-                              child: Image.network(url, width: 56, height: 56, fit: BoxFit.cover),
+                              child: Image.network(
+                                url,
+                                width: 56,
+                                height: 56,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         );
@@ -658,7 +818,10 @@ class _ProductFormSheetState extends State<_ProductFormSheet> {
                   const SizedBox(height: 20),
 
                   // Выбор категории (чипами)
-                  const Text('Категория', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                  const Text(
+                    'Категория',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                  ),
                   const SizedBox(height: 10),
                   Wrap(
                     spacing: 8,
@@ -666,29 +829,48 @@ class _ProductFormSheetState extends State<_ProductFormSheet> {
                     children: _categories.map((cat) {
                       final isSelected = _selectedCategory == cat['key'];
                       return GestureDetector(
-                        onTap: () => setState(() => _selectedCategory = cat['key'] as String),
+                        onTap: () => setState(
+                          () => _selectedCategory = cat['key'] as String,
+                        ),
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 200),
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 10,
+                          ),
                           decoration: BoxDecoration(
-                            color: isSelected ? (cat['color'] as Color).withOpacity(0.15) : Colors.grey.withOpacity(0.08),
+                            color: isSelected
+                                ? (cat['color'] as Color).withOpacity(0.15)
+                                : Colors.grey.withOpacity(0.08),
                             borderRadius: BorderRadius.circular(30),
                             border: Border.all(
-                              color: isSelected ? cat['color'] as Color : Colors.transparent,
+                              color: isSelected
+                                  ? cat['color'] as Color
+                                  : Colors.transparent,
                               width: 1.5,
                             ),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(cat['icon'] as IconData, size: 16, color: isSelected ? cat['color'] as Color : AppTheme.greyColor),
+                              Icon(
+                                cat['icon'] as IconData,
+                                size: 16,
+                                color: isSelected
+                                    ? cat['color'] as Color
+                                    : AppTheme.greyColor,
+                              ),
                               const SizedBox(width: 6),
                               Text(
                                 cat['name'] as String,
                                 style: TextStyle(
                                   fontSize: 13,
-                                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                                  color: isSelected ? cat['color'] as Color : AppTheme.greyColor,
+                                  fontWeight: isSelected
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
+                                  color: isSelected
+                                      ? cat['color'] as Color
+                                      : AppTheme.greyColor,
                                 ),
                               ),
                             ],
@@ -700,14 +882,17 @@ class _ProductFormSheetState extends State<_ProductFormSheet> {
                   const SizedBox(height: 28),
 
                   // Превью
-                  if (_imageController.text.isNotEmpty && _nameController.text.isNotEmpty)
+                  if (_imageController.text.isNotEmpty &&
+                      _nameController.text.isNotEmpty)
                     Container(
                       padding: const EdgeInsets.all(12),
                       margin: const EdgeInsets.only(bottom: 16),
                       decoration: BoxDecoration(
                         color: Colors.grey.withOpacity(0.05),
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.grey.withOpacity(0.15)),
+                        border: Border.all(
+                          color: Colors.grey.withOpacity(0.15),
+                        ),
                       ),
                       child: Row(
                         children: [
@@ -731,11 +916,27 @@ class _ProductFormSheetState extends State<_ProductFormSheet> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text('Предпросмотр', style: TextStyle(fontSize: 10, color: AppTheme.greyColor)),
-                                Text(_nameController.text, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                                const Text(
+                                  'Предпросмотр',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: AppTheme.greyColor,
+                                  ),
+                                ),
+                                Text(
+                                  _nameController.text,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                  ),
+                                ),
                                 Text(
                                   '₸${_priceController.text.isEmpty ? "0" : _priceController.text}',
-                                  style: const TextStyle(color: AppTheme.primaryColor, fontWeight: FontWeight.bold, fontSize: 12),
+                                  style: const TextStyle(
+                                    color: AppTheme.primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                  ),
                                 ),
                               ],
                             ),
@@ -749,7 +950,9 @@ class _ProductFormSheetState extends State<_ProductFormSheet> {
                     onPressed: _submit,
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 18),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -758,7 +961,10 @@ class _ProductFormSheetState extends State<_ProductFormSheet> {
                         const SizedBox(width: 8),
                         Text(
                           isEditing ? 'Сохранить изменения' : 'Добавить товар',
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),
@@ -810,12 +1016,12 @@ class _ProductFormSheetState extends State<_ProductFormSheet> {
     );
   }
 
-  void _submit() {
+  Future<void> _submit() async {
     if (_formKey.currentState?.validate() ?? false) {
       final partner = context.read<PartnerProvider>();
 
       if (isEditing) {
-        partner.updateProduct(
+        await partner.updateProductWithSupabase(
           widget.product!.id,
           name: _nameController.text,
           description: _descController.text,
@@ -836,11 +1042,13 @@ class _ProductFormSheetState extends State<_ProductFormSheet> {
             ),
             backgroundColor: Colors.green,
             behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
         );
       } else {
-        partner.addProduct(
+        await partner.addProductWithSupabase(
           PartnerProduct(
             id: 'pp_${DateTime.now().millisecondsSinceEpoch}',
             name: _nameController.text,
@@ -863,7 +1071,9 @@ class _ProductFormSheetState extends State<_ProductFormSheet> {
             ),
             backgroundColor: Colors.green,
             behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
         );
       }

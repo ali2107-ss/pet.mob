@@ -3,8 +3,44 @@ import 'package:provider/provider.dart';
 import '../providers/order_provider.dart';
 import '../theme.dart';
 
-class OrderHistoryScreen extends StatelessWidget {
+class OrderHistoryScreen extends StatefulWidget {
   const OrderHistoryScreen({super.key});
+
+  @override
+  State<OrderHistoryScreen> createState() => _OrderHistoryScreenState();
+}
+
+class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
+  bool _isLoading = true;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadOrders();
+  }
+
+  Future<void> _loadOrders() async {
+    try {
+      if (!mounted) return;
+      setState(() {
+        _isLoading = true;
+        _error = null;
+      });
+
+      final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+      await orderProvider.fetchOrders();
+
+      if (!mounted) return;
+      setState(() => _isLoading = false);
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _isLoading = false;
+        _error = e.toString();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +51,55 @@ class OrderHistoryScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('История заказов'),
         centerTitle: true,
+        actions: [
+          if (!_isLoading)
+            IconButton(icon: const Icon(Icons.refresh), onPressed: _loadOrders),
+        ],
       ),
-      body: orders.isEmpty
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : _error != null
           ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.receipt_long_outlined, size: 80, color: AppTheme.greyColor.withValues(alpha: 0.5)),
+                  Icon(
+                    Icons.error_outline,
+                    size: 80,
+                    color: Colors.red.withValues(alpha: 0.5),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Ошибка загрузки',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Text(
+                      _error!,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: AppTheme.greyColor),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: _loadOrders,
+                    child: const Text('Попробовать снова'),
+                  ),
+                ],
+              ),
+            )
+          : orders.isEmpty
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.receipt_long_outlined,
+                    size: 80,
+                    color: AppTheme.greyColor.withValues(alpha: 0.5),
+                  ),
                   const SizedBox(height: 16),
                   const Text(
                     'Заказов пока нет',
@@ -41,8 +119,10 @@ class OrderHistoryScreen extends StatelessWidget {
               itemBuilder: (ctx, i) {
                 final order = orders[i];
                 final date = order.dateTime;
-                final dateStr = '${date.day.toString().padLeft(2, '0')}.${date.month.toString().padLeft(2, '0')}.${date.year}';
-                final timeStr = '${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+                final dateStr =
+                    '${date.day.toString().padLeft(2, '0')}.${date.month.toString().padLeft(2, '0')}.${date.year}';
+                final timeStr =
+                    '${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
 
                 final paymentLabel = {
                   'card': 'Банковская карта',
@@ -75,7 +155,7 @@ class OrderHistoryScreen extends StatelessWidget {
                         color: Colors.black.withValues(alpha: 0.04),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
-                      )
+                      ),
                     ],
                   ),
                   child: Padding(
@@ -89,12 +169,18 @@ class OrderHistoryScreen extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 order.id,
-                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
                               decoration: BoxDecoration(
                                 color: statusColor.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(20),
@@ -113,23 +199,37 @@ class OrderHistoryScreen extends StatelessWidget {
                         const SizedBox(height: 12),
                         Row(
                           children: [
-                            const Icon(Icons.calendar_today, size: 14, color: AppTheme.greyColor),
+                            const Icon(
+                              Icons.calendar_today,
+                              size: 14,
+                              color: AppTheme.greyColor,
+                            ),
                             const SizedBox(width: 6),
                             Text(
                               '$dateStr, $timeStr',
-                              style: const TextStyle(color: AppTheme.greyColor, fontSize: 14),
+                              style: const TextStyle(
+                                color: AppTheme.greyColor,
+                                fontSize: 14,
+                              ),
                             ),
                           ],
                         ),
                         const SizedBox(height: 8),
                         Row(
                           children: [
-                            const Icon(Icons.location_on_outlined, size: 14, color: AppTheme.greyColor),
+                            const Icon(
+                              Icons.location_on_outlined,
+                              size: 14,
+                              color: AppTheme.greyColor,
+                            ),
                             const SizedBox(width: 6),
                             Expanded(
                               child: Text(
                                 order.address,
-                                style: const TextStyle(color: AppTheme.greyColor, fontSize: 14),
+                                style: const TextStyle(
+                                  color: AppTheme.greyColor,
+                                  fontSize: 14,
+                                ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -139,11 +239,19 @@ class OrderHistoryScreen extends StatelessWidget {
                         const SizedBox(height: 8),
                         Row(
                           children: [
-                            const Icon(Icons.payment, size: 14, color: AppTheme.greyColor),
+                            const Icon(
+                              Icons.payment,
+                              size: 14,
+                              color: AppTheme.greyColor,
+                            ),
                             const SizedBox(width: 6),
                             Text(
-                              paymentLabel[order.paymentMethod] ?? order.paymentMethod,
-                              style: const TextStyle(color: AppTheme.greyColor, fontSize: 14),
+                              paymentLabel[order.paymentMethod] ??
+                                  order.paymentMethod,
+                              style: const TextStyle(
+                                color: AppTheme.greyColor,
+                                fontSize: 14,
+                              ),
                             ),
                           ],
                         ),
@@ -161,11 +269,15 @@ class OrderHistoryScreen extends StatelessWidget {
                                 margin: const EdgeInsets.only(right: 4),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(8),
-                                  child: Image.network(
-                                    order.items[j].product.imageUrl,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (c, e, s) => Container(color: Colors.grey[200]),
-                                  ),
+                                  child: order.items[j].product != null
+                                      ? Image.network(
+                                          order.items[j].product!.imageUrl,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (c, e, s) => Container(
+                                            color: Colors.grey[200],
+                                          ),
+                                        )
+                                      : Container(color: Colors.grey[200]),
                                 ),
                               );
                             },
@@ -177,11 +289,18 @@ class OrderHistoryScreen extends StatelessWidget {
                           children: [
                             Text(
                               '${order.items.length} товар(ов)',
-                              style: const TextStyle(color: AppTheme.greyColor, fontSize: 14),
+                              style: const TextStyle(
+                                color: AppTheme.greyColor,
+                                fontSize: 14,
+                              ),
                             ),
                             Text(
                               '₸${order.totalAmount.toStringAsFixed(0)}',
-                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: AppTheme.primaryColor),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: AppTheme.primaryColor,
+                              ),
                             ),
                           ],
                         ),

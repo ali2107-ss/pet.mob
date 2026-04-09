@@ -17,9 +17,26 @@ class CheckoutScreen extends StatefulWidget {
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
   static const List<String> _kazakhstanCities = [
-    'Алматы', 'Астана', 'Шымкент', 'Караганда', 'Актобе', 'Тараз', 'Павлодар', 
-    'Усть-Каменогорск', 'Семей', 'Атырау', 'Костанай', 'Кызылорда', 'Уральск', 
-    'Петропавловск', 'Туркестан', 'Актау', 'Темиртау', 'Талдыкорган', 'Экибастуз', 'Рудный'
+    'Алматы',
+    'Астана',
+    'Шымкент',
+    'Караганда',
+    'Актобе',
+    'Тараз',
+    'Павлодар',
+    'Усть-Каменогорск',
+    'Семей',
+    'Атырау',
+    'Костанай',
+    'Кызылорда',
+    'Уральск',
+    'Петропавловск',
+    'Туркестан',
+    'Актау',
+    'Темиртау',
+    'Талдыкорган',
+    'Экибастуз',
+    'Рудный',
   ];
   int _currentStep = 0;
   String _selectedCity = 'Алматы';
@@ -27,6 +44,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   final _phoneController = TextEditingController(text: '+7 ');
   final _commentController = TextEditingController();
   String _selectedPayment = 'card';
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -41,10 +59,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final cart = Provider.of<CartProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Оформление заказа'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('Оформление заказа'), centerTitle: true),
       body: Column(
         children: [
           // Step indicators
@@ -72,8 +87,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: (Theme.of(context).cardTheme.color ?? Colors.white).withValues(alpha: 0.95),
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+              color: (Theme.of(context).cardTheme.color ?? Colors.white)
+                  .withValues(alpha: 0.95),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(24),
+              ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.05),
@@ -105,10 +123,18 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   Expanded(
                     flex: 2,
                     child: ElevatedButton(
-                      onPressed: () => _handleNext(cart),
-                      child: Text(
-                        _currentStep == 2 ? 'Оформить заказ' : 'Продолжить',
-                      ),
+                      onPressed: () async => await _handleNext(cart),
+                      child: _isLoading
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : Text(
+                              _currentStep == 2
+                                  ? 'Оформить заказ'
+                                  : 'Продолжить',
+                            ),
                     ),
                   ),
                 ],
@@ -138,7 +164,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         color: AppTheme.primaryColor.withValues(alpha: 0.3),
                         blurRadius: 8,
                         offset: const Offset(0, 3),
-                      )
+                      ),
                     ]
                   : [],
             ),
@@ -204,53 +230,85 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           ),
           const SizedBox(height: 16),
           if (addresses.isNotEmpty) ...[
-            const Text('Выберите сохраненный адрес:', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text(
+              'Выберите сохраненный адрес:',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 12),
-            ...addresses.map((addr) => GestureDetector(
-              onTap: () {
-                setState(() {
-                  _selectedCity = addr.city;
-                  _addressController.text = '${addr.street}, ${addr.house}-${addr.apartment}';
-                });
-              },
-              child: Container(
-                margin: const EdgeInsets.only(bottom: 8),
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: _addressController.text.contains(addr.street) ? AppTheme.primaryColor.withOpacity(0.1) : (Theme.of(context).cardTheme.color ?? Colors.white),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: _addressController.text.contains(addr.street) ? AppTheme.primaryColor : Colors.grey.withOpacity(0.2)),
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.location_on, color: _addressController.text.contains(addr.street) ? AppTheme.primaryColor : Colors.grey),
-                    const SizedBox(width: 12),
-                    Expanded(child: Text('${addr.title} (${addr.city})', style: const TextStyle(fontWeight: FontWeight.bold))),
-                  ],
+            ...addresses.map(
+              (addr) => GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _selectedCity = addr.city;
+                    _addressController.text =
+                        '${addr.street}, ${addr.house}-${addr.apartment}';
+                  });
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: _addressController.text.contains(addr.street)
+                        ? AppTheme.primaryColor.withOpacity(0.1)
+                        : (Theme.of(context).cardTheme.color ?? Colors.white),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: _addressController.text.contains(addr.street)
+                          ? AppTheme.primaryColor
+                          : Colors.grey.withOpacity(0.2),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.location_on,
+                        color: _addressController.text.contains(addr.street)
+                            ? AppTheme.primaryColor
+                            : Colors.grey,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          '${addr.title} (${addr.city})',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            )),
+            ),
             const SizedBox(height: 16),
           ],
-          const Text('Город Казахстана', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+          const Text(
+            'Город Казахстана',
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+          ),
           const SizedBox(height: 8),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(
-              color: (Theme.of(context).cardTheme.color ?? Colors.white).withValues(alpha: 0.9),
+              color: (Theme.of(context).cardTheme.color ?? Colors.white)
+                  .withValues(alpha: 0.9),
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
-                BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 10, offset: const Offset(0, 4)),
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.03),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
               ],
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
                 value: _selectedCity,
                 isExpanded: true,
-                items: _kazakhstanCities.map((city) => DropdownMenuItem(
-                  value: city,
-                  child: Text(city),
-                )).toList(),
+                items: _kazakhstanCities
+                    .map(
+                      (city) =>
+                          DropdownMenuItem(value: city, child: Text(city)),
+                    )
+                    .toList(),
                 onChanged: (val) => setState(() => _selectedCity = val!),
               ),
             ),
@@ -293,14 +351,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           ),
           const SizedBox(height: 16),
           if (cards.isNotEmpty) ...[
-            const Text('Ваши карты:', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text(
+              'Ваши карты:',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 12),
-            ...cards.map((card) => _buildPaymentOption(
-              'card_${card.id}',
-              'Карта **** ${card.lastFour}',
-              card.cardHolder,
-              Icons.credit_card,
-            )),
+            ...cards.map(
+              (card) => _buildPaymentOption(
+                'card_${card.id}',
+                'Карта **** ${card.lastFour}',
+                card.cardHolder,
+                Icons.credit_card,
+              ),
+            ),
             const SizedBox(height: 16),
           ],
           _buildPaymentOption(
@@ -328,7 +391,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     );
   }
 
-  Widget _buildPaymentOption(String value, String title, String subtitle, IconData icon) {
+  Widget _buildPaymentOption(
+    String value,
+    String title,
+    String subtitle,
+    IconData icon,
+  ) {
     final isSelected = _selectedPayment == value;
     return GestureDetector(
       onTap: () => setState(() => _selectedPayment = value),
@@ -336,10 +404,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: isSelected ? AppTheme.primaryColor.withValues(alpha: 0.1) : (Theme.of(context).cardTheme.color ?? Colors.white),
+          color: isSelected
+              ? AppTheme.primaryColor.withValues(alpha: 0.1)
+              : (Theme.of(context).cardTheme.color ?? Colors.white),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected ? AppTheme.primaryColor : Colors.grey.withValues(alpha: 0.2),
+            color: isSelected
+                ? AppTheme.primaryColor
+                : Colors.grey.withValues(alpha: 0.2),
             width: isSelected ? 2 : 1,
           ),
           boxShadow: isSelected
@@ -348,7 +420,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     color: AppTheme.primaryColor.withValues(alpha: 0.1),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
-                  )
+                  ),
                 ]
               : [],
         ),
@@ -367,8 +439,20 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                  Text(subtitle, style: const TextStyle(color: AppTheme.greyColor, fontSize: 13)),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(
+                      color: AppTheme.greyColor,
+                      fontSize: 13,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -416,9 +500,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           _buildSummaryCard(
             icon: Icons.location_on,
             title: 'Адрес',
-            value: _addressController.text.isEmpty 
-              ? 'Не указан' 
-              : '$_selectedCity, ${_addressController.text}',
+            value: _addressController.text.isEmpty
+                ? 'Не указан'
+                : '$_selectedCity, ${_addressController.text}',
           ),
           const SizedBox(height: 12),
           _buildSummaryCard(
@@ -433,33 +517,58 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             value: paymentLabel[_selectedPayment] ?? 'Карта',
           ),
           const SizedBox(height: 24),
-          const Text('Товары', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          const Text(
+            'Товары',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 12),
-          ...cart.items.values.map((item) => Container(
-                margin: const EdgeInsets.only(bottom: 8),
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: (Theme.of(context).cardTheme.color ?? Colors.white).withValues(alpha: 0.9),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  children: [
+          ...cart.items.values.map(
+            (item) => Container(
+              margin: const EdgeInsets.only(bottom: 8),
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: (Theme.of(context).cardTheme.color ?? Colors.white)
+                    .withValues(alpha: 0.9),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  if (item.product != null)
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.network(item.product.imageUrl, width: 50, height: 50, fit: BoxFit.cover,
-                        errorBuilder: (c, e, s) => Container(width: 50, height: 50, color: Colors.grey[200]),
+                      child: Image.network(
+                        item.product!.imageUrl,
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                        errorBuilder: (c, e, s) => Container(
+                          width: 50,
+                          height: 50,
+                          color: Colors.grey[200],
+                        ),
                       ),
+                    )
+                  else
+                    Container(width: 50, height: 50, color: Colors.grey[200]),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      item.product?.name ?? 'Товар',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(item.product.name, maxLines: 1, overflow: TextOverflow.ellipsis),
+                  ),
+                  Text(
+                    '${item.quantity}x ₸${item.product?.price.toStringAsFixed(0) ?? '0'}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.primaryColor,
                     ),
-                    Text('${item.quantity}x ₸${item.product.price.toStringAsFixed(0)}',
-                      style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
-                    ),
-                  ],
-                ),
-              )),
+                  ),
+                ],
+              ),
+            ),
+          ),
           const SizedBox(height: 16),
           Container(
             padding: const EdgeInsets.all(16),
@@ -470,10 +579,17 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Итого:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                const Text(
+                  'Итого:',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
                 Text(
                   '₸${cart.totalAmount.toStringAsFixed(0)}',
-                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.primaryColor,
+                  ),
                 ),
               ],
             ),
@@ -484,11 +600,17 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     );
   }
 
-  Widget _buildSummaryCard({required IconData icon, required String title, required String value}) {
+  Widget _buildSummaryCard({
+    required IconData icon,
+    required String title,
+    required String value,
+  }) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: (Theme.of(context).cardTheme.color ?? Colors.white).withValues(alpha: 0.9),
+        color: (Theme.of(context).cardTheme.color ?? Colors.white).withValues(
+          alpha: 0.9,
+        ),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -499,9 +621,18 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: const TextStyle(fontSize: 12, color: AppTheme.greyColor)),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppTheme.greyColor,
+                  ),
+                ),
                 const SizedBox(height: 4),
-                Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
+                Text(
+                  value,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
               ],
             ),
           ),
@@ -521,11 +652,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+        Text(
+          label,
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+        ),
         const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
-            color: (Theme.of(context).cardTheme.color ?? Colors.white).withValues(alpha: 0.9),
+            color: (Theme.of(context).cardTheme.color ?? Colors.white)
+                .withValues(alpha: 0.9),
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
@@ -541,10 +676,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             keyboardType: keyboardType,
             decoration: InputDecoration(
               hintText: hint,
-              hintStyle: const TextStyle(color: AppTheme.greyColor, fontSize: 14),
+              hintStyle: const TextStyle(
+                color: AppTheme.greyColor,
+                fontSize: 14,
+              ),
               prefixIcon: Icon(icon, color: AppTheme.primaryColor),
               border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 16,
+              ),
             ),
           ),
         ),
@@ -552,15 +693,31 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     );
   }
 
-  void _handleNext(CartProvider cart) {
+  Future<void> _handleNext(CartProvider cart) async {
     if (_currentStep == 0) {
+      // Валидация адреса и телефона
       if (_addressController.text.trim().isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: const Text('Введите адрес доставки'),
             backgroundColor: Colors.red[400],
             behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        );
+        return;
+      }
+      if (_phoneController.text.trim().length < 8) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Введите корректный номер телефона'),
+            backgroundColor: Colors.red[400],
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
         );
         return;
@@ -570,69 +727,121 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       setState(() => _currentStep = 2);
     } else {
       // Place order
-      final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-      final partnerProvider = Provider.of<PartnerProvider>(context, listen: false);
+      if (!mounted) return;
 
-      // Пополняем баланс партнёра за каждый его товар в корзине
-      for (final item in cart.items.values) {
-        partnerProvider.simulateSale(item.product.id, item.quantity);
-      }
+      setState(() => _isLoading = true);
 
-      orderProvider.addOrder(
-        cart.items.values.toList(),
-        cart.totalAmount,
-        _addressController.text,
-        _selectedPayment,
-      );
-      cart.clear();
+      try {
+        final orderProvider = Provider.of<OrderProvider>(
+          context,
+          listen: false,
+        );
+        final partnerProvider = Provider.of<PartnerProvider>(
+          context,
+          listen: false,
+        );
 
-      // Show success dialog
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (ctx) => AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.green.withValues(alpha: 0.1),
-                  shape: BoxShape.circle,
+        // Пополняем баланс партнёра за каждый его товар в корзине
+        for (final item in cart.items.values) {
+          if (item.product != null) {
+            partnerProvider.simulateSale(item.product!.id, item.quantity);
+          }
+        }
+
+        // Создаём заказ
+        await orderProvider.addOrder(
+          cart.items.values.toList(),
+          cart.totalAmount,
+          _addressController.text,
+          _selectedPayment,
+        );
+
+        // Загружаем все заказы из Supabase
+        await orderProvider.fetchOrders();
+
+        // Обновляем данные партнера
+        await partnerProvider.refreshProductsFromSupabase();
+
+        cart.clear();
+
+        if (!mounted) return;
+
+        setState(() => _isLoading = false);
+
+        // Show success dialog
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (ctx) => AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.green.withValues(alpha: 0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.check_circle,
+                    color: Colors.green,
+                    size: 64,
+                  ),
                 ),
-                child: const Icon(Icons.check_circle, color: Colors.green, size: 64),
-              ),
-              const SizedBox(height: 24),
-              const Text(
-                'Заказ принят! 🎉',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 12),
-              const Text(
-                'Ваш заказ в пути.\nМы скоро свяжемся с вами!',
-                style: TextStyle(color: AppTheme.greyColor, fontSize: 15),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(ctx).pop(); // close dialog
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => const MainScreen()),
-                      (route) => false,
-                    );
-                  },
-                  child: const Text('На главную'),
+                const SizedBox(height: 24),
+                const Text(
+                  'Заказ принят! 🎉',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
                 ),
-              ),
-            ],
+                const SizedBox(height: 12),
+                const Text(
+                  'Ваш заказ в пути.\nМы скоро свяжемся с вами!',
+                  style: TextStyle(color: AppTheme.greyColor, fontSize: 15),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(ctx).pop();
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          builder: (context) => const MainScreen(),
+                        ),
+                        (route) => false,
+                      );
+                    },
+                    child: const Text('На главную'),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      );
+        );
+      } catch (e) {
+        if (!mounted) return;
+
+        setState(() => _isLoading = false);
+
+        debugPrint('Order error: $e');
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Ошибка заказа: ${e.toString()}'),
+            backgroundColor: Colors.red[400],
+            behavior: SnackBarBehavior.floating,
+            duration: const Duration(seconds: 5),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        );
+      }
     }
   }
 }
