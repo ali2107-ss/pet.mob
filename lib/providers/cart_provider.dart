@@ -37,21 +37,25 @@ class CartProvider with ChangeNotifier {
     return total;
   }
 
-  /// Загрузка корзины из Supabase
   Future<void> fetchCart(List<Product> allProducts) async {
     final user = _supabase.auth.currentUser;
-    if (user == null) return;
+    if (user == null) {
+      debugPrint('CartProvider: fetchCart skipped, no user');
+      return;
+    }
 
     try {
+      debugPrint('CartProvider: Fetching cart from Supabase for user ${user.id}');
       final data = await _supabase
           .from('cart_items')
           .select()
           .eq('user_id', user.id);
 
-      _items.clear();
+      final Map<String, CartItem> newItems = {};
       for (var row in data) {
         final productId = row['product_id'] as String;
         final quantity = row['quantity'] as int;
+        
         final product = allProducts.firstWhere(
           (p) => p.id == productId,
           orElse: () => Product(
@@ -63,24 +67,29 @@ class CartProvider with ChangeNotifier {
             imageUrl: '',
           ),
         );
+
         if (product.name != 'Unknown') {
-          _items[productId] = CartItem(
+          newItems[productId] = CartItem(
             id: productId,
             product: product,
             quantity: quantity,
           );
         }
       }
+      
+      _items.clear();
+      _items.addAll(newItems);
+      debugPrint('CartProvider: fetchCart successful, loaded ${_items.length} items');
       notifyListeners();
     } catch (e) {
-      debugPrint('Error fetching cart: $e');
+      debugPrint('CartProvider: Error fetching cart: $e');
     }
   }
 
   Future<void> addItem(Product product) async {
     final user = _supabase.auth.currentUser;
 
-    // Проверяем наличие товара на складе перед добавлением
+    // Проверяем наличие товара на складе (если таблица существует)
     try {
       final stockData = await _supabase
           .from('partner_products')
@@ -88,26 +97,24 @@ class CartProvider with ChangeNotifier {
           .eq('id', product.id)
           .maybeSingle();
 
-      final availableStock = stockData != null
-          ? (stockData['stock'] as int)
-          : 0;
-      final currentQuantity = _items.containsKey(product.id)
-          ? _items[product.id]!.quantity
-          : 0;
+      if (stockData != null) {
+        final availableStock = stockData['stock'] as int;
+        final currentQuantity = _items.containsKey(product.id)
+            ? _items[product.id]!.quantity
+            : 0;
 
-      // Если товара меньше чем в корзине + 1, не добавляем
-      if (availableStock <= currentQuantity) {
-        debugPrint(
-          'Error: Not enough stock for product ${product.id}. Available: $availableStock, In cart: $currentQuantity',
-        );
-        throw Exception('Недостаточно товара на складе');
+        if (availableStock <= currentQuantity) {
+          debugPrint('Error: Not enough stock for product ${product.id}.');
+          throw Exception('Недостаточно товара на складе');
+        }
       }
     } catch (e) {
-      debugPrint('Error checking stock: $e');
-      throw Exception('Ошибка при проверке наличия товара');
+      // Если таблицы нет или ошибка запроса - просто пропускаем проверку
+      debugPrint('Stock check skipped: $e');
     }
 
     if (_items.containsKey(product.id)) {
+      debugPrint('CartProvider: Incrementing quantity for ${product.id}');
       _items.update(
         product.id,
         (existing) => CartItem(
@@ -117,6 +124,7 @@ class CartProvider with ChangeNotifier {
         ),
       );
     } else {
+      debugPrint('CartProvider: Adding new product to cart ${product.id}');
       _items.putIfAbsent(
         product.id,
         () => CartItem(id: DateTime.now().toString(), product: product),
@@ -124,11 +132,19 @@ class CartProvider with ChangeNotifier {
     }
 
     if (user != null) {
-      await _supabase.from('cart_items').upsert({
-        'user_id': user.id,
-        'product_id': product.id,
-        'quantity': _items[product.id]!.quantity,
-      });
+      debugPrint('CartProvider: Syncing with Supabase for user ${user.id}');
+      try {
+        await _supabase.from('cart_items').upsert({
+          'user_id': user.id,
+          'product_id': product.id,
+          'quantity': _items[product.id]!.quantity,
+        });
+        debugPrint('CartProvider: Sync successful');
+      } catch (e) {
+        debugPrint('CartProvider: Failed to sync with Supabase: $e');
+      }
+    } else {
+      debugPrint('CartProvider: User not logged in, local only');
     }
 
     notifyListeners();

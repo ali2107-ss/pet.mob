@@ -26,12 +26,13 @@ class FavoriteProvider with ChangeNotifier {
     if (user == null) return;
 
     try {
+      debugPrint('FavoriteProvider: Fetching favorites for ${user.id}');
       final data = await _supabase
           .from('favorites')
           .select('product_id')
           .eq('user_id', user.id);
 
-      _items.clear();
+      final Map<String, Product> newItems = {};
       for (var row in data) {
         final productId = row['product_id'] as String;
         final product = allProducts.firstWhere(
@@ -39,12 +40,16 @@ class FavoriteProvider with ChangeNotifier {
           orElse: () => Product(id: productId, name: 'Unknown', description: '', price: 0, category: '', imageUrl: ''),
         );
         if (product.name != 'Unknown') {
-          _items[productId] = product;
+          newItems[productId] = product;
         }
       }
+      
+      _items.clear();
+      _items.addAll(newItems);
+      debugPrint('FavoriteProvider: Loaded ${_items.length} favorites');
       notifyListeners();
     } catch (e) {
-      debugPrint('Error fetching favorites: $e');
+      debugPrint('FavoriteProvider: Error fetching favorites: $e');
     }
   }
 
