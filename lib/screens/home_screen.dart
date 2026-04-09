@@ -130,10 +130,10 @@ class _HomeScreenState extends State<HomeScreen>
                     children: [
                       Text(
                         '${t['hello_user']!}, ${auth.userName} 👋',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: AppTheme.textColor,
+                          color: Theme.of(context).textTheme.bodyLarge?.color,
                         ),
                       ),
                       Row(
@@ -203,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen>
             child: Container(
               margin: const EdgeInsets.only(right: 16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).cardTheme.color ?? Colors.white,
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
@@ -214,9 +214,9 @@ class _HomeScreenState extends State<HomeScreen>
                 ],
               ),
               child: IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.shopping_bag_outlined,
-                  color: AppTheme.textColor,
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
                 ),
                 onPressed: () {
                   Navigator.of(
@@ -431,7 +431,7 @@ class _HomeScreenState extends State<HomeScreen>
                                   decoration: BoxDecoration(
                                     color: isSelected
                                         ? AppTheme.primaryColor
-                                        : Colors.white,
+                                        : (Theme.of(context).cardTheme.color ?? Colors.white),
                                     borderRadius: BorderRadius.circular(20),
                                     boxShadow: [
                                       BoxShadow(

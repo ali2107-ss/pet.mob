@@ -4,6 +4,7 @@ import '../theme.dart';
 import '../l10n/translation.dart';
 import '../providers/locale_provider.dart';
 import '../providers/auth_provider.dart';
+import '../providers/theme_provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -14,7 +15,6 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _notificationsEnabled = true;
-  bool _darkModeEnabled = false;
 
   void _showLanguageSelector(
     BuildContext context,
@@ -80,19 +80,71 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  void _showPasswordDialog(BuildContext context) {
+    final passController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Смена пароля'),
+        content: TextField(
+          controller: passController,
+          obscureText: true,
+          decoration: const InputDecoration(labelText: 'Новый пароль'),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Отмена')),
+          TextButton(
+            onPressed: () async {
+              if (passController.text.length < 6) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Пароль должен быть не менее 6 символов')),
+                );
+                return;
+              }
+              await context.read<AuthProvider>().updatePassword(passController.text);
+              Navigator.pop(ctx);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Пароль успешно изменен')),
+              );
+            },
+            child: const Text('Сохранить'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showPrivacyPolicy(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Политика конфиденциальности'),
+        content: const SingleChildScrollView(
+          child: Text(
+            '1. Сбор данных: Мы собираем только те данные, которые необходимы для работы приложения: имя, телефон и адрес доставки.\n\n'
+            '2. Использование: Данные используются исключительно для обработки ваших заказов и улучшения сервиса.\n\n'
+            '3. Защита: Мы используем современные методы шифрования для защиты вашей информации. Ваши данные не передаются третьим лицам.\n\n'
+            '4. Ваши права: Вы можете в любой момент изменить или удалить свои данные в настройках профиля.',
+          ),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Понятно')),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final localeProvider = Provider.of<LocaleProvider>(context);
+    final themeProvider = Provider.of<ThemeProvider>(context);
     final langCode = localeProvider.locale.languageCode;
-    final t =
-        AppTranslation.translations[langCode] ??
-        AppTranslation.translations['ru']!;
+    final t = AppTranslation.translations[langCode] ?? AppTranslation.translations['ru']!;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(t['settings'] ?? 'Настройки'),
         centerTitle: true,
-        backgroundColor: Colors.transparent,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
@@ -213,7 +265,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
             const SizedBox(height: 32),
-            // Секция языка и внешнего вида
+            // Секция внешнего вида
             Text(
               t['appearance'] ?? 'Внешний вид',
               style: const TextStyle(
@@ -299,12 +351,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
                 trailing: Switch(
-                  value: _darkModeEnabled,
+                  value: themeProvider.isDarkMode,
                   activeColor: AppTheme.primaryColor,
                   onChanged: (value) {
-                    setState(() {
-                      _darkModeEnabled = value;
-                    });
+                    themeProvider.toggleTheme(value);
                   },
                 ),
               ),
@@ -322,7 +372,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             const SizedBox(height: 16),
             Container(
-              margin: const EdgeInsets.only(bottom: 16),
               decoration: BoxDecoration(
                 color: Theme.of(context).cardTheme.color ?? Colors.white,
                 borderRadius: BorderRadius.circular(16),
@@ -358,58 +407,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Icons.chevron_right,
                   color: AppTheme.greyColor,
                 ),
-                onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Функция будет реализована позже'),
-                    ),
-                  );
-                },
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardTheme.color ?? Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.04),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: ListTile(
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 8,
-                ),
-                leading: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: AppTheme.primaryColor.withOpacity(0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.fingerprint,
-                    color: AppTheme.primaryColor,
-                  ),
-                ),
-                title: const Text(
-                  'Двухфакторная аутентификация',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                ),
-                trailing: Switch(
-                  value: false,
-                  activeColor: AppTheme.primaryColor,
-                  onChanged: (value) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Функция будет реализована позже'),
-                      ),
-                    );
-                  },
-                ),
+                onTap: () => _showPasswordDialog(context),
               ),
             ),
             const SizedBox(height: 32),
@@ -498,13 +496,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Icons.chevron_right,
                   color: AppTheme.greyColor,
                 ),
-                onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Открытие политики конфиденциальности'),
-                    ),
-                  );
-                },
+                onTap: () => _showPrivacyPolicy(context),
               ),
             ),
             const SizedBox(height: 32),

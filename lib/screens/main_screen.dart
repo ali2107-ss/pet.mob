@@ -37,10 +37,10 @@ class _MainScreenState extends State<MainScreen> {
 
     return Stack(
       children: [
-        Container(color: Colors.white), // Базовый белый фон
+        Container(color: Theme.of(context).scaffoldBackgroundColor), // Фон зависит от темы
         Positioned.fill(
           child: Opacity(
-            opacity: 0.25, // Increased visibility
+            opacity: 0.25,
             child: Image.asset(
               'assets/images/pet_background.png',
               fit: BoxFit.cover,
@@ -54,7 +54,7 @@ class _MainScreenState extends State<MainScreen> {
             children: _screens,
           ),
           bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: Colors.white.withOpacity(0.9), // Slightly opaque for readability
+            backgroundColor: Theme.of(context).cardTheme.color?.withValues(alpha: 0.9) ?? Colors.white.withValues(alpha: 0.9),
             currentIndex: _currentIndex,
             onTap: (index) {
               setState(() {

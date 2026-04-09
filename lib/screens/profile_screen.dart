@@ -164,10 +164,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: 16),
               Text(
                 authProvider.userName,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.textColor,
+                  color: Theme.of(context).textTheme.titleLarge?.color,
                 ),
               ),
               const SizedBox(height: 4),
@@ -180,16 +180,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 authProvider.userPhone,
                 style: TextStyle(fontSize: 14, color: AppTheme.greyColor),
               ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.accentColor,
-                  foregroundColor: AppTheme.primaryColor,
-                  minimumSize: const Size(double.infinity, 50),
-                ),
-                child: Text(t['edit_profile']!),
-              ),
+              const SizedBox(height: 16),
             ],
 
             const SizedBox(height: 32),
@@ -340,10 +331,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     required IconData icon,
     required String title,
     required VoidCallback onTap,
-    Color textColor = AppTheme.textColor,
+    Color? textColor,
     Color iconColor = AppTheme.primaryColor,
     bool showChevron = true,
   }) {
+    final effectiveTextColor = textColor ?? Theme.of(context).textTheme.bodyLarge?.color ?? AppTheme.textColor;
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
@@ -372,7 +364,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: textColor,
+            color: effectiveTextColor,
           ),
         ),
         trailing: showChevron

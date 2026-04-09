@@ -3,6 +3,9 @@ import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
 import '../providers/order_provider.dart';
 import '../providers/partner_provider.dart';
+import '../providers/address_provider.dart';
+import '../providers/payment_method_provider.dart';
+import 'main_screen.dart';
 import '../theme.dart';
 
 class CheckoutScreen extends StatefulWidget {
@@ -13,7 +16,13 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
+  static const List<String> _kazakhstanCities = [
+    'Алматы', 'Астана', 'Шымкент', 'Караганда', 'Актобе', 'Тараз', 'Павлодар', 
+    'Усть-Каменогорск', 'Семей', 'Атырау', 'Костанай', 'Кызылорда', 'Уральск', 
+    'Петропавловск', 'Туркестан', 'Актау', 'Темиртау', 'Талдыкорган', 'Экибастуз', 'Рудный'
+  ];
   int _currentStep = 0;
+  String _selectedCity = 'Алматы';
   final _addressController = TextEditingController();
   final _phoneController = TextEditingController(text: '+7 ');
   final _commentController = TextEditingController();
@@ -32,9 +41,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final cart = Provider.of<CartProvider>(context);
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         title: const Text('Оформление заказа'),
         centerTitle: true,
       ),
@@ -182,6 +189,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   Widget _buildAddressStep() {
+    final addressProvider = Provider.of<AddressProvider>(context);
+    final addresses = addressProvider.addresses;
+
     return SingleChildScrollView(
       key: const ValueKey('address'),
       padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -192,15 +202,63 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             'Адрес доставки',
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
+          const SizedBox(height: 16),
+          if (addresses.isNotEmpty) ...[
+            const Text('Выберите сохраненный адрес:', style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 12),
+            ...addresses.map((addr) => GestureDetector(
+              onTap: () {
+                setState(() {
+                  _selectedCity = addr.city;
+                  _addressController.text = '${addr.street}, ${addr.house}-${addr.apartment}';
+                });
+              },
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 8),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: _addressController.text.contains(addr.street) ? AppTheme.primaryColor.withOpacity(0.1) : (Theme.of(context).cardTheme.color ?? Colors.white),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: _addressController.text.contains(addr.street) ? AppTheme.primaryColor : Colors.grey.withOpacity(0.2)),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.location_on, color: _addressController.text.contains(addr.street) ? AppTheme.primaryColor : Colors.grey),
+                    const SizedBox(width: 12),
+                    Expanded(child: Text('${addr.title} (${addr.city})', style: const TextStyle(fontWeight: FontWeight.bold))),
+                  ],
+                ),
+              ),
+            )),
+            const SizedBox(height: 16),
+          ],
+          const Text('Город Казахстана', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
           const SizedBox(height: 8),
-          const Text(
-            'Введите адрес, куда доставить заказ',
-            style: TextStyle(color: AppTheme.greyColor),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            decoration: BoxDecoration(
+              color: (Theme.of(context).cardTheme.color ?? Colors.white).withValues(alpha: 0.9),
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 10, offset: const Offset(0, 4)),
+              ],
+            ),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                value: _selectedCity,
+                isExpanded: true,
+                items: _kazakhstanCities.map((city) => DropdownMenuItem(
+                  value: city,
+                  child: Text(city),
+                )).toList(),
+                onChanged: (val) => setState(() => _selectedCity = val!),
+              ),
+            ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
           _buildTextField(
             controller: _addressController,
-            label: 'Адрес',
+            label: 'Улица, дом, квартира',
             hint: 'например: ул. Абая, 52, кв. 10',
             icon: Icons.location_on_outlined,
             maxLines: 2,
@@ -213,43 +271,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             icon: Icons.phone_outlined,
             keyboardType: TextInputType.phone,
           ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _commentController,
-            label: 'Комментарий к заказу (необязательно)',
-            hint: 'Код, этаж, и т.д.',
-            icon: Icons.comment_outlined,
-            maxLines: 2,
-          ),
           const SizedBox(height: 24),
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: AppTheme.accentColor,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: const Row(
-              children: [
-                Icon(Icons.local_shipping_outlined, color: AppTheme.primaryColor),
-                SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Бесплатная доставка', style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primaryColor)),
-                      Text('При заказе от ₸5000', style: TextStyle(fontSize: 12, color: AppTheme.greyColor)),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );
   }
 
   Widget _buildPaymentStep() {
+    final paymentProvider = Provider.of<PaymentMethodProvider>(context);
+    final cards = paymentProvider.cards;
+
     return SingleChildScrollView(
       key: const ValueKey('payment'),
       padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -260,17 +291,23 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             'Способ оплаты',
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 8),
-          const Text(
-            'Выберите удобный способ оплаты',
-            style: TextStyle(color: AppTheme.greyColor),
-          ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
+          if (cards.isNotEmpty) ...[
+            const Text('Ваши карты:', style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 12),
+            ...cards.map((card) => _buildPaymentOption(
+              'card_${card.id}',
+              'Карта **** ${card.lastFour}',
+              card.cardHolder,
+              Icons.credit_card,
+            )),
+            const SizedBox(height: 16),
+          ],
           _buildPaymentOption(
             'card',
-            'Банковская карта',
+            'Новая карта',
             'Visa / Mastercard',
-            Icons.credit_card,
+            Icons.add_card,
           ),
           const SizedBox(height: 12),
           _buildPaymentOption(
@@ -379,7 +416,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           _buildSummaryCard(
             icon: Icons.location_on,
             title: 'Адрес',
-            value: _addressController.text.isEmpty ? 'Не указан' : _addressController.text,
+            value: _addressController.text.isEmpty 
+              ? 'Не указан' 
+              : '$_selectedCity, ${_addressController.text}',
           ),
           const SizedBox(height: 12),
           _buildSummaryCard(
@@ -582,8 +621,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.of(ctx).pop(); // close dialog
-                    Navigator.of(context).pop(); // back to cart
-                    Navigator.of(context).pop(); // back to main
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => const MainScreen()),
+                      (route) => false,
+                    );
                   },
                   child: const Text('На главную'),
                 ),

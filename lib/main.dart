@@ -8,6 +8,9 @@ import 'providers/locale_provider.dart';
 import 'providers/order_provider.dart';
 import 'providers/auth_provider.dart';
 import 'providers/partner_provider.dart';
+import 'providers/address_provider.dart';
+import 'providers/payment_method_provider.dart';
+import 'providers/theme_provider.dart';
 import 'screens/main_screen.dart';
 import 'theme.dart';
 
@@ -38,20 +41,39 @@ class PetMobApp extends StatelessWidget {
             return product;
           },
         ),
-        ChangeNotifierProvider(create: (_) => CartProvider()),
-        ChangeNotifierProvider(create: (_) => FavoriteProvider()),
         ChangeNotifierProvider(create: (_) => LocaleProvider()),
         ChangeNotifierProvider(create: (_) => OrderProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => AddressProvider()),
+        ChangeNotifierProvider(create: (_) => PaymentMethodProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProxyProvider<ProductProvider, CartProvider>(
+          create: (_) => CartProvider(),
+          update: (_, productProvider, cart) {
+            if (productProvider.items.isNotEmpty) {
+              cart!.fetchCart(productProvider.items);
+            }
+            return cart!;
+          },
+        ),
+        ChangeNotifierProxyProvider<ProductProvider, FavoriteProvider>(
+          create: (_) => FavoriteProvider(),
+          update: (_, productProvider, favorite) {
+            if (productProvider.items.isNotEmpty) {
+              favorite!.fetchFavorites(productProvider.items);
+            }
+            return favorite!;
+          },
+        ),
       ],
-      child: Consumer<LocaleProvider>(
-        builder: (context, localeProvider, child) {
+      child: Consumer2<LocaleProvider, ThemeProvider>(
+        builder: (context, localeProvider, themeProvider, child) {
           return MaterialApp(
             title: 'ЗооМаг Казахстан',
             debugShowCheckedModeBanner: false,
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
-            themeMode: ThemeMode.system,
+            themeMode: themeProvider.themeMode,
             home: const MainScreen(),
           );
         },

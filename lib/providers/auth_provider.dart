@@ -79,4 +79,11 @@ class AuthProvider with ChangeNotifier {
     
     notifyListeners();
   }
+
+  /// Обновление пароля
+  Future<void> updatePassword(String newPassword) async {
+    await _supabase.auth.updateUser(
+      UserAttributes(password: newPassword),
+    );
+  }
 }
