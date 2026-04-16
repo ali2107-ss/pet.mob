@@ -3,8 +3,10 @@ import 'package:provider/provider.dart';
 import '../models/product.dart';
 import '../widgets/network_or_base64_image.dart';
 import '../providers/cart_provider.dart';
+import '../providers/auth_provider.dart';
 import '../theme.dart';
 import 'checkout_screen.dart';
+import 'auth/login_screen.dart';
 
 class CartScreen extends StatefulWidget {
   final bool isRoot;
@@ -172,6 +174,34 @@ class _CartScreenState extends State<CartScreen> {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
+                              final authProvider = Provider.of<AuthProvider>(context, listen: false);
+                              if (!authProvider.isLoggedIn) {
+                                showDialog(
+                                  context: context,
+                                  builder: (ctx) => AlertDialog(
+                                    title: const Text('Требуется авторизация'),
+                                    content: const Text('Вам необходимо войти или зарегистрироваться для оформления заказа.'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.of(ctx).pop(),
+                                        child: const Text('Отмена'),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.of(ctx).pop();
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (_) => const LoginScreen(),
+                                            ),
+                                          );
+                                        },
+                                        child: const Text('Войти'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                                return;
+                              }
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (_) => const CheckoutScreen(),
