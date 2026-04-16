@@ -10,13 +10,19 @@ class LocaleProvider with ChangeNotifier {
     _loadSavedLocale();
   }
 
-  void _loadSavedLocale() async {
+  Future<void> _loadSavedLocale() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       if (prefs.containsKey('language_code')) {
         final languageCode = prefs.getString('language_code');
         if (languageCode != null) {
-          _locale = Locale(languageCode);
+          // Казахский язык убран из выбора — откатываем на русский
+          if (languageCode == 'kk') {
+            _locale = const Locale('ru');
+            await prefs.setString('language_code', 'ru');
+          } else {
+            _locale = Locale(languageCode);
+          }
           notifyListeners();
         }
       }

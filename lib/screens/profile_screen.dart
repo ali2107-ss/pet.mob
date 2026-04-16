@@ -60,16 +60,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
               ),
               ListTile(
-                title: Text(t['kk_lang']!),
-                trailing: langCode == 'kk'
-                    ? const Icon(Icons.check, color: AppTheme.primaryColor)
-                    : null,
-                onTap: () {
-                  localeProvider.setLocale(const Locale('kk'));
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
                 title: Text(t['en_lang']!),
                 trailing: langCode == 'en'
                     ? const Icon(Icons.check, color: AppTheme.primaryColor)

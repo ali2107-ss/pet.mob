@@ -35,10 +35,10 @@ class _HomeScreenState extends State<HomeScreen>
   // Base keys instead of hardcoded localized strings
   final List<Map<String, dynamic>> _categories = [
     {'key': 'Барлығы', 'locale_key': 'see_all', 'icon': Icons.pets},
-    {'key': 'Тамақ', 'locale_key': 'cat_food', 'icon': Icons.restaurant},
-    {'key': 'Ойыншықтар', 'locale_key': 'cat_toys', 'icon': Icons.toys},
+    {'key': 'Корма', 'locale_key': 'cat_food', 'icon': Icons.restaurant},
+    {'key': 'Игрушки', 'locale_key': 'cat_toys', 'icon': Icons.toys},
     {
-      'key': 'Аксессуарлар',
+      'key': 'Аксессуары',
       'locale_key': 'cat_accessories',
       'icon': Icons.content_cut,
     },
@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen>
       'locale_key': 'cat_hygiene',
       'icon': Icons.cleaning_services,
     },
-    {'key': 'Киімдер', 'locale_key': 'cat_clothes', 'icon': Icons.checkroom},
+    {'key': 'Одежда', 'locale_key': 'cat_clothes', 'icon': Icons.checkroom},
   ];
 
   String _searchQuery = '';
@@ -1258,12 +1258,23 @@ class _FilterDialogContentState extends State<_FilterDialogContent> {
 
   Widget _buildCategoryChips() {
     final categories = [
-      'Тамақ',
-      'Ойыншықтар',
-      'Аксессуарлар',
+      'Корма',
+      'Игрушки',
+      'Аксессуары',
       'Гигиена',
-      'Киімдер',
+      'Одежда',
     ];
+
+    String getDisplayName(String cat) {
+      switch (cat) {
+        case 'Корма': return widget.t['cat_food'] ?? cat;
+        case 'Игрушки': return widget.t['cat_toys'] ?? cat;
+        case 'Аксессуары': return widget.t['cat_accessories'] ?? cat;
+        case 'Гигиена': return widget.t['cat_hygiene'] ?? cat;
+        case 'Одежда': return widget.t['cat_clothes'] ?? cat;
+        default: return cat;
+      }
+    }
 
     return Wrap(
       spacing: 8,
@@ -1271,7 +1282,7 @@ class _FilterDialogContentState extends State<_FilterDialogContent> {
       children: categories.map((category) {
         final isSelected = selectedCategories.contains(category);
         return FilterChip(
-          label: Text(category),
+          label: Text(getDisplayName(category)),
           selected: isSelected,
           onSelected: (selected) {
             setState(() {

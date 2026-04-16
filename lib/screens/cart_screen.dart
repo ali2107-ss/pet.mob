@@ -5,6 +5,9 @@ import '../widgets/network_or_base64_image.dart';
 import '../providers/cart_provider.dart';
 import '../providers/auth_provider.dart';
 import '../theme.dart';
+import '../theme.dart';
+import '../l10n/translation.dart';
+import '../providers/locale_provider.dart';
 import 'checkout_screen.dart';
 import 'auth/login_screen.dart';
 
@@ -17,17 +20,17 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  void _confirmClearCart(CartProvider cart) {
+  void _confirmClearCart(CartProvider cart, Map<String, String> t) {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('Очистить корзину?'),
-        content: Text('Удалить все ${cart.itemCount} товар(ов) из корзины?'),
+        title: Text(t['clear_cart_title'] ?? 'Очистить корзину?'),
+        content: Text('${t['delete_all']} ${cart.itemCount} ${t['items_from_cart']}'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('Отмена'),
+            child: Text(t['cancel'] ?? 'Отмена'),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
@@ -36,14 +39,14 @@ class _CartScreenState extends State<CartScreen> {
               cart.clear();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: const Text('Корзина очищена'),
+                  content: Text(t['cart_cleared'] ?? 'Корзина очищена'),
                   behavior: SnackBarBehavior.floating,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   duration: const Duration(seconds: 3),
                 ),
               );
             },
-            child: const Text('Очистить', style: TextStyle(color: Colors.white)),
+            child: Text(t['clear'] ?? 'Очистить', style: const TextStyle(color: Colors.white)),
           ),
         ],
       ),
@@ -53,19 +56,22 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<CartProvider>(context);
+    final localeProvider = Provider.of<LocaleProvider>(context);
+    final langCode = localeProvider.locale.languageCode;
+    final t = AppTranslation.translations[langCode] ?? AppTranslation.translations['ru']!;
 
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Text(cart.items.isEmpty ? 'Корзина' : 'Корзина (${cart.itemCount})'),
+        title: Text(cart.items.isEmpty ? (t['cart'] ?? 'Корзина') : '${t['cart'] ?? 'Корзина'} (${cart.itemCount})'),
         automaticallyImplyLeading: !widget.isRoot,
         actions: [
           if (cart.items.isNotEmpty)
             IconButton(
               icon: const Icon(Icons.delete_sweep_outlined),
-              tooltip: 'Очистить корзину',
-              onPressed: () => _confirmClearCart(cart),
+              tooltip: t['clear_cart_title'] ?? 'Очистить корзину',
+              onPressed: () => _confirmClearCart(cart, t),
             ),
         ],
       ),
@@ -80,14 +86,14 @@ class _CartScreenState extends State<CartScreen> {
                     color: AppTheme.greyColor.withValues(alpha: 0.5),
                   ),
                   const SizedBox(height: 16),
-                  const Text(
-                    'Ваша корзина пуста',
-                    style: TextStyle(fontSize: 18, color: AppTheme.greyColor),
+                  Text(
+                    t['empty_cart'] ?? 'Ваша корзина пуста',
+                    style: const TextStyle(fontSize: 18, color: AppTheme.greyColor),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'Добавьте товары из каталога',
-                    style: TextStyle(fontSize: 14, color: AppTheme.greyColor),
+                  Text(
+                    t['add_from_catalog'] ?? 'Добавьте товары из каталога',
+                    style: const TextStyle(fontSize: 14, color: AppTheme.greyColor),
                   ),
                 ],
               ),
@@ -109,7 +115,7 @@ class _CartScreenState extends State<CartScreen> {
                             color: Colors.grey[100],
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          child: const Center(child: Text('Товар не найден')),
+                          child: Center(child: Text(t['product_not_found'] ?? 'Товар не найден')),
                         );
                       }
                       return _CartItemWidget(
@@ -148,7 +154,7 @@ class _CartScreenState extends State<CartScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Итого:',
+                              '${t['total'] ?? 'Итого'}:',
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -208,7 +214,7 @@ class _CartScreenState extends State<CartScreen> {
                                 ),
                               );
                             },
-                            child: const Text('Оформить заказ'),
+                            child: Text(t['checkout'] ?? 'Оформить заказ'),
                           ),
                         ),
                       ],

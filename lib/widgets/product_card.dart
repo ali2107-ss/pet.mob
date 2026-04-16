@@ -200,15 +200,15 @@ class ProductCard extends StatelessWidget {
 
   String _getCategoryKey(String originalCategory) {
     switch (originalCategory) {
-      case 'Тамақ':
+      case 'Корма':
         return 'cat_food';
-      case 'Ойыншықтар':
+      case 'Игрушки':
         return 'cat_toys';
-      case 'Аксессуарлар':
+      case 'Аксессуары':
         return 'cat_accessories';
       case 'Гигиена':
         return 'cat_hygiene';
-      case 'Киімдер':
+      case 'Одежда':
         return 'cat_clothes';
       default:
         return 'see_all';

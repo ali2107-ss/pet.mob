@@ -30,11 +30,11 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         AppTranslation.translations['ru']!;
 
     final categoriesMap = [
-      {'key': 'Тамақ', 'label': t['cat_food']},
-      {'key': 'Ойыншықтар', 'label': t['cat_toys']},
-      {'key': 'Аксессуарлар', 'label': t['cat_accessories']},
+      {'key': 'Корма', 'label': t['cat_food']},
+      {'key': 'Игрушки', 'label': t['cat_toys']},
+      {'key': 'Аксессуары', 'label': t['cat_accessories']},
       {'key': 'Гигиена', 'label': t['cat_hygiene']},
-      {'key': 'Киімдер', 'label': t['cat_clothes']},
+      {'key': 'Одежда', 'label': t['cat_clothes']},
     ];
 
     return Scaffold(

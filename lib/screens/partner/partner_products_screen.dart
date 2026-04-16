@@ -581,19 +581,19 @@ class _ProductFormSheetState extends State<_ProductFormSheet> {
   final List<Map<String, dynamic>> _categories = [
     {
       'name': 'Корм',
-      'key': 'Тамақ',
+      'key': 'Корма',
       'icon': Icons.restaurant,
       'color': Colors.orange,
     },
     {
       'name': 'Игрушки',
-      'key': 'Ойыншықтар',
+      'key': 'Игрушки',
       'icon': Icons.toys,
       'color': Colors.purple,
     },
     {
       'name': 'Аксессуары',
-      'key': 'Аксессуарлар',
+      'key': 'Аксессуары',
       'icon': Icons.pets,
       'color': Colors.blue,
     },
@@ -605,7 +605,7 @@ class _ProductFormSheetState extends State<_ProductFormSheet> {
     },
     {
       'name': 'Одежда',
-      'key': 'Киімдер',
+      'key': 'Одежда',
       'icon': Icons.checkroom,
       'color': Colors.pink,
     },
@@ -637,7 +637,7 @@ class _ProductFormSheetState extends State<_ProductFormSheet> {
     _stockController = TextEditingController(
       text: widget.product?.stock.toString() ?? '',
     );
-    _selectedCategory = widget.product?.category ?? 'Тамақ';
+    _selectedCategory = widget.product?.category ?? 'Корма';
   }
 
   @override
