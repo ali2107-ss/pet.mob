@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/partner_provider.dart';
 import '../../theme.dart';
+import '../../widgets/network_or_base64_image.dart';
 
 class PartnerDashboardScreen extends StatelessWidget {
   const PartnerDashboardScreen({super.key});
@@ -410,8 +411,9 @@ class _ProductAnalyticsCard extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(14),
-                child: Image.network(product.imageUrl, width: 60, height: 60, fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Container(width: 60, height: 60, color: Colors.grey[200])),
+                child: NetworkOrBase64Image(
+                    imageUrl: product.imageUrl, width: 60, height: 60, fit: BoxFit.cover,
+                    errorWidget: Container(width: 60, height: 60, color: Colors.grey[200])),
               ),
               if (!product.isActive)
                 Positioned.fill(

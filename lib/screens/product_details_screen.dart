@@ -8,6 +8,7 @@ import 'cart_screen.dart';
 import 'package:badges/badges.dart' as badges;
 import '../l10n/translation.dart';
 import '../providers/locale_provider.dart';
+import '../widgets/network_or_base64_image.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final Product product;
@@ -71,20 +72,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                   Hero(
                     tag:
                         '${widget.heroPrefix}product_image_${widget.product.id}',
-                    child: FadeInImage.assetNetwork(
-                      placeholder: 'assets/images/pet_background.png',
-                      image: widget.product.imageUrl,
+                    child: NetworkOrBase64Image(
+                      imageUrl: widget.product.imageUrl,
                       fit: BoxFit.cover,
-                      imageErrorBuilder: (context, error, stackTrace) =>
-                          Container(
-                            color: Colors.grey[200],
-                            alignment: Alignment.center,
-                            child: const Icon(
-                              Icons.image_not_supported,
-                              size: 56,
-                              color: Colors.grey,
-                            ),
-                          ),
+                      errorWidget: Container(
+                        color: Colors.grey[200],
+                        alignment: Alignment.center,
+                        child: const Icon(
+                          Icons.image_not_supported,
+                          size: 56,
+                          color: Colors.grey,
+                        ),
+                      ),
                     ),
                   ),
                   const DecoratedBox(

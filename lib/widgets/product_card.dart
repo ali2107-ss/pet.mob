@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/product.dart';
@@ -53,22 +54,46 @@ class ProductCard extends StatelessWidget {
                     ),
                     child: Hero(
                       tag: '${heroPrefix}product_image_${product.id}',
-                      child: FadeInImage.assetNetwork(
-                        placeholder: 'assets/images/pet_background.png',
-                        image: product.imageUrl,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        imageErrorBuilder: (context, error, stackTrace) =>
-                            Container(
-                              color: Colors.grey[200],
-                              alignment: Alignment.center,
-                              child: const Icon(
-                                Icons.image_not_supported,
-                                size: 40,
-                                color: Colors.grey,
-                              ),
+                    child: Builder(
+                      builder: (context) {
+                        Widget errorBuilder(BuildContext ctx, Object err, StackTrace? st) {
+                          return Container(
+                            color: Colors.grey[200],
+                            alignment: Alignment.center,
+                            child: const Icon(
+                              Icons.image_not_supported,
+                              size: 40,
+                              color: Colors.grey,
                             ),
-                      ),
+                          );
+                        }
+
+                        if (product.imageUrl.startsWith('data:image')) {
+                          try {
+                            final parts = product.imageUrl.split(',');
+                            if (parts.length > 1) {
+                              return FadeInImage(
+                                placeholder: const AssetImage('assets/images/pet_background.png'),
+                                image: MemoryImage(base64Decode(parts[1].replaceAll(RegExp(r'\s+'), ''))),
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                                imageErrorBuilder: errorBuilder,
+                              );
+                            }
+                          } catch (e) {
+                            // fall through to error handling
+                          }
+                        }
+
+                        return FadeInImage.assetNetwork(
+                          placeholder: 'assets/images/pet_background.png',
+                          image: product.imageUrl,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          imageErrorBuilder: errorBuilder,
+                        );
+                      },
+                    ),
                     ),
                   ),
                   Positioned(

@@ -10,10 +10,12 @@ import '../theme.dart';
 import 'package:badges/badges.dart' as badges;
 import '../providers/locale_provider.dart';
 import '../l10n/translation.dart';
-import '../providers/auth_provider.dart';
-import 'package:confetti/confetti.dart';
-import 'package:audioplayers/audioplayers.dart';
+import '../widgets/product_card.dart';
 import 'package:vibration/vibration.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:confetti/confetti.dart';
+import 'dart:convert';
+import '../providers/auth_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -615,7 +617,9 @@ class _HomeScreenState extends State<HomeScreen>
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           image: DecorationImage(
-            image: NetworkImage(imageUrl),
+            image: imageUrl.startsWith('data:image') 
+                ? MemoryImage(base64Decode(imageUrl.split(',').last.replaceAll(RegExp(r'\s+'), ''))) as ImageProvider
+                : NetworkImage(imageUrl),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
               Colors.black.withValues(alpha: 0.4),

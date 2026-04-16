@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme.dart';
+import '../widgets/network_or_base64_image.dart';
 
 class TipDetailScreen extends StatelessWidget {
   final String title;
@@ -286,11 +287,10 @@ Food with Omega-3 and Omega-6 fatty acids makes coats shiny. Consider adding fis
               background: Stack(
                 fit: StackFit.expand,
                 children: [
-                  Image.network(
-                    imageUrl,
+                  NetworkOrBase64Image(
+                    imageUrl: imageUrl,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) =>
-                        Container(color: Colors.grey[300]),
+                    errorWidget: Container(color: Colors.grey[300]),
                   ),
                   const DecoratedBox(
                     decoration: BoxDecoration(

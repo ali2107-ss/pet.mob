@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/partner_provider.dart';
 import '../../theme.dart';
+import '../../widgets/network_or_base64_image.dart';
 
 class PartnerProductsScreen extends StatefulWidget {
   const PartnerProductsScreen({super.key});
@@ -353,12 +354,12 @@ class _ProductCard extends StatelessWidget {
                     ),
                     child: Stack(
                       children: [
-                        Image.network(
-                          product.imageUrl,
+                        NetworkOrBase64Image(
+                          imageUrl: product.imageUrl,
                           width: 110,
                           height: 110,
                           fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => Container(
+                          errorWidget: Container(
                             width: 110,
                             height: 110,
                             color: Colors.grey[200],

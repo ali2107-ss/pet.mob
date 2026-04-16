@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/order_provider.dart';
 import '../theme.dart';
+import '../widgets/network_or_base64_image.dart';
 
 class OrderHistoryScreen extends StatefulWidget {
   const OrderHistoryScreen({super.key});
@@ -272,10 +273,10 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(8),
                                   child: order.items[j].product != null
-                                      ? Image.network(
-                                          order.items[j].product!.imageUrl,
+                                      ? NetworkOrBase64Image(
+                                          imageUrl: order.items[j].product!.imageUrl,
                                           fit: BoxFit.cover,
-                                          errorBuilder: (c, e, s) => Container(
+                                          errorWidget: Container(
                                             color: Colors.grey[200],
                                           ),
                                         )

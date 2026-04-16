@@ -5,6 +5,7 @@ import '../providers/order_provider.dart';
 import '../providers/partner_provider.dart';
 import '../providers/address_provider.dart';
 import '../providers/payment_method_provider.dart';
+import '../widgets/network_or_base64_image.dart';
 import 'main_screen.dart';
 import '../theme.dart';
 
@@ -551,12 +552,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   if (item.product != null)
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.network(
-                        item.product!.imageUrl,
+                      child: NetworkOrBase64Image(
+                        imageUrl: item.product!.imageUrl,
                         width: 50,
                         height: 50,
                         fit: BoxFit.cover,
-                        errorBuilder: (c, e, s) => Container(
+                        errorWidget: Container(
                           width: 50,
                           height: 50,
                           color: Colors.grey[200],

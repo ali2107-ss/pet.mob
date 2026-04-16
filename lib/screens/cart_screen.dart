@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/product.dart';
+import '../widgets/network_or_base64_image.dart';
 import '../providers/cart_provider.dart';
 import '../theme.dart';
 import 'checkout_screen.dart';
@@ -244,13 +245,12 @@ class _CartItemWidget extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
-              child: Image.network(
-                imageUrl,
+              child: NetworkOrBase64Image(
+                imageUrl: imageUrl,
                 width: 80,
                 height: 80,
                 fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) =>
-                    Container(width: 80, height: 80, color: Colors.grey[200]),
+                errorWidget: Container(width: 80, height: 80, color: Colors.grey[200]),
               ),
             ),
             const SizedBox(width: 16),

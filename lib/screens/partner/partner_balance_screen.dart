@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/partner_provider.dart';
 import '../../theme.dart';
+import '../../widgets/network_or_base64_image.dart';
 
 class PartnerBalanceScreen extends StatelessWidget {
   const PartnerBalanceScreen({super.key});
@@ -309,8 +310,12 @@ class _IncomeRow extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: Image.network(product.imageUrl, width: 48, height: 48, fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(width: 48, height: 48, color: Colors.grey[200])),
+            child: NetworkOrBase64Image(
+                imageUrl: product.imageUrl,
+                width: 48,
+                height: 48,
+                fit: BoxFit.cover,
+                errorWidget: Container(width: 48, height: 48, color: Colors.grey[200])),
           ),
           const SizedBox(width: 12),
           Expanded(
