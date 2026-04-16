@@ -15,12 +15,13 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLoading = false;
 
   Future<void> _login() async {
-    if (_emailController.text.trim().isEmpty || _passwordController.text.trim().isEmpty) return;
+    if (!(_formKey.currentState?.validate() ?? false)) return;
 
     setState(() => _isLoading = true);
     try {
@@ -113,10 +114,12 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
                   Icons.pets,
                   size: 80,
                   color: Colors.blue,
@@ -130,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 48),
-                TextField(
+                TextFormField(
                   controller: _emailController,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
@@ -141,12 +144,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   keyboardType: TextInputType.emailAddress,
+                  validator: (val) => val == null || val.trim().isEmpty ? t['enter_email'] ?? 'Введите email' : null,
                 ),
                 const SizedBox(height: 16),
-                TextField(
+                TextFormField(
                   controller: _passwordController,
                   textInputAction: TextInputAction.done,
-                  onSubmitted: (_) => _login(),
+                  onFieldSubmitted: (_) => _login(),
                   decoration: InputDecoration(
                     labelText: t['password']!,
                     prefixIcon: const Icon(Icons.lock),
@@ -155,6 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   obscureText: true,
+                  validator: (val) => val == null || val.trim().isEmpty ? 'Введите пароль' : null,
                 ),
                 const SizedBox(height: 24),
                 SizedBox(
@@ -184,10 +189,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ],
-            ),
-          ),
+            ), // Closes Column
+          ), // Closes Form
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

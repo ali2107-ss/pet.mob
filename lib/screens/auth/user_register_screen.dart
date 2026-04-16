@@ -162,6 +162,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
               const SizedBox(height: 32),
               TextFormField(
                 controller: _nameController,
+                textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
                   labelText: t['full_name']!,
                   prefixIcon: const Icon(Icons.person),
@@ -174,6 +175,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: _phoneController,
+                textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
                   labelText: t['phone_number']!,
                   prefixIcon: const Icon(Icons.phone),
@@ -187,6 +189,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: _emailController,
+                textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
                   labelText: t['email']!,
                   prefixIcon: const Icon(Icons.email),
@@ -200,6 +203,8 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: _passwordController,
+                textInputAction: TextInputAction.done,
+                onFieldSubmitted: (_) => _register(t),
                 decoration: InputDecoration(
                   labelText: t['password']!,
                   prefixIcon: const Icon(Icons.lock),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class NetworkOrBase64Image extends StatelessWidget {
   final String imageUrl;
@@ -41,12 +42,18 @@ class NetworkOrBase64Image extends StatelessWidget {
       }
     }
 
-    return Image.network(
-      imageUrl.isNotEmpty ? imageUrl : 'https://via.placeholder.com/150',
+    return CachedNetworkImage(
+      imageUrl: imageUrl.isNotEmpty ? imageUrl : 'https://via.placeholder.com/150',
       width: width,
       height: height,
       fit: fit,
-      errorBuilder: buildError,
+      placeholder: (context, url) => Container(
+        width: width,
+        height: height,
+        color: Colors.grey[200],
+        child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+      ),
+      errorWidget: (context, url, error) => buildError(context, error, null),
     );
   }
 

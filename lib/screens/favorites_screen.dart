@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/favorite_provider.dart';
@@ -7,6 +8,7 @@ import '../widgets/product_card.dart';
 import '../models/product.dart';
 import 'product_details_screen.dart';
 import '../theme.dart';
+import '../widgets/animated_empty_state.dart';
 
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
@@ -18,6 +20,13 @@ class FavoritesScreen extends StatefulWidget {
 class _FavoritesScreenState extends State<FavoritesScreen> {
   String _searchQuery = '';
   String _sortBy = 'default';
+  Timer? _debounce;
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +77,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                         ],
                       ),
                       child: TextField(
-                        onChanged: (value) => setState(() => _searchQuery = value),
+                        onChanged: (value) {
+                          if (_debounce?.isActive ?? false) _debounce!.cancel();
+                          _debounce = Timer(const Duration(milliseconds: 300), () {
+                            setState(() => _searchQuery = value);
+                          });
+                        },
                         decoration: InputDecoration(
                           hintText: t['search_hint'] ?? 'Іздеу...',
                           hintStyle: const TextStyle(color: AppTheme.greyColor, fontSize: 14),
@@ -104,20 +118,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           // Content
           Expanded(
             child: favorites.isEmpty
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.favorite_border, size: 80, color: AppTheme.greyColor.withValues(alpha: 0.5)),
-                        const SizedBox(height: 16),
-                        Text(
-                          favoritesData.items.isEmpty
-                              ? (t['no_favorites'] ?? 'Таңдаулы тізімі бос')
-                              : (t['no_products'] ?? 'Товары не найдены'),
-                          style: const TextStyle(fontSize: 18, color: AppTheme.greyColor),
-                        ),
-                      ],
-                    ),
+                ? AnimatedEmptyState(
+                    icon: Icons.favorite_border,
+                    title: favoritesData.items.isEmpty
+                        ? (t['no_favorites'] ?? 'Список избранного пуст')
+                        : (t['no_products'] ?? 'Товары не найдены'),
+                    subtitle: t['add_from_catalog'] ?? 'Добавьте товары из каталога',
                   )
                 : Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),

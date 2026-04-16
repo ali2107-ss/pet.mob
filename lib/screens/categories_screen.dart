@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/product_provider.dart';
@@ -19,6 +20,13 @@ class CategoriesScreen extends StatefulWidget {
 class _CategoriesScreenState extends State<CategoriesScreen> {
   String _searchQuery = '';
   String _sortBy = 'default'; // default, price_asc, price_desc, rating, name
+  Timer? _debounce;
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +75,12 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       ],
                     ),
                     child: TextField(
-                      onChanged: (value) =>
-                          setState(() => _searchQuery = value),
+                      onChanged: (value) {
+                        if (_debounce?.isActive ?? false) _debounce!.cancel();
+                        _debounce = Timer(const Duration(milliseconds: 300), () {
+                          setState(() => _searchQuery = value);
+                        });
+                      },
                       decoration: InputDecoration(
                         hintText: t['search_hint'] ?? 'Іздеу...',
                         hintStyle: const TextStyle(

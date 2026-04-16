@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/product.dart';
 import '../widgets/network_or_base64_image.dart';
+import '../widgets/animated_empty_state.dart';
 import '../providers/cart_provider.dart';
 import '../providers/auth_provider.dart';
 import '../theme.dart';
@@ -76,27 +77,10 @@ class _CartScreenState extends State<CartScreen> {
         ],
       ),
       body: cart.items.isEmpty
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.shopping_cart_outlined,
-                    size: 80,
-                    color: AppTheme.greyColor.withValues(alpha: 0.5),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    t['empty_cart'] ?? 'Ваша корзина пуста',
-                    style: const TextStyle(fontSize: 18, color: AppTheme.greyColor),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    t['add_from_catalog'] ?? 'Добавьте товары из каталога',
-                    style: const TextStyle(fontSize: 14, color: AppTheme.greyColor),
-                  ),
-                ],
-              ),
+          ? AnimatedEmptyState(
+              icon: Icons.shopping_cart_outlined,
+              title: t['empty_cart'] ?? 'Ваша корзина пуста',
+              subtitle: t['add_from_catalog'] ?? 'Добавьте товары из каталога',
             )
           : Column(
               children: [
