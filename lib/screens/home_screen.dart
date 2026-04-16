@@ -58,6 +58,9 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<ProductProvider>(context, listen: false).fetchProducts();
+    });
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 800),
@@ -519,31 +522,44 @@ class _HomeScreenState extends State<HomeScreen>
           ),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            sliver: displayedProducts.isEmpty
-                ? SliverToBoxAdapter(
+            sliver: productData.isLoading
+                ? const SliverToBoxAdapter(
                     child: Center(
                       child: Padding(
-                        padding: const EdgeInsets.all(40.0),
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.search_off,
-                              size: 64,
-                              color: AppTheme.greyColor.withOpacity(0.5),
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              t['no_products']!,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                color: AppTheme.greyColor,
-                              ),
-                            ),
-                          ],
+                        padding: EdgeInsets.all(40.0),
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            AppTheme.primaryColor,
+                          ),
                         ),
                       ),
                     ),
                   )
+                : displayedProducts.isEmpty
+                    ? SliverToBoxAdapter(
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(40.0),
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.search_off,
+                                  size: 64,
+                                  color: AppTheme.greyColor.withOpacity(0.5),
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  t['no_products']!,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    color: AppTheme.greyColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
                 : SliverGrid(
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(

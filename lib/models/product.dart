@@ -16,4 +16,16 @@ class Product {
     required this.imageUrl,
     this.rating = 0.0,
   });
+
+  factory Product.fromMap(Map<String, dynamic> map) {
+    return Product(
+      id: map['id'] ?? '',
+      name: map['name'] ?? '',
+      description: map['description'] ?? '',
+      price: (map['price'] as num).toDouble(),
+      category: map['category'] ?? '',
+      imageUrl: map['image_url'] ?? '',
+      rating: (map['rating'] as num?)?.toDouble() ?? 0.0,
+    );
+  }
 }
