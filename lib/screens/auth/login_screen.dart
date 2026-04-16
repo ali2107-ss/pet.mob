@@ -132,6 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 48),
                 TextField(
                   controller: _emailController,
+                  textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                     labelText: t['email']!,
                     prefixIcon: const Icon(Icons.email),
@@ -144,6 +145,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 16),
                 TextField(
                   controller: _passwordController,
+                  textInputAction: TextInputAction.done,
+                  onSubmitted: (_) => _login(),
                   decoration: InputDecoration(
                     labelText: t['password']!,
                     prefixIcon: const Icon(Icons.lock),
