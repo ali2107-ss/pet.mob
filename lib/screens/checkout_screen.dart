@@ -4,6 +4,7 @@ import '../providers/cart_provider.dart';
 import '../providers/order_provider.dart';
 import '../providers/partner_provider.dart';
 import '../providers/address_provider.dart';
+import '../providers/auth_provider.dart';
 import '../providers/payment_method_provider.dart';
 import '../widgets/network_or_base64_image.dart';
 import 'main_screen.dart';
@@ -58,6 +59,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     Future.microtask(() {
       Provider.of<AddressProvider>(context, listen: false).fetchAddresses();
       Provider.of<PaymentMethodProvider>(context, listen: false).fetchCards();
+      
+      final auth = Provider.of<AuthProvider>(context, listen: false);
+      if (auth.isLoggedIn) {
+        final phone = auth.userPhone;
+        // Если номер существует и не дефолтный текст
+        if (phone.isNotEmpty && phone != 'Номер не указан') {
+          _phoneController.text = phone;
+        }
+      }
     });
   }
 
@@ -824,6 +834,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         );
         return;
       }
+      
+      // Обновляем номер телефона в профиле БД, если он поменялся
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      if (authProvider.isLoggedIn) {
+        final enteredPhone = _phoneController.text.trim();
+        if (enteredPhone.isNotEmpty && enteredPhone != authProvider.userPhone) {
+          authProvider.updateProfile(phone: enteredPhone);
+        }
+      }
+      
       setState(() => _currentStep = 1);
     } else if (_currentStep == 1) {
       setState(() => _currentStep = 2);
