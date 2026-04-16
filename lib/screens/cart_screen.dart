@@ -5,9 +5,47 @@ import '../providers/cart_provider.dart';
 import '../theme.dart';
 import 'checkout_screen.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   final bool isRoot;
   const CartScreen({super.key, this.isRoot = false});
+
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  void _confirmClearCart(CartProvider cart) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text('Очистить корзину?'),
+        content: Text('Удалить все ${cart.itemCount} товар(ов) из корзины?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Отмена'),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+              cart.clear();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: const Text('Корзина очищена'),
+                  behavior: SnackBarBehavior.floating,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  duration: const Duration(seconds: 3),
+                ),
+              );
+            },
+            child: const Text('Очистить', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +55,16 @@ class CartScreen extends StatelessWidget {
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text('Корзина'),
-        automaticallyImplyLeading: !isRoot,
+        title: Text(cart.items.isEmpty ? 'Корзина' : 'Корзина (${cart.itemCount})'),
+        automaticallyImplyLeading: !widget.isRoot,
+        actions: [
+          if (cart.items.isNotEmpty)
+            IconButton(
+              icon: const Icon(Icons.delete_sweep_outlined),
+              tooltip: 'Очистить корзину',
+              onPressed: () => _confirmClearCart(cart),
+            ),
+        ],
       ),
       body: cart.items.isEmpty
           ? Center(

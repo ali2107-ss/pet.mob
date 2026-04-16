@@ -145,7 +145,9 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                   statusColor = Colors.green;
                 }
 
-                return Container(
+                return GestureDetector(
+                  onTap: () => _showOrderTracking(context, order, status),
+                  child: Container(
                   margin: const EdgeInsets.only(bottom: 16),
                   decoration: BoxDecoration(
                     color: Theme.of(context).cardTheme.color ?? Colors.white,
@@ -294,22 +296,122 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                                 fontSize: 14,
                               ),
                             ),
-                            Text(
-                              '₸${order.totalAmount.toStringAsFixed(0)}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                                color: AppTheme.primaryColor,
-                              ),
+                            Row(
+                              children: [
+                                Text(
+                                  '₸${order.totalAmount.toStringAsFixed(0)}',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    color: AppTheme.primaryColor,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Icon(
+                                  Icons.chevron_right,
+                                  color: AppTheme.greyColor,
+                                  size: 20,
+                                ),
+                              ],
                             ),
                           ],
                         ),
                       ],
                     ),
                   ),
+                ),
                 );
               },
             ),
+    );
+  }
+
+  void _showOrderTracking(BuildContext context, dynamic order, String status) {
+    final steps = [
+      {'title': 'Заказ принят', 'icon': Icons.receipt_long, 'done': true},
+      {'title': 'Подтверждён', 'icon': Icons.check_circle, 'done': status != 'Обработка'},
+      {'title': 'В пути', 'icon': Icons.local_shipping, 'done': status == 'В пути' || status == 'Доставлен'},
+      {'title': 'Доставлен', 'icon': Icons.home, 'done': status == 'Доставлен'},
+    ];
+
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (ctx) => Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Container(
+                width: 40, height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Отслеживание заказа',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              '₸${order.totalAmount.toStringAsFixed(0)} • ${order.items.length} товар(ов)',
+              style: const TextStyle(color: AppTheme.greyColor, fontSize: 14),
+            ),
+            const SizedBox(height: 24),
+            ...List.generate(steps.length, (i) {
+              final step = steps[i];
+              final done = step['done'] as bool;
+              final isLast = i == steps.length - 1;
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                        width: 36, height: 36,
+                        decoration: BoxDecoration(
+                          color: done ? AppTheme.primaryColor : Colors.grey[200],
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          step['icon'] as IconData,
+                          color: done ? Colors.white : Colors.grey,
+                          size: 18,
+                        ),
+                      ),
+                      if (!isLast)
+                        Container(
+                          width: 2, height: 32,
+                          color: done ? AppTheme.primaryColor : Colors.grey[300],
+                        ),
+                    ],
+                  ),
+                  const SizedBox(width: 16),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(
+                      step['title'] as String,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: done ? FontWeight.bold : FontWeight.normal,
+                        color: done ? AppTheme.textColor : AppTheme.greyColor,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            }),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -19,12 +19,15 @@ class FavoriteProvider with ChangeNotifier {
   bool isFavorite(String id) {
     return _items.containsKey(id);
   }
+  bool _isFetching = false;
 
   /// Загрузка избранного из Supabase
   Future<void> fetchFavorites(List<Product> allProducts) async {
+    if (_isFetching) return;
     final user = _supabase.auth.currentUser;
     if (user == null) return;
 
+    _isFetching = true;
     try {
       debugPrint('FavoriteProvider: Fetching favorites for ${user.id}');
       final data = await _supabase
@@ -50,6 +53,8 @@ class FavoriteProvider with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       debugPrint('FavoriteProvider: Error fetching favorites: $e');
+    } finally {
+      _isFetching = false;
     }
   }
 

@@ -45,12 +45,27 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   final _commentController = TextEditingController();
   String _selectedPayment = 'card';
   bool _isLoading = false;
+  final _promoController = TextEditingController();
+  double _discount = 0;
+  String? _promoMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    // Загружаем адреса и карты при открытии чекаута — 
+    // это исправляет баг «через раз» когда данные не загружены
+    Future.microtask(() {
+      Provider.of<AddressProvider>(context, listen: false).fetchAddresses();
+      Provider.of<PaymentMethodProvider>(context, listen: false).fetchCards();
+    });
+  }
 
   @override
   void dispose() {
     _addressController.dispose();
     _phoneController.dispose();
     _commentController.dispose();
+    _promoController.dispose();
     super.dispose();
   }
 
@@ -570,6 +585,92 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             ),
           ),
           const SizedBox(height: 16),
+          // Промокод
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: (Theme.of(context).cardTheme.color ?? Colors.white).withValues(alpha: 0.9),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Промокод', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _promoController,
+                        decoration: InputDecoration(
+                          hintText: 'Введите промокод',
+                          hintStyle: const TextStyle(color: AppTheme.greyColor, fontSize: 14),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          isDense: true,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    ElevatedButton(
+                      onPressed: () {
+                        final code = _promoController.text.trim().toUpperCase();
+                        setState(() {
+                          if (code == 'PETMOB10') {
+                            _discount = 0.1;
+                            _promoMessage = 'Скидка 10% применена! 🎉';
+                          } else if (code == 'PETMOB20') {
+                            _discount = 0.2;
+                            _promoMessage = 'Скидка 20% применена! 🎉';
+                          } else if (code.isNotEmpty) {
+                            _discount = 0;
+                            _promoMessage = 'Промокод не найден';
+                          }
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      ),
+                      child: const Text('Применить'),
+                    ),
+                  ],
+                ),
+                if (_promoMessage != null) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    _promoMessage!,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: _discount > 0 ? Colors.green : Colors.red,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          // Итого
+          if (_discount > 0) ...[
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.green.withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Скидка:', style: TextStyle(fontSize: 16, color: Colors.green)),
+                  Text(
+                    '-₸${(cart.totalAmount * _discount).toStringAsFixed(0)}',
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.green),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 8),
+          ],
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -584,7 +685,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  '₸${cart.totalAmount.toStringAsFixed(0)}',
+                  '₸${(cart.totalAmount * (1 - _discount)).toStringAsFixed(0)}',
                   style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -748,10 +849,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           }
         }
 
-        // Создаём заказ
+        // Создаём заказ (с учётом скидки по промокоду)
+        final discountedTotal = cart.totalAmount * (1 - _discount);
         await orderProvider.addOrder(
           cart.items.values.toList(),
-          cart.totalAmount,
+          discountedTotal,
           _addressController.text,
           _selectedPayment,
         );

@@ -6,6 +6,8 @@ import '../models/product.dart';
 class CartProvider with ChangeNotifier {
   final SupabaseClient _supabase = Supabase.instance.client;
   final Map<String, CartItem> _items = {};
+  bool _isFetching = false;
+  bool _hasFetched = false;
 
   Map<String, CartItem> get items => {..._items};
 
@@ -38,12 +40,14 @@ class CartProvider with ChangeNotifier {
   }
 
   Future<void> fetchCart(List<Product> allProducts) async {
+    if (_isFetching) return;
     final user = _supabase.auth.currentUser;
     if (user == null) {
       debugPrint('CartProvider: fetchCart skipped, no user');
       return;
     }
 
+    _isFetching = true;
     try {
       debugPrint('CartProvider: Fetching cart from Supabase for user ${user.id}');
       final data = await _supabase
@@ -79,17 +83,20 @@ class CartProvider with ChangeNotifier {
       
       _items.clear();
       _items.addAll(newItems);
+      _hasFetched = true;
       debugPrint('CartProvider: fetchCart successful, loaded ${_items.length} items');
       notifyListeners();
     } catch (e) {
       debugPrint('CartProvider: Error fetching cart: $e');
+    } finally {
+      _isFetching = false;
     }
   }
 
   Future<void> addItem(Product product) async {
     final user = _supabase.auth.currentUser;
 
-    // Проверяем наличие товара на складе (если таблица существует)
+    // Проверяем наличие товара на складе
     try {
       final stockData = await _supabase
           .from('partner_products')
@@ -108,8 +115,12 @@ class CartProvider with ChangeNotifier {
           throw Exception('Недостаточно товара на складе');
         }
       }
-    } catch (e) {
-      // Если таблицы нет или ошибка запроса - просто пропускаем проверку
+    } on Exception catch (e) {
+      final msg = e.toString();
+      if (msg.contains('Недостаточно')) {
+        rethrow; // Пробрасываем ошибку о нехватке на склад
+      }
+      // Если таблицы нет или сетевая ошибка - пропускаем
       debugPrint('Stock check skipped: $e');
     }
 

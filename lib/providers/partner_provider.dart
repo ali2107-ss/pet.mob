@@ -50,6 +50,22 @@ class PartnerProvider with ChangeNotifier {
 
   final List<PartnerProduct> _products = [];
 
+  PartnerProvider() {
+    initializePartner();
+    _supabase.auth.onAuthStateChange.listen((data) {
+      if (data.event == AuthChangeEvent.signedIn) {
+        initializePartner();
+      } else if (data.event == AuthChangeEvent.signedOut) {
+        _partnerId = null;
+        _products.clear();
+        _transactions.clear();
+        _balance = 0;
+        _isPartnerMode = false;
+        notifyListeners();
+      }
+    });
+  }
+
   // История операций
   final List<PartnerTransaction> _transactions = [];
 
