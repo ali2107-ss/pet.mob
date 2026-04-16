@@ -33,7 +33,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
     'Темиртау',
     'Талдыкорган',
     'Экибастуз',
-    'Рудный',
+    'Рудны',
   ];
 
   @override
