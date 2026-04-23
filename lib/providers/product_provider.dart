@@ -16,7 +16,7 @@ class ProductProvider with ChangeNotifier {
   List<Product> get items {
     final List<Product> mainProducts = [..._items];
     if (_partnerProvider != null) {
-      mainProducts.addAll(_partnerProvider!.partnerProducts);
+      mainProducts.addAll(_partnerProvider!.products.map((p) => p.toProduct()));
     }
     return mainProducts;
   }
@@ -39,13 +39,43 @@ class ProductProvider with ChangeNotifier {
       final List<dynamic> data = response as List<dynamic>;
       _items = data.map((json) => Product.fromMap(json)).toList();
       
-      print('Loaded \${_items.length} products from Supabase');
+      print('Loaded ${_items.length} products from Supabase');
     } catch (e) {
       _error = e.toString();
-      print('Error fetching products: \$e');
+      print('Error fetching products: $e');
     } finally {
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  Future<void> updateProductRatingLocal(String productId) async {
+    try {
+      final response = await Supabase.instance.client
+          .from('products')
+          .select('rating')
+          .eq('id', productId)
+          .maybeSingle();
+      
+      if (response != null) {
+        final newRating = (response['rating'] as num?)?.toDouble() ?? 0.0;
+        final index = _items.indexWhere((p) => p.id == productId);
+        if (index != -1) {
+          final old = _items[index];
+          _items[index] = Product(
+            id: old.id,
+            name: old.name,
+            description: old.description,
+            price: old.price,
+            category: old.category,
+            imageUrl: old.imageUrl,
+            rating: newRating,
+          );
+          notifyListeners();
+        }
+      }
+    } catch (e) {
+      print('Error updating single rating: $e');
     }
   }
 

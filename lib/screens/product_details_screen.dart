@@ -8,7 +8,12 @@ import 'cart_screen.dart';
 import 'package:badges/badges.dart' as badges;
 import '../l10n/translation.dart';
 import '../providers/locale_provider.dart';
+import '../providers/rating_provider.dart';
+import '../providers/product_provider.dart';
 import '../widgets/network_or_base64_image.dart';
+import '../widgets/star_rating.dart';
+import 'auth/login_screen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final Product product;
@@ -41,6 +46,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
       curve: Curves.easeIn,
     );
     _fadeController.forward();
+
+    Future.microtask(() {
+      if (mounted) {
+        Provider.of<RatingProvider>(context, listen: false)
+            .fetchUserRating(widget.product.id);
+      }
+    });
   }
 
   @override
@@ -187,17 +199,20 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                               size: 20,
                             ),
                             const SizedBox(width: 4),
-                            Text(
-                              widget.product.rating.toString(),
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color:
-                                    Theme.of(
-                                      context,
-                                    ).textTheme.bodyLarge?.color ??
-                                    AppTheme.textColor,
-                              ),
+                            Consumer<ProductProvider>(
+                              builder: (ctx, productProvider, _) {
+                                final updatedProduct = productProvider.findById(widget.product.id);
+                                return Text(
+                                  updatedProduct.rating.toStringAsFixed(1),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color:
+                                        Theme.of(context).textTheme.bodyLarge?.color ??
+                                        AppTheme.textColor,
+                                  ),
+                                );
+                              },
                             ),
                           ],
                         ),
@@ -235,6 +250,67 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                             AppTheme.greyColor,
                         height: 1.5,
                       ),
+                    ),
+                    const SizedBox(height: 24),
+                    Text(
+                      t['rate_product'] ?? 'Оцените товар',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color:
+                            Theme.of(context).textTheme.titleLarge?.color ??
+                            AppTheme.textColor,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Consumer<RatingProvider>(
+                      builder: (ctx, ratingProvider, child) {
+                        final userRating = ratingProvider.getUserRating(widget.product.id) ?? 0;
+                        if (ratingProvider.isLoading) {
+                          return const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: SizedBox(
+                              height: 24,
+                              width: 24,
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        }
+                        return StarRating(
+                          rating: userRating,
+                          onRatingChanged: (newRating) {
+                              final auth = Supabase.instance.client.auth.currentUser;
+                              if (auth == null) {
+                                showDialog(
+                                  context: context,
+                                  builder: (dialogCtx) => AlertDialog(
+                                    title: const Text('Требуется авторизация'),
+                                    content: const Text('Для оценки товара необходимо войти в свой аккаунт.'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(dialogCtx),
+                                        child: const Text('Отмена'),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pop(dialogCtx);
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (_) => const LoginScreen()),
+                                          );
+                                        },
+                                        child: const Text('Войти'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                                return;
+                              }
+                              final productProvider = Provider.of<ProductProvider>(context, listen: false);
+                              ratingProvider.submitRating(widget.product.id, newRating, productProvider);
+                            },
+                          );
+                        },
                     ),
                     const SizedBox(height: 100), // spacing for bottom nav
                   ],

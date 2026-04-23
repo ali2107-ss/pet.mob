@@ -123,6 +123,7 @@ class AppTranslation {
       'product_not_found': 'Товар не найден',
       'total': 'Итого',
       'checkout': 'Оформить заказ',
+      'rate_product': 'Оцените товар',
     },
     'en': {
       'profile': 'Profile',
@@ -244,6 +245,7 @@ class AppTranslation {
       'product_not_found': 'Product not found',
       'total': 'Total',
       'checkout': 'Checkout',
+      'rate_product': 'Rate product',
     },
   };
 }

@@ -189,8 +189,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ],
-            ), // Closes Column
-          ), // Closes Form
+            ),
+          ),
         ),
       ),
     ),
