@@ -15,7 +15,6 @@ import '../widgets/star_rating.dart';
 import 'auth/login_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../utils/product_description_formatter.dart';
-import '../utils/product_rating_helper.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final Product product;
@@ -209,20 +208,36 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                                 final updatedProduct = productProvider.findById(
                                   widget.product.id,
                                 );
-                                final displayRating =
-                                    ProductRatingHelper.displayRating(
-                                      productId: updatedProduct.id,
-                                      productName: updatedProduct.name,
-                                      currentRating: updatedProduct.rating,
-                                    );
                                 return Text(
-                                  displayRating.toStringAsFixed(1),
+                                  updatedProduct.rating.toStringAsFixed(1),
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                     color:
                                         Theme.of(context).textTheme.bodyLarge?.color ??
                                         AppTheme.textColor,
+                                  ),
+                                );
+                              },
+                            ),
+                            Consumer<ProductProvider>(
+                              builder: (ctx, productProvider, _) {
+                                final updatedProduct = productProvider.findById(
+                                  widget.product.id,
+                                );
+                                if (updatedProduct.ratingCount == 0) {
+                                  return const SizedBox.shrink();
+                                }
+                                return Padding(
+                                  padding: const EdgeInsets.only(left: 6),
+                                  child: Text(
+                                    '(${updatedProduct.ratingCount})',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color:
+                                          Theme.of(context).textTheme.bodyMedium?.color ??
+                                          AppTheme.greyColor,
+                                    ),
                                   ),
                                 );
                               },

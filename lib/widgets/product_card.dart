@@ -7,7 +7,6 @@ import '../providers/favorite_provider.dart';
 import '../theme.dart';
 import '../l10n/translation.dart';
 import '../providers/locale_provider.dart';
-import '../utils/product_rating_helper.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -28,11 +27,6 @@ class ProductCard extends StatelessWidget {
     final t =
         AppTranslation.translations[langCode] ??
         AppTranslation.translations['ru']!;
-    final displayRating = ProductRatingHelper.displayRating(
-      productId: product.id,
-      productName: product.name,
-      currentRating: product.rating,
-    );
 
     return GestureDetector(
       onTap: onTap,
@@ -123,7 +117,7 @@ class ProductCard extends StatelessWidget {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            displayRating.toStringAsFixed(1),
+                            product.rating.toStringAsFixed(1),
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 12,

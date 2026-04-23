@@ -35,9 +35,40 @@ class ProductProvider with ChangeNotifier {
           .from('products')
           .select()
           .order('name', ascending: true);
+      final ratingsResponse = await Supabase.instance.client
+          .from('product_ratings')
+          .select('product_id, rating');
 
       final List<dynamic> data = response as List<dynamic>;
-      _items = data.map((json) => Product.fromMap(json)).toList();
+      final List<dynamic> ratingsData = ratingsResponse as List<dynamic>;
+      final Map<String, List<int>> ratingsByProduct = {};
+
+      for (final row in ratingsData) {
+        final String productId = row['product_id'] as String;
+        final int rating = (row['rating'] as num).toInt();
+        ratingsByProduct.putIfAbsent(productId, () => []).add(rating);
+      }
+
+      _items = data.map((json) {
+        final String productId = json['id'] ?? '';
+        final String productName = json['name'] ?? '';
+        final List<int> userRatings = ratingsByProduct[productId] ?? [];
+
+        return Product(
+          id: productId,
+          name: productName,
+          description: json['description'] ?? '',
+          price: (json['price'] as num).toDouble(),
+          category: json['category'] ?? '',
+          imageUrl: json['image_url'] ?? '',
+          rating: ProductRatingHelper.combineRatings(
+            productId: productId,
+            productName: productName,
+            userRatings: userRatings,
+          ),
+          ratingCount: userRatings.length,
+        );
+      }).toList();
 
       print('Loaded ${_items.length} products from Supabase');
     } catch (e) {
@@ -59,16 +90,12 @@ class ProductProvider with ChangeNotifier {
           .eq('product_id', productId);
 
       final List<dynamic> ratings = response as List<dynamic>;
-      final double? averageRating = ratings.isEmpty
-          ? null
-          : ratings
-                  .map((row) => (row['rating'] as num).toDouble())
-                  .reduce((a, b) => a + b) /
-              ratings.length;
-
       final index = _items.indexWhere((p) => p.id == productId);
       if (index != -1) {
         final old = _items[index];
+        final List<int> userRatings = ratings
+            .map((row) => (row['rating'] as num).toInt())
+            .toList();
         _items[index] = Product(
           id: old.id,
           name: old.name,
@@ -76,11 +103,12 @@ class ProductProvider with ChangeNotifier {
           price: old.price,
           category: old.category,
           imageUrl: old.imageUrl,
-          rating: ProductRatingHelper.resolveInitialRating(
+          rating: ProductRatingHelper.combineRatings(
             productId: old.id,
             productName: old.name,
-            currentRating: averageRating,
+            userRatings: userRatings,
           ),
+          ratingCount: userRatings.length,
         );
         notifyListeners();
       }

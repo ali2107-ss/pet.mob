@@ -8,6 +8,7 @@ class Product {
   final String category;
   final String imageUrl;
   final double rating;
+  final int ratingCount;
 
   Product({
     required this.id,
@@ -17,11 +18,10 @@ class Product {
     required this.category,
     required this.imageUrl,
     this.rating = 0.0,
+    this.ratingCount = 0,
   });
 
   factory Product.fromMap(Map<String, dynamic> map) {
-    final double rawRating = (map['rating'] as num?)?.toDouble() ?? 0.0;
-
     return Product(
       id: map['id'] ?? '',
       name: map['name'] ?? '',
@@ -29,11 +29,12 @@ class Product {
       price: (map['price'] as num).toDouble(),
       category: map['category'] ?? '',
       imageUrl: map['image_url'] ?? '',
-      rating: ProductRatingHelper.resolveInitialRating(
-        productId: map['id'] ?? '',
-        productName: map['name'] ?? '',
-        currentRating: rawRating,
-      ),
+      rating: (map['rating'] as num?)?.toDouble() ??
+          ProductRatingHelper.starterRating(
+            productId: map['id'] ?? '',
+            productName: map['name'] ?? '',
+          ),
+      ratingCount: (map['rating_count'] as num?)?.toInt() ?? 0,
     );
   }
 }

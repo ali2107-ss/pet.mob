@@ -37,10 +37,11 @@ class PartnerProduct {
     price: price,
     category: category,
     imageUrl: imageUrl,
-    rating: ProductRatingHelper.resolveInitialRating(
+    rating: ProductRatingHelper.starterRating(
       productId: id,
       productName: name,
     ),
+    ratingCount: 0,
   );
 }
 
