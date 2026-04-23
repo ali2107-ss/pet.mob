@@ -1,3 +1,5 @@
+import '../utils/product_rating_helper.dart';
+
 class Product {
   final String id;
   final String name;
@@ -18,6 +20,8 @@ class Product {
   });
 
   factory Product.fromMap(Map<String, dynamic> map) {
+    final double rawRating = (map['rating'] as num?)?.toDouble() ?? 0.0;
+
     return Product(
       id: map['id'] ?? '',
       name: map['name'] ?? '',
@@ -25,7 +29,11 @@ class Product {
       price: (map['price'] as num).toDouble(),
       category: map['category'] ?? '',
       imageUrl: map['image_url'] ?? '',
-      rating: (map['rating'] as num?)?.toDouble() ?? 0.0,
+      rating: ProductRatingHelper.resolveInitialRating(
+        productId: map['id'] ?? '',
+        productName: map['name'] ?? '',
+        currentRating: rawRating,
+      ),
     );
   }
 }

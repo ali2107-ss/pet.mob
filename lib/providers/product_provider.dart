@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/product.dart';
 import 'partner_provider.dart';
+import '../utils/product_rating_helper.dart';
 
 class ProductProvider with ChangeNotifier {
   PartnerProvider? _partnerProvider;
@@ -24,7 +25,6 @@ class ProductProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
 
-  // Метод для загрузки товаров из Supabase
   Future<void> fetchProducts() async {
     _isLoading = true;
     _error = null;
@@ -38,7 +38,7 @@ class ProductProvider with ChangeNotifier {
 
       final List<dynamic> data = response as List<dynamic>;
       _items = data.map((json) => Product.fromMap(json)).toList();
-      
+
       print('Loaded ${_items.length} products from Supabase');
     } catch (e) {
       _error = e.toString();
@@ -50,32 +50,39 @@ class ProductProvider with ChangeNotifier {
   }
 
   Future<void> updateProductRatingLocal(String productId) async {
-    // Небольшая задержка, чтобы триггер в БД успел сработать
     await Future.delayed(const Duration(milliseconds: 500));
 
     try {
       final response = await Supabase.instance.client
-          .from('products')
+          .from('product_ratings')
           .select('rating')
-          .eq('id', productId)
-          .maybeSingle();
-      
-      if (response != null) {
-        final newRating = (response['rating'] as num?)?.toDouble() ?? 0.0;
-        final index = _items.indexWhere((p) => p.id == productId);
-        if (index != -1) {
-          final old = _items[index];
-          _items[index] = Product(
-            id: old.id,
-            name: old.name,
-            description: old.description,
-            price: old.price,
-            category: old.category,
-            imageUrl: old.imageUrl,
-            rating: newRating,
-          );
-          notifyListeners();
-        }
+          .eq('product_id', productId);
+
+      final List<dynamic> ratings = response as List<dynamic>;
+      final double? averageRating = ratings.isEmpty
+          ? null
+          : ratings
+                  .map((row) => (row['rating'] as num).toDouble())
+                  .reduce((a, b) => a + b) /
+              ratings.length;
+
+      final index = _items.indexWhere((p) => p.id == productId);
+      if (index != -1) {
+        final old = _items[index];
+        _items[index] = Product(
+          id: old.id,
+          name: old.name,
+          description: old.description,
+          price: old.price,
+          category: old.category,
+          imageUrl: old.imageUrl,
+          rating: ProductRatingHelper.resolveInitialRating(
+            productId: old.id,
+            productName: old.name,
+            currentRating: averageRating,
+          ),
+        );
+        notifyListeners();
       }
     } catch (e) {
       debugPrint('ProductProvider: Error updating product rating: $e');
@@ -87,7 +94,7 @@ class ProductProvider with ChangeNotifier {
   }
 
   List<Product> getProductsByCategory(String categoryName) {
-    if (categoryName == 'Все' || categoryName == 'Барлығы') {
+    if (categoryName == 'Р’СЃРµ' || categoryName == 'Р‘Р°СЂР»С‹Т“С‹') {
       return items;
     }
     return items.where((prod) => prod.category == categoryName).toList();
@@ -136,7 +143,6 @@ class ProductProvider with ChangeNotifier {
           filtered.sort((a, b) => b.rating.compareTo(a.rating));
           break;
         case 'newest':
-          // We don't have dates yet, so no-op
           break;
       }
     }

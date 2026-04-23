@@ -15,6 +15,7 @@ import '../widgets/star_rating.dart';
 import 'auth/login_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../utils/product_description_formatter.dart';
+import '../utils/product_rating_helper.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final Product product;
@@ -205,9 +206,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                             const SizedBox(width: 4),
                             Consumer<ProductProvider>(
                               builder: (ctx, productProvider, _) {
-                                final updatedProduct = productProvider.findById(widget.product.id);
+                                final updatedProduct = productProvider.findById(
+                                  widget.product.id,
+                                );
+                                final displayRating =
+                                    ProductRatingHelper.displayRating(
+                                      productId: updatedProduct.id,
+                                      productName: updatedProduct.name,
+                                      currentRating: updatedProduct.rating,
+                                    );
                                 return Text(
-                                  updatedProduct.rating.toStringAsFixed(1),
+                                  displayRating.toStringAsFixed(1),
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/product.dart';
+import '../utils/product_rating_helper.dart';
 
 class PartnerProduct {
   final String id;
@@ -36,7 +37,10 @@ class PartnerProduct {
     price: price,
     category: category,
     imageUrl: imageUrl,
-    rating: 0.0,
+    rating: ProductRatingHelper.resolveInitialRating(
+      productId: id,
+      productName: name,
+    ),
   );
 }
 
