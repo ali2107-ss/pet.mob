@@ -12,6 +12,9 @@ import 'providers/address_provider.dart';
 import 'providers/payment_method_provider.dart';
 import 'providers/theme_provider.dart';
 import 'providers/rating_provider.dart';
+import 'providers/pet_provider.dart';
+import 'providers/notification_provider.dart';
+import 'providers/promo_provider.dart';
 import 'screens/main_screen.dart';
 import 'theme.dart';
 
@@ -67,6 +70,9 @@ class PetMobApp extends StatelessWidget {
           },
         ),
         ChangeNotifierProvider(create: (_) => RatingProvider()),
+        ChangeNotifierProvider(create: (_) => PetProvider()),
+        ChangeNotifierProvider(create: (_) => NotificationProvider()),
+        ChangeNotifierProvider(create: (_) => PromoProvider()),
       ],
       child: Consumer2<LocaleProvider, ThemeProvider>(
         builder: (context, localeProvider, themeProvider, child) {

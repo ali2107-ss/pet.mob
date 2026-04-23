@@ -13,6 +13,8 @@ import '../providers/locale_provider.dart';
 import '../providers/auth_provider.dart';
 import '../providers/partner_provider.dart';
 import 'partner/partner_main_screen.dart';
+import '../providers/notification_provider.dart';
+import 'notifications_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -173,7 +175,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: 16),
             ],
 
-            const SizedBox(height: 32),
+              const SizedBox(height: 16),
+            ],
+
+            if (isLoggedIn)
+              _buildProfileMenuItem(
+                context,
+                icon: Icons.notifications_none_rounded,
+                title: 'Уведомления',
+                trailing: Consumer<NotificationProvider>(
+                  builder: (context, provider, _) {
+                    if (provider.unreadCount == 0) return const Icon(Icons.chevron_right, color: AppTheme.greyColor);
+                    return Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                      child: Text(
+                        '${provider.unreadCount}',
+                        style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                      ),
+                    );
+                  },
+                ),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const NotificationsScreen()),
+                  );
+                },
+              ),
+
+            const SizedBox(height: 16),
             _buildProfileMenuItem(
               context,
               icon: Icons.location_on_outlined,
@@ -324,6 +354,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Color? textColor,
     Color iconColor = AppTheme.primaryColor,
     bool showChevron = true,
+    Widget? trailing,
   }) {
     final effectiveTextColor = textColor ?? Theme.of(context).textTheme.bodyLarge?.color ?? AppTheme.textColor;
     return Container(
@@ -357,9 +388,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             color: effectiveTextColor,
           ),
         ),
-        trailing: showChevron
+        trailing: trailing ?? (showChevron
             ? const Icon(Icons.chevron_right, color: AppTheme.greyColor)
-            : null,
+            : null),
         onTap: onTap,
       ),
     );

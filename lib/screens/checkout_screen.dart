@@ -7,6 +7,7 @@ import '../providers/address_provider.dart';
 import '../providers/auth_provider.dart';
 import '../providers/payment_method_provider.dart';
 import '../providers/product_provider.dart';
+import '../providers/promo_provider.dart';
 import '../widgets/network_or_base64_image.dart';
 import 'main_screen.dart';
 import '../theme.dart';
@@ -625,20 +626,30 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ),
                     const SizedBox(width: 8),
                     ElevatedButton(
-                      onPressed: () {
-                        final code = _promoController.text.trim().toUpperCase();
-                        setState(() {
-                          if (code == 'PETMOB10') {
-                            _discount = 0.1;
-                            _promoMessage = 'Скидка 10% применена! 🎉';
-                          } else if (code == 'PETMOB20') {
-                            _discount = 0.2;
-                            _promoMessage = 'Скидка 20% применена! 🎉';
-                          } else if (code.isNotEmpty) {
+                      onPressed: () async {
+                        final code = _promoController.text.trim();
+                        if (code.isEmpty) return;
+
+                        final promoProvider = Provider.of<PromoProvider>(context, listen: false);
+                        try {
+                          final discountPercent = await promoProvider.validatePromo(code);
+                          setState(() {
+                            if (discountPercent > 0) {
+                              _discount = discountPercent / 100;
+                              _promoMessage = 'Скидка $discountPercent% применена! 🎉';
+                            } else {
+                              _discount = 0;
+                              _promoMessage = 'Промокод не активен или истек';
+                            }
+                          });
+                        } catch (e) {
+                          setState(() {
                             _discount = 0;
-                            _promoMessage = 'Промокод не найден';
-                          }
-                        });
+                            _promoMessage = e.toString().contains('использовали') 
+                                ? 'Вы уже использовали этот код' 
+                                : 'Ошибка проверки промокода';
+                          });
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -879,6 +890,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           _addressController.text,
           _selectedPayment,
         );
+
+        // Фиксируем использование промокода, если он был применен
+        if (_discount > 0) {
+          final promoProvider = Provider.of<PromoProvider>(context, listen: false);
+          await promoProvider.usePromo(_promoController.text.trim());
+        }
 
         // Загружаем все заказы из Supabase
         final productProvider = Provider.of<ProductProvider>(context, listen: false);
