@@ -6,6 +6,7 @@ import '../providers/partner_provider.dart';
 import '../providers/address_provider.dart';
 import '../providers/auth_provider.dart';
 import '../providers/payment_method_provider.dart';
+import '../providers/product_provider.dart';
 import '../widgets/network_or_base64_image.dart';
 import 'main_screen.dart';
 import '../theme.dart';
@@ -880,7 +881,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         );
 
         // Загружаем все заказы из Supabase
-        await orderProvider.fetchOrders();
+        final productProvider = Provider.of<ProductProvider>(context, listen: false);
+        await orderProvider.fetchOrders(productProvider.items);
 
         // Обновляем данные партнера
         await partnerProvider.refreshProductsFromSupabase();

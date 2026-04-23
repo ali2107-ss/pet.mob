@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/order.dart';
 import '../models/cart_item.dart';
+import '../models/product.dart';
 
 class OrderProvider with ChangeNotifier {
   final SupabaseClient _supabase = Supabase.instance.client;
@@ -15,12 +16,13 @@ class OrderProvider with ChangeNotifier {
     _supabase.auth.onAuthStateChange.listen((data) {
       if (data.event == AuthChangeEvent.signedOut) {
         _orders.clear();
+        notifyListeners();
       }
     });
   }
 
-  /// Загрузить заказы из Supabase
-  Future<void> fetchOrders() async {
+  /// Загрузить заказы из Supabase (нужен список товаров для сопоставления)
+  Future<void> fetchOrders(List<Product> allProducts) async {
     final user = _supabase.auth.currentUser;
     if (user == null) return;
 
@@ -32,45 +34,28 @@ class OrderProvider with ChangeNotifier {
           .order('created_at', ascending: false);
 
       _orders.clear();
-      for (var row in data) {
-        // Загружаем items для каждого заказа
-        final items = await _supabase
+
+      for (final row in data) {
+        // Загружаем позиции заказа
+        final List<dynamic> itemsRaw = await _supabase
             .from('order_items')
             .select()
-            .eq('order_id', row['id']);
+            .eq('order_id', row['id'] as String);
 
-        final cartItems = <CartItem>[];
-        for (var item in items) {
-          // Здесь нужно получить Product по product_id
-          // Для упрощения используем mock
-          cartItems.add(
-            CartItem(
-              id: item['id'],
-              product: null, // Будет заполнено после загрузки товаров
-              quantity: item['quantity'],
-            ),
-          );
-        }
+        final itemRows = itemsRaw.cast<Map<String, dynamic>>();
 
         _orders.add(
-          Order(
-            id: row['id'],
-            items: cartItems,
-            totalAmount: (row['total_amount'] as num).toDouble(),
-            dateTime: DateTime.parse(row['created_at']),
-            address: 'Address', // Можно добавить в таблицу
-            paymentMethod: 'Supabase', // Можно добавить в таблицу
-            status: row['status'],
-          ),
+          Order.fromSupabase(row, itemRows, allProducts),
         );
       }
+
       notifyListeners();
     } catch (e) {
-      debugPrint('Error fetching orders: $e');
+      debugPrint('OrderProvider: Error fetching orders: $e');
     }
   }
 
-  /// Добавить заказ (локально и в Supabase)
+  /// Создать новый заказ в Supabase
   Future<void> addOrder(
     List<CartItem> cartItems,
     double total,
@@ -81,71 +66,68 @@ class OrderProvider with ChangeNotifier {
     if (user == null) return;
 
     try {
-      // Сначала проверяем наличие товаров на складе
-      for (var item in cartItems) {
+      // Проверяем наличие партнёрских товаров на складе
+      for (final item in cartItems) {
         if (item.product == null) continue;
         final available = await checkStockAvailability(
           item.product!.id,
           item.quantity,
         );
         if (!available) {
-          throw Exception(
-            'Недостаточно товара на складе: ${item.product!.name}',
-          );
+          throw Exception('Недостаточно товара на складе: ${item.product!.name}');
         }
       }
 
-      // Создаём заказ в Supabase (БД сама генерирует UUID)
+      // Создаём запись заказа
       final orderResponse = await _supabase
           .from('orders')
           .insert({
             'user_id': user.id,
             'total_amount': total,
             'status': 'processing',
+            'shipping_address': address,
+            'payment_method': paymentMethod,
           })
           .select('id')
           .single();
 
       final orderId = orderResponse['id'] as String;
 
-      // Добавляем positions в order_items
-      for (var item in cartItems) {
+      // Добавляем позиции в order_items
+      for (final item in cartItems) {
         if (item.product == null) continue;
-        
+
+        await _supabase.from('order_items').insert({
+          'order_id': orderId,
+          'product_id': item.product!.id,
+          'quantity': item.quantity,
+          'price_at_purchase': item.product!.price,
+          'product_name': item.product!.name,
+        });
+
+        // Обновляем партнёрскую статистику (если применимо)
         try {
-          final productCheck = await _supabase
+          final partnerProduct = await _supabase
               .from('partner_products')
               .select('stock, partner_id')
               .eq('id', item.product!.id)
               .maybeSingle();
 
-          if (productCheck != null && productCheck['stock'] >= item.quantity) {
-            // Добавляем item в заказ
-            await _supabase.from('order_items').insert({
-              'order_id': orderId,
-              'product_id': item.product!.id,
-              'partner_id': productCheck['partner_id'],
-              'quantity': item.quantity,
-              'price': item.product!.price,
-              'total': item.product!.price * item.quantity,
-            });
-
-            // Добавляем запись в partner_sales для партнерского статистики
+          if (partnerProduct != null) {
             await _supabase.from('partner_sales').insert({
-              'partner_id': productCheck['partner_id'],
+              'partner_id': partnerProduct['partner_id'],
               'product_id': item.product!.id,
               'quantity': item.quantity,
               'amount': item.product!.price * item.quantity,
               'description': 'Заказ: ${item.product!.name} x${item.quantity}',
             });
           }
-        } catch (e) {
-          // Игнорируем ошибку при вставке для моковых товаров (неверный UUID и т.д.)
-          debugPrint('Skipping partner product check for mock item: ${item.product!.id}');
+        } catch (_) {
+          // Не партнёрский товар — пропускаем без ошибки
         }
       }
 
-      // Добавляем локально
+      // Добавляем в локальный список
       _orders.insert(
         0,
         Order(
@@ -158,14 +140,15 @@ class OrderProvider with ChangeNotifier {
           status: 'processing',
         ),
       );
+
       notifyListeners();
     } catch (e) {
-      debugPrint('Error adding order: $e');
+      debugPrint('OrderProvider: Error adding order: $e');
       rethrow;
     }
   }
 
-  /// Проверить наличие товара на складе
+  /// Проверить наличие партнёрского товара на складе
   Future<bool> checkStockAvailability(String productId, int quantity) async {
     try {
       final data = await _supabase
@@ -174,14 +157,11 @@ class OrderProvider with ChangeNotifier {
           .eq('id', productId)
           .maybeSingle();
 
-      // Если товара нет в партнерской БД, считаем что это системный/моковый товар
-      // с бесконечным стоком.
+      // Если товара нет в partner_products — это обычный товар (неограниченный склад)
       if (data == null) return true;
       return (data['stock'] as int) >= quantity;
-    } catch (e) {
-      debugPrint('Error checking stock: $e');
-      // В случае ошибки парсинга UUID моковых товаров и т.д.
-      return true;
+    } catch (_) {
+      return true; // Ошибка UUID или сети — разрешаем покупку
     }
   }
 }

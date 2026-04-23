@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/order_provider.dart';
+import '../providers/product_provider.dart';
 import '../theme.dart';
 import '../widgets/network_or_base64_image.dart';
 
@@ -30,7 +31,8 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
       });
 
       final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-      await orderProvider.fetchOrders();
+      final productProvider = Provider.of<ProductProvider>(context, listen: false);
+      await orderProvider.fetchOrders(productProvider.items);
 
       if (!mounted) return;
       setState(() => _isLoading = false);
