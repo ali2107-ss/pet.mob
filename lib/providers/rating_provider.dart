@@ -53,7 +53,7 @@ class RatingProvider with ChangeNotifier {
       await productProvider.updateProductRatingLocal(productId);
       
     } catch (e) {
-      print('Error submitting rating: $e');
+      debugPrint('RatingProvider: Error submitting rating: $e');
     } finally {
       _isLoading = false;
       notifyListeners();

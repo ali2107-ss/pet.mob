@@ -50,6 +50,9 @@ class ProductProvider with ChangeNotifier {
   }
 
   Future<void> updateProductRatingLocal(String productId) async {
+    // Небольшая задержка, чтобы триггер в БД успел сработать
+    await Future.delayed(const Duration(milliseconds: 500));
+
     try {
       final response = await Supabase.instance.client
           .from('products')
@@ -75,7 +78,7 @@ class ProductProvider with ChangeNotifier {
         }
       }
     } catch (e) {
-      print('Error updating single rating: $e');
+      debugPrint('ProductProvider: Error updating product rating: $e');
     }
   }
 
