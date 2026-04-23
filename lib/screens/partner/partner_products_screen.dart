@@ -904,7 +904,7 @@ class _ProductFormSheetState extends State<_ProductFormSheet> {
                               width: 50,
                               height: 50,
                               fit: BoxFit.cover,
-                              errorBuilder: (_, __, ___) => Container(
+                              errorBuilder: (_, _, _) => Container(
                                 width: 50,
                                 height: 50,
                                 color: Colors.grey[200],

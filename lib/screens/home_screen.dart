@@ -10,7 +10,6 @@ import '../theme.dart';
 import 'package:badges/badges.dart' as badges;
 import '../providers/locale_provider.dart';
 import '../l10n/translation.dart';
-import '../widgets/product_card.dart';
 import 'package:vibration/vibration.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:confetti/confetti.dart';

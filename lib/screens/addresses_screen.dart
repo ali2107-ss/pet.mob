@@ -180,7 +180,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
                 ),
                 const SizedBox(height: 16),
                 DropdownButtonFormField<String>(
-                  value: selectedCity,
+                  initialValue: selectedCity,
                   decoration: const InputDecoration(labelText: 'Город'),
                   items: _kazakhstanCities
                       .map(

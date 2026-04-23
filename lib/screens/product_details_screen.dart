@@ -14,6 +14,7 @@ import '../widgets/network_or_base64_image.dart';
 import '../widgets/star_rating.dart';
 import 'auth/login_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../utils/product_description_formatter.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final Product product;
@@ -68,6 +69,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
     final t =
         AppTranslation.translations[langCode] ??
         AppTranslation.translations['ru']!;
+    final description = ProductDescriptionFormatter.detailedDescription(
+      widget.product,
+    );
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -241,14 +245,25 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                       ),
                     ),
                     const SizedBox(height: 12),
-                    Text(
-                      widget.product.description,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color:
-                            Theme.of(context).textTheme.bodyMedium?.color ??
-                            AppTheme.greyColor,
-                        height: 1.5,
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(18),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFF7F2),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: AppTheme.primaryColor.withOpacity(0.12),
+                        ),
+                      ),
+                      child: Text(
+                        description,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color:
+                              Theme.of(context).textTheme.bodyMedium?.color ??
+                              AppTheme.greyColor,
+                          height: 1.7,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 24),

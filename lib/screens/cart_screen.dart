@@ -6,7 +6,6 @@ import '../widgets/animated_empty_state.dart';
 import '../providers/cart_provider.dart';
 import '../providers/auth_provider.dart';
 import '../theme.dart';
-import '../theme.dart';
 import '../l10n/translation.dart';
 import '../providers/locale_provider.dart';
 import 'checkout_screen.dart';

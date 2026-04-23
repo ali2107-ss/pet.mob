@@ -245,7 +245,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 trailing: Switch(
                   value: _notificationsEnabled,
-                  activeColor: AppTheme.primaryColor,
+                  activeThumbColor: AppTheme.primaryColor,
                   onChanged: (value) {
                     setState(() {
                       _notificationsEnabled = value;
@@ -342,7 +342,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 trailing: Switch(
                   value: themeProvider.isDarkMode,
-                  activeColor: AppTheme.primaryColor,
+                  activeThumbColor: AppTheme.primaryColor,
                   onChanged: (value) {
                     themeProvider.toggleTheme(value);
                   },

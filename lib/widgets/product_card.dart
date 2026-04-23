@@ -163,10 +163,10 @@ class ProductCard extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).textTheme.bodyLarge?.color,
                     ),
-                    maxLines: 1,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 6),
                   Text(
                     t[_getCategoryKey(product.category)] ?? product.category,
                     style: const TextStyle(
@@ -174,7 +174,7 @@ class ProductCard extends StatelessWidget {
                       color: AppTheme.greyColor,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

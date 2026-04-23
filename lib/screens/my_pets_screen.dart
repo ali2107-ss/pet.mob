@@ -53,7 +53,7 @@ class _MyPetsScreenState extends State<MyPetsScreen> {
                 ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
-                  value: _selectedSpecies,
+                  initialValue: _selectedSpecies,
                   decoration: InputDecoration(
                     labelText: 'Тип животного',
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
