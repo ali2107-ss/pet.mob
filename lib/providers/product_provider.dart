@@ -122,7 +122,7 @@ class ProductProvider with ChangeNotifier {
   }
 
   List<Product> getProductsByCategory(String categoryName) {
-    if (categoryName == 'Все' || categoryName == 'Барлығы') {
+    if (categoryName == 'Все') {
       return items;
     }
     return items.where((prod) => prod.category == categoryName).toList();

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../models/product.dart';
 import '../providers/cart_provider.dart';
 import '../providers/favorite_provider.dart';
@@ -54,46 +55,7 @@ class ProductCard extends StatelessWidget {
                     ),
                     child: Hero(
                       tag: '${heroPrefix}product_image_${product.id}',
-                    child: Builder(
-                      builder: (context) {
-                        Widget errorBuilder(BuildContext ctx, Object err, StackTrace? st) {
-                          return Container(
-                            color: Colors.grey[200],
-                            alignment: Alignment.center,
-                            child: const Icon(
-                              Icons.image_not_supported,
-                              size: 40,
-                              color: Colors.grey,
-                            ),
-                          );
-                        }
-
-                        if (product.imageUrl.startsWith('data:image')) {
-                          try {
-                            final parts = product.imageUrl.split(',');
-                            if (parts.length > 1) {
-                              return FadeInImage(
-                                placeholder: const AssetImage('assets/images/pet_background.png'),
-                                image: MemoryImage(base64Decode(parts[1].replaceAll(RegExp(r'\s+'), ''))),
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                                imageErrorBuilder: errorBuilder,
-                              );
-                            }
-                          } catch (e) {
-                            // fall through to error handling
-                          }
-                        }
-
-                        return FadeInImage.assetNetwork(
-                          placeholder: 'assets/images/pet_background.png',
-                          image: product.imageUrl,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                          imageErrorBuilder: errorBuilder,
-                        );
-                      },
-                    ),
+                      child: _buildProductImage(),
                     ),
                   ),
                   Positioned(
@@ -213,6 +175,74 @@ class ProductCard extends StatelessWidget {
       default:
         return 'see_all';
     }
+  }
+
+  Widget _buildProductImage() {
+    Widget errorWidget = Container(
+      color: Colors.grey[200],
+      alignment: Alignment.center,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.pets,
+            size: 40,
+            color: Colors.grey[400],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Нет фото',
+            style: TextStyle(
+              color: Colors.grey[600],
+              fontSize: 12,
+            ),
+          ),
+        ],
+      ),
+    );
+
+    Widget loadingWidget = Container(
+      color: Colors.grey[100],
+      alignment: Alignment.center,
+      child: const CircularProgressIndicator(
+        strokeWidth: 2,
+        valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
+      ),
+    );
+
+    // Base64 изображение
+    if (product.imageUrl.startsWith('data:image')) {
+      try {
+        final parts = product.imageUrl.split(',');
+        if (parts.length > 1) {
+          final bytes = base64Decode(parts[1].replaceAll(RegExp(r'\s+'), ''));
+          return Image.memory(
+            bytes,
+            width: double.infinity,
+            fit: BoxFit.cover,
+            errorBuilder: (_, __, ___) => errorWidget,
+          );
+        }
+      } catch (e) {
+        return errorWidget;
+      }
+    }
+
+    // URL изображение с кэшированием
+    if (product.imageUrl.startsWith('http')) {
+      return CachedNetworkImage(
+        imageUrl: product.imageUrl,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        placeholder: (context, url) => loadingWidget,
+        errorWidget: (context, url, error) => errorWidget,
+        fadeInDuration: const Duration(milliseconds: 300),
+        memCacheWidth: 400, // Оптимизация памяти
+      );
+    }
+
+    // Если URL пустой или неправильный
+    return errorWidget;
   }
 }
 
