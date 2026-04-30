@@ -255,44 +255,87 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                               color: AppTheme.greyColor,
                             ),
                             const SizedBox(width: 6),
-                            Text(
-                              paymentLabel[order.paymentMethod] ??
-                                  order.paymentMethod,
-                              style: const TextStyle(
-                                color: AppTheme.greyColor,
-                                fontSize: 14,
+                            Expanded(
+                              child: Text(
+                                () {
+                                  final method = order.paymentMethod;
+                                  if (method.startsWith('card_')) {
+                                    // Это сохранённая карта, но у нас нет доступа к последним цифрам
+                                    return 'Банковская карта';
+                                  }
+                                  return paymentLabel[method] ?? method;
+                                }(),
+                                style: const TextStyle(
+                                  color: AppTheme.greyColor,
+                                  fontSize: 14,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ],
                         ),
                         const SizedBox(height: 12),
-                        // Items preview
-                        SizedBox(
-                          height: 40,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: order.items.length,
-                            itemBuilder: (ctx, j) {
-                              return Container(
-                                width: 40,
-                                height: 40,
-                                margin: const EdgeInsets.only(right: 4),
-                                child: ClipRRect(
+                        // Товары с фото и названиями
+                        ...order.items.map((item) {
+                          return Container(
+                            margin: const EdgeInsets.only(bottom: 8),
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.grey.withValues(alpha: 0.05),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Row(
+                              children: [
+                                ClipRRect(
                                   borderRadius: BorderRadius.circular(8),
-                                  child: order.items[j].product != null
+                                  child: item.product != null
                                       ? NetworkOrBase64Image(
-                                          imageUrl: order.items[j].product!.imageUrl,
+                                          imageUrl: item.product!.imageUrl,
+                                          width: 50,
+                                          height: 50,
                                           fit: BoxFit.cover,
                                           errorWidget: Container(
+                                            width: 50,
+                                            height: 50,
                                             color: Colors.grey[200],
                                           ),
                                         )
-                                      : Container(color: Colors.grey[200]),
+                                      : Container(
+                                          width: 50,
+                                          height: 50,
+                                          color: Colors.grey[200],
+                                        ),
                                 ),
-                              );
-                            },
-                          ),
-                        ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        item.product?.name ?? 'Товар',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        '${item.quantity} шт × ₸${item.product?.price.toStringAsFixed(0) ?? '0'}',
+                                        style: const TextStyle(
+                                          color: AppTheme.greyColor,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }).toList(),
                         const SizedBox(height: 12),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
