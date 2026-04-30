@@ -84,8 +84,8 @@ class OrderProvider with ChangeNotifier {
           .insert({
             'user_id': user.id,
             'total_amount': total,
-            'status': 'processing',
-            'shipping_address': address,
+            'status': 'pending',
+            'delivery_address': address,
             'payment_method': paymentMethod,
           })
           .select('id')
@@ -100,9 +100,10 @@ class OrderProvider with ChangeNotifier {
         await _supabase.from('order_items').insert({
           'order_id': orderId,
           'product_id': item.product!.id,
+          'product_name': item.product!.name,
           'quantity': item.quantity,
           'price_at_purchase': item.product!.price,
-          'product_name': item.product!.name,
+          'total': item.product!.price * item.quantity,
         });
 
         // Обновляем партнёрскую статистику (если применимо)
@@ -137,7 +138,7 @@ class OrderProvider with ChangeNotifier {
           dateTime: DateTime.now(),
           address: address,
           paymentMethod: paymentMethod,
-          status: 'processing',
+          status: 'pending',
         ),
       );
 

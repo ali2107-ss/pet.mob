@@ -37,10 +37,7 @@ class PartnerProduct {
     price: price,
     category: category,
     imageUrl: imageUrl,
-    rating: ProductRatingHelper.starterRating(
-      productId: id,
-      productName: name,
-    ),
+    rating: 0.0, // Рейтинг будет загружен из БД
     ratingCount: 0,
   );
 }

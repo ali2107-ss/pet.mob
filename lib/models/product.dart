@@ -1,5 +1,3 @@
-import '../utils/product_rating_helper.dart';
-
 class Product {
   final String id;
   final String name;
@@ -29,11 +27,7 @@ class Product {
       price: (map['price'] as num).toDouble(),
       category: map['category'] ?? '',
       imageUrl: map['image_url'] ?? '',
-      rating: (map['rating'] as num?)?.toDouble() ??
-          ProductRatingHelper.starterRating(
-            productId: map['id'] ?? '',
-            productName: map['name'] ?? '',
-          ),
+      rating: (map['rating'] as num?)?.toDouble() ?? 0.0,
       ratingCount: (map['rating_count'] as num?)?.toInt() ?? 0,
     );
   }
