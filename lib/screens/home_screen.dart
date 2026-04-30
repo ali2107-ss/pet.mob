@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   // Base keys instead of hardcoded localized strings
   final List<Map<String, dynamic>> _categories = [
-    {'key': 'Барлығы', 'locale_key': 'see_all', 'icon': Icons.pets},
+    {'key': 'Все', 'locale_key': 'see_all', 'icon': Icons.pets},
     {'key': 'Корма', 'locale_key': 'cat_food', 'icon': Icons.restaurant},
     {'key': 'Игрушки', 'locale_key': 'cat_toys', 'icon': Icons.toys},
     {

@@ -1,0 +1,49 @@
+```html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mels Wear</title>
+
+  
+    <link rel="stylesheet" href="body {.css">
+</head>
+<body>
+
+<h1>Mels Wear</h1>
+
+<!-- КАТАЛОГ -->
+<div class="products" id="products"></div>
+
+<!-- КОРЗИНА -->
+<div class="cart">
+    <h2>Корзина</h2>
+    <ul id="cartList"></ul>
+    <p>Итого: <span id="total">0</span> тг</p>
+    <button onclick="clearCart()">Очистить корзину</button>
+</div>
+
+<!-- ФОРМА -->
+<form onsubmit="order(event)">
+    <h2>Оформление заказа</h2>
+    <input type="text" placeholder="Имя" required>
+    <input type="text" placeholder="Телефон" required>
+    <input type="text" placeholder="Адрес доставки" required>
+    <button type="submit">Отправить заявку</button>
+</form>
+
+<!-- ОТЗЫВЫ -->
+<div class="reviews">
+    <h2>Отзывы</h2>
+    <p>⭐️⭐️⭐️⭐️⭐️ Отличный магазин!</p>
+    <p>⭐️⭐️⭐️⭐️ Быстрая доставка</p>
+    <p>⭐️⭐️⭐️ Хорошее качество одежды</p>
+</div>
+
+<!-- JS файл (если вынесешь отдельно) -->
+<script src="script.js"></script>
+
+</body>
+</html>
+```
