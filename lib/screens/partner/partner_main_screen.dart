@@ -186,7 +186,7 @@ class _PartnerMainScreenState extends State<PartnerMainScreen> {
                     size: 20,
                   ),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   final partner = context.read<PartnerProvider>();
                   if (partner.products.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -207,14 +207,22 @@ class _PartnerMainScreenState extends State<PartnerMainScreen> {
                     );
                     return;
                   }
-                  partner.simulateRandomSales();
+                  // Используем Supabase-версию для каждого товара
+                  for (final product in partner.products) {
+                    if (product.stock > 0) {
+                      final qty = (product.stock * 0.3).ceil().clamp(1, 5);
+                      await partner.simulateSaleWithSupabase(product.id, qty);
+                    }
+                  }
+                  await partner.syncBalance();
+                  if (!context.mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: const Row(
                         children: [
                           Icon(Icons.celebration, color: Colors.white),
                           SizedBox(width: 8),
-                          Text('🎉 Новые продажи!'),
+                          Text('🎉 Новые продажи сохранены!'),
                         ],
                       ),
                       backgroundColor: Colors.green,

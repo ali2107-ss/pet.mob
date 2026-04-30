@@ -133,19 +133,34 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                   'cash': 'Наличные',
                 };
 
-                // Determine status based on time
-                final minutesSince = DateTime.now().difference(date).inMinutes;
+                // Status from Supabase backend
+                final String rawStatus = order.status;
                 String status;
                 Color statusColor;
-                if (minutesSince < 5) {
-                  status = 'Обработка';
-                  statusColor = Colors.orange;
-                } else if (minutesSince < 30) {
-                  status = 'В пути';
-                  statusColor = Colors.blue;
-                } else {
-                  status = 'Доставлен';
-                  statusColor = Colors.green;
+                switch (rawStatus) {
+                  case 'processing':
+                    status = 'Обработка';
+                    statusColor = Colors.orange;
+                    break;
+                  case 'confirmed':
+                    status = 'Подтверждён';
+                    statusColor = Colors.blue;
+                    break;
+                  case 'shipping':
+                    status = 'В пути';
+                    statusColor = Colors.indigo;
+                    break;
+                  case 'delivered':
+                    status = 'Доставлен';
+                    statusColor = Colors.green;
+                    break;
+                  case 'cancelled':
+                    status = 'Отменён';
+                    statusColor = Colors.red;
+                    break;
+                  default:
+                    status = 'Обработка';
+                    statusColor = Colors.orange;
                 }
 
                 return GestureDetector(
@@ -330,11 +345,21 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   }
 
   void _showOrderTracking(BuildContext context, dynamic order, String status) {
+    final rawStatus = order.status as String;
+    final statusIndex = {
+      'processing': 0,
+      'confirmed': 1,
+      'shipping': 2,
+      'delivered': 3,
+    };
+    final currentStep = statusIndex[rawStatus] ?? 0;
+    final isCancelled = rawStatus == 'cancelled';
+
     final steps = [
-      {'title': 'Заказ принят', 'icon': Icons.receipt_long, 'done': true},
-      {'title': 'Подтверждён', 'icon': Icons.check_circle, 'done': status != 'Обработка'},
-      {'title': 'В пути', 'icon': Icons.local_shipping, 'done': status == 'В пути' || status == 'Доставлен'},
-      {'title': 'Доставлен', 'icon': Icons.home, 'done': status == 'Доставлен'},
+      {'title': 'Заказ принят', 'icon': Icons.receipt_long, 'done': currentStep >= 0 && !isCancelled},
+      {'title': 'Подтверждён', 'icon': Icons.check_circle, 'done': currentStep >= 1 && !isCancelled},
+      {'title': 'В пути', 'icon': Icons.local_shipping, 'done': currentStep >= 2 && !isCancelled},
+      {'title': 'Доставлен', 'icon': Icons.home, 'done': currentStep >= 3 && !isCancelled},
     ];
 
     showModalBottomSheet(

@@ -878,7 +878,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         // Пополняем баланс партнёра за каждый его товар в корзине
         for (final item in cart.items.values) {
           if (item.product != null) {
-            partnerProvider.simulateSale(item.product!.id, item.quantity);
+            await partnerProvider.simulateSaleWithSupabase(item.product!.id, item.quantity);
           }
         }
 
@@ -904,7 +904,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         // Обновляем данные партнера
         await partnerProvider.refreshProductsFromSupabase();
 
-        cart.clear();
+        await cart.clear();
 
         if (!mounted) return;
 

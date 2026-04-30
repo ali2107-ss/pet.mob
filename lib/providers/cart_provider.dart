@@ -206,8 +206,21 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void clear() {
+  Future<void> clear() async {
+    final user = _supabase.auth.currentUser;
     _items.clear();
+    _hasFetched = false;
     notifyListeners();
+
+    if (user != null) {
+      try {
+        await _supabase
+            .from('cart_items')
+            .delete()
+            .eq('user_id', user.id);
+      } catch (e) {
+        debugPrint('CartProvider: Error clearing cart in Supabase: $e');
+      }
+    }
   }
 }
