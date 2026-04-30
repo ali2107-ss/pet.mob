@@ -935,14 +935,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 ),
                 const SizedBox(height: 24),
                 const Text(
-                  'Заказ принят! 🎉',
+                  'Ваш заказ принят и в пути',
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 12),
-                const Text(
-                  'Ваш заказ в пути.\nМы скоро свяжемся с вами!',
-                  style: TextStyle(color: AppTheme.greyColor, fontSize: 15),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 24),

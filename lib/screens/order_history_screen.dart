@@ -186,16 +186,6 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Expanded(
-                              child: Text(
-                                order.id,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
                             Container(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 12,
